@@ -255,8 +255,6 @@ const serumProducts = [
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Announcement />
-      <MainNavbar />
       <main>
         {/* Your page content goes here */}
         <Hero />
