@@ -266,7 +266,7 @@ export default function Home() {
         products={bestSellers}
       />
       <ProductCarousel 
-        title="Skin Care"
+        title="Face Wash"
         description="Discover our natural skin care collection for healthy, glowing skin."
         products={skinCareProducts}
       />
