@@ -1,18 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      colors: {
-        emerald: {
-          500: '#00B894', // You can adjust this color to match your logo exactly
-        },
+      screens: {
+        'xs': '375px',
+        'sm': '768px',
+        'md': '1024px',
+        'xl': '2560px',
       },
     },
   },
   plugins: [],
-};
+}
