@@ -8,7 +8,7 @@ export default function Hero() {
   const slides = [
     {
       id: 1,
-      image: "https://cdn.pixabay.com/photo/2023/12/04/15/14/bottle-8429706_1280.jpg",
+      image: "https://cdn.pixabay.com/photo/2018/08/14/13/48/botanical-3605603_1280.jpg",
       alt: "Slide 1"
     },
     {
@@ -18,7 +18,7 @@ export default function Hero() {
     },
     {
       id: 3,
-      image: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg", 
+      image: "https://cdn.pixabay.com/photo/2023/12/04/15/14/bottle-8429706_1280.jpg", 
       alt: "Slide 3"
     }
   ]
