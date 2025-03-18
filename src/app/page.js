@@ -46,6 +46,13 @@ export default function Home() {
           }}
         />
         <InstagramFeed posts={instagramPosts} />
+        <TrendingProducts 
+            title=""
+            categories={["LOOKSPURE PLAY RANGE",""]}
+            productData={[eliteEdition,onTheGoEssentials]}
+            viewAllLinks={["/elite-edition","/on-the-go-essential"]}
+            showRatings={true}
+        />
       </main>
     </div>
   );

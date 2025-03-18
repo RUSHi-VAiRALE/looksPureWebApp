@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { SiGoogledisplayandvideo360 } from "react-icons/si"
 
 export default function InstagramFeed({ 
   title = "LOOKSPURE INSTA",
@@ -86,7 +87,7 @@ export default function InstagramFeed({
                       
                       {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-60 transition-opacity duration-300 flex items-center justify-center">
-                        <span className="text-white text-sm font-medium">View on Instagram</span>
+                        <span className="text-white text-sm font-medium"><SiGoogledisplayandvideo360 size={30}/></span>
                       </div>
                     </div>
                   </Link>
