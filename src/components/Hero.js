@@ -13,7 +13,7 @@ export default function Hero() {
     },
     {
       id: 2, 
-      image: "https://cdn.pixabay.com/photo/2018/08/14/13/48/botanical-3605603_1280.jpg",
+      image: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg",
       alt: "Slide 2"
     },
     {
@@ -22,7 +22,7 @@ export default function Hero() {
       alt: "Slide 3"
     }
   ]
-
+  
   return (
     <section className="relative w-full overflow-hidden h-[80vh] z-10">
       <Carousel
