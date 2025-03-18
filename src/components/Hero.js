@@ -18,15 +18,13 @@ export default function Hero() {
     },
     {
       id: 3,
-      image: "https://cdn.pixabay.com/photo/2019/09/27/09/39/flatlay-4507972_1280.jpg", 
+      image: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg", 
       alt: "Slide 3"
     }
   ]
 
   return (
-    <section className="relative w-full overflow-hidden
-      h-[100px] xs:h-[113px] sm:h-[204.8px] md:h-[273px] xl:h-[682.66px]
-    ">
+    <section className="relative w-full overflow-hidden h-[80vh] z-10">
       <Carousel
         slides={slides}
         currentSlide={currentSlide}

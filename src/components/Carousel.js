@@ -14,9 +14,7 @@ export function Carousel({ slides, currentSlide, setCurrentSlide, autoPlay = tru
   }, [autoPlay, interval, slides.length, setCurrentSlide])
 
   return (
-    <div className="relative w-full overflow-hidden
-      h-[100px] xs:h-[113px] sm:h-[204.8px] md:h-[273px] xl:h-[682.66px]
-    ">
+    <div className="relative w-full h-full overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -32,11 +30,7 @@ export function Carousel({ slides, currentSlide, setCurrentSlide, autoPlay = tru
             src={slide.image}
             alt={slide.alt}
             fill
-            sizes="(min-width: 2560px) 2560px, 
-                   (min-width: 1024px) 1024px,
-                   (min-width: 768px) 768px,
-                   (min-width: 425px) 425px,
-                   375px"
+            sizes="100vw"
             className="object-cover w-full"
             quality={100}
             priority={index === 0}
