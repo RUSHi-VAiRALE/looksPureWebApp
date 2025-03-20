@@ -102,10 +102,7 @@ export default function TrendingProducts({
             style={{ transform: `translateX(-${currentIndex * (100 / getVisibleProducts())}%)` }}
           >
             {products.map((product) => (
-              <div 
-                key={product.id}
-                className="w-full min-w-[100%] sm:min-w-[50%] lg:min-w-[25%] px-3 group"
-              >
+              <Link key={product.id} href="/singleProduct/1" className="w-full min-w-[100%] sm:min-w-[50%] lg:min-w-[25%] px-3 group">
                 {/* Product Image */}
                 <div className="relative mb-4 overflow-hidden bg-gray-100 rounded-sm aspect-square">
                   {product.discount && (
@@ -145,7 +142,7 @@ export default function TrendingProducts({
                     </span>
                   )}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
