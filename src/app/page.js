@@ -12,13 +12,15 @@ import PromoBanner from "@/components/PromoBanner";
 import ProductSpotlight from '@/components/ProductSpotlight';
 import InstagramFeed from '@/components/InstagramFeed';
 import { instagramPosts } from '@/data/instagramPosts';
-
+import ProductDetail from "@/components/ProductDetail";
+import { productDetails } from '@/data/productDetails'; // Add this import
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <main>
         {/* Your page content goes here */}
+     
         <Hero />
         <TrendingProducts 
             title="TRENDING AT LOOKSPURE"

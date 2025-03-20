@@ -93,7 +93,7 @@ export default function Footer() {
               <div className={`space-y-4 ${openSection === 'contact' ? 'block' : 'hidden md:block'}`}>
                 <p className="text-sm">
                   Need help? Fill out our form or email<br />
-                  <a href="mailto:help@lookspure.com" className="text-emerald-400">
+                  <a href="mailto:help@lookspure.com" className="hover:text-emerald-400">
                     help@lookspure.com
                   </a>
                 </p>
