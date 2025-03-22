@@ -75,7 +75,7 @@ export default function TrendingProducts({
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`px-6 py-2 text-lg font-medium transition-all duration-300 tracking-[0.3em] ${
+                className={`px-2 sm:px-4 md:px-6 py-2 text-sm sm:text-base md:text-lg font-medium transition-all duration-300 tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] ${
                   activeCategory === index 
                     ? 'text-black' 
                     : 'text-black hover:text-gray-800'

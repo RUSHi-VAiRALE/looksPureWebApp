@@ -102,8 +102,8 @@ export default function MainNavbar() {
     } else {
       return `${baseClasses} ${activeIndicator} ${afterTransition} ${
         isActive(path) 
-          ? 'text-black after:bg-white font-semibold' 
-          : 'text-white hover:text-white after:bg-white'
+          ? 'text-white after:bg-white font-semibold' 
+          : 'text-white hover:text-black after:bg-black'
       }`;
     }
   };
@@ -134,7 +134,7 @@ export default function MainNavbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 order-2">
-              <Link href="/" className={getNavLinkClasses('/')}>
+              <Link href="/new" className={getNavLinkClasses('/skincare')}>
                 New
               </Link>
               <Link href="/skincare" className={getNavLinkClasses('/skincare')}>
@@ -170,13 +170,13 @@ export default function MainNavbar() {
                 )}
               </button>
               
-              <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
+              {/* <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
                 !isHomePage || scrolled 
                   ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
               }`}>
                 <FiStar size={22} />
-              </button>
+              </button> */}
               <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
                 !isHomePage || scrolled 
                   ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 

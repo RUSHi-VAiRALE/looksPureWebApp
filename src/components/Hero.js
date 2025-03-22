@@ -9,7 +9,8 @@ export default function Hero() {
     {
       id: 1,
       type: 'video',
-      src: "https://cdn.pixabay.com/video/2024/05/19/212632_tiny.mp4",
+      src: "https://cdn.pixabay.com/video/2024/04/27/209634_tiny.mp4",
+      hdSrc: "https://cdn.pixabay.com/video/2024/04/27/209634_tiny.mp4",
       alt: "Skincare application video"
     },
     {
@@ -28,6 +29,7 @@ export default function Hero() {
       id: 4,
       type: 'video',
       src: "https://cdn.pixabay.com/video/2017/09/15/12004-234428494_tiny.mp4",
+      hdSrc: "https://cdn.pixabay.com/video/2017/09/15/12004-234428494_tiny.mp4",
       alt: "Product showcase video"
     },
     {

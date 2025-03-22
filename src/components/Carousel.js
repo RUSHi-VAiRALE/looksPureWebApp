@@ -39,10 +39,21 @@ export function Carousel({ slides, currentSlide, setCurrentSlide, autoPlay = tru
         videoEl.currentTime = 0;
         setIsPaused(true); // Pause the carousel while video plays
         
-        // Set video quality attributes
+        // Enhanced video quality settings
         videoEl.setAttribute('playsinline', '');
         videoEl.setAttribute('preload', 'auto');
         videoEl.style.objectFit = 'cover';
+        
+        // Set higher quality attributes
+        if (currentSlideData.hdSrc) {
+          videoEl.src = currentSlideData.hdSrc; // Use HD source if available
+        }
+        
+        // Force HD quality when possible
+        if (videoEl.canPlayType('video/mp4; codecs="avc1.64001E, mp4a.40.2"')) {
+          videoEl.style.width = '100%';
+          videoEl.style.height = '100%';
+        }
         
         // Play with higher quality
         const playPromise = videoEl.play();
@@ -92,7 +103,7 @@ export function Carousel({ slides, currentSlide, setCurrentSlide, autoPlay = tru
               priority={index === 0}
             />
           ) : (
-            <div className="relative aspect-video w-full h-full">
+            <div className="relative w-full h-full">
               <video
                 ref={el => { if (el) videoRefs.current[slide.id] = el; }}
                 className="absolute inset-0 w-full h-full object-cover"
@@ -101,9 +112,12 @@ export function Carousel({ slides, currentSlide, setCurrentSlide, autoPlay = tru
                 preload="auto"
                 aria-label={slide.alt}
                 src={slide.src}
+                poster={slide.poster || ''}
+                controlsList="nodownload"
               >
-                {/* <source src={slide.src} type="video/mp4" />
-                Your browser does not support the video tag. */}
+                {slide.hdSrc && <source src={slide.hdSrc} type="video/mp4" />}
+                <source src={slide.src} type="video/mp4" />
+                Your browser does not support the video tag.
               </video>
             </div>
           )}
