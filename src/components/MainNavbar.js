@@ -57,23 +57,23 @@ export default function MainNavbar() {
 
   const textClasses = isHomePage
     ? scrolled
-      ? 'text-gray-700 hover:text-emerald-500 after:bg-emerald-500'
+      ? 'text-gray-700 hover:text-black after:bg-black'
       : 'text-white hover:text-white after:bg-white'
-    : 'text-gray-700 hover:text-emerald-500 after:bg-emerald-500';
+    : 'text-gray-700 hover:text-black after:bg-black';
 
   const iconClasses = isHomePage
     ? scrolled
-      ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100'
+      ? 'text-gray-700 hover:text-black hover:bg-gray-100'
       : 'text-white hover:text-white hover:bg-white/20'
-    : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100';
+    : 'text-gray-700 hover:text-black hover:bg-gray-100';
 
   const logoClasses = isHomePage
     ? scrolled
-      ? 'bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent'
+      ? 'bg-black bg-clip-text text-transparent'
       : 'text-white'
-    : 'bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent';
+    : 'bg-black bg-clip-text text-transparent';
 
-  // Update the textClasses to always include emerald-500 for active routes
+  // Update the textClasses to always include black for active routes
   const getNavLinkClasses = (path) => {
     const baseClasses = "text-lg font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
     const activeIndicator = isActive(path) ? 'after:w-full' : 'after:w-0 hover:after:w-full';
@@ -82,13 +82,13 @@ export default function MainNavbar() {
     if (!isHomePage || scrolled) {
       return `${baseClasses} ${activeIndicator} ${afterTransition} ${
         isActive(path) 
-          ? 'text-emerald-500 after:bg-emerald-500' 
-          : 'text-gray-700 hover:text-emerald-500 after:bg-emerald-500'
+          ? 'text-black after:bg-black' 
+          : 'text-gray-700 hover:text-black after:bg-black'
       }`;
     } else {
       return `${baseClasses} ${activeIndicator} ${afterTransition} ${
         isActive(path) 
-          ? 'text-emerald-500 after:bg-white font-semibold' 
+          ? 'text-black after:bg-white font-semibold' 
           : 'text-white hover:text-white after:bg-white'
       }`;
     }
@@ -143,13 +143,13 @@ export default function MainNavbar() {
               onClick={() => setCartOpen(true)}
               className={`p-2 rounded-full transition-colors duration-200 relative ${
                 !isHomePage || scrolled 
-                  ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
               }`}
             >
               <FiShoppingCart size={22} />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItemCount > 9 ? '9+' : cartItemCount}
                 </span>
               )}
@@ -184,28 +184,28 @@ export default function MainNavbar() {
           <div className="md:hidden py-3 border-t border-gray-100 animate-fadeIn bg-white">
             <div className="px-2 space-y-1">
               <Link href="/" className={`block px-4 py-3 rounded-lg transition-colors ${
-                isActive('/') ? 'text-emerald-500 bg-emerald-50' : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-50'
+                isActive('/') ? 'text-black bg-gray-50' : 'text-gray-700 hover:text-black hover:bg-gray-50'
               }`}>
                 Home
               </Link>
               <Link href="/shop" className={`block px-4 py-3 rounded-lg transition-colors ${isActive('/shop') 
-                ? 'text-emerald-500 bg-emerald-50' 
-                : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-50'}`}>
+                ? 'text-black bg-gray-50' 
+                : 'text-gray-700 hover:text-black hover:bg-gray-50'}`}>
                 Shop
               </Link>
               <Link href="/bestseller" className={`block px-4 py-3 rounded-lg transition-colors ${isActive('/bestseller') 
-                ? 'text-emerald-500 bg-emerald-50' 
-                : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-50'}`}>
+                ? 'text-black bg-gray-50' 
+                : 'text-gray-700 hover:text-black hover:bg-gray-50'}`}>
                 Bestseller
               </Link>
               <Link href="/skincare" className={`block px-4 py-3 rounded-lg transition-colors ${isActive('/skincare') 
-                ? 'text-emerald-500 bg-emerald-50' 
-                : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-50'}`}>
+                ? 'text-black bg-gray-50' 
+                : 'text-gray-700 hover:text-black hover:bg-gray-50'}`}>
                 Skin Care
               </Link>
               <Link href="/track" className={`block px-4 py-3 rounded-lg transition-colors ${isActive('/track') 
-                ? 'text-emerald-500 bg-emerald-50' 
-                : 'text-gray-700 hover:text-emerald-500 hover:bg-gray-50'}`}>
+                ? 'text-black bg-gray-50' 
+                : 'text-gray-700 hover:text-black hover:bg-gray-50'}`}>
                 Track Order
               </Link>
             </div>

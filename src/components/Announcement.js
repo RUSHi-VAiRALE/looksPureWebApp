@@ -18,8 +18,8 @@ export default function Announcement() {
   }, []);
 
   return (
-    <div className="announcement-bar fixed top-0 left-0 right-0 z-50 bg-emerald-500 text-white transition-transform duration-300">
-      <div className="container mx-auto text-center py-2 text-sm font-medium">
+    <div className="announcement-bar py-2 fixed top-0 left-0 right-0 z-50 bg-black text-white transition-transform duration-300">
+      <div className="container mx-auto text-center text-sm font-medium w-fit border-b-2">
         {announcements[currentAnnouncement]}
       </div>
     </div>

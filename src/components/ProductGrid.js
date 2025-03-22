@@ -49,7 +49,7 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
           
           {/* Bestseller Badge */}
           {product.isBestseller && (
-            <div className="absolute top-2 left-2 z-10 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
               BESTSELLER
             </div>
           )}
@@ -87,7 +87,7 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
               <p className="text-sm font-medium text-gray-900">₹{product.price.toFixed(2)}</p>
               <button 
                 onClick={() => handleAddToCart(product)}
-                className="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-md hover:bg-emerald-700 transition-colors"
+                className="text-xs bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors"
               >
                 Add to Cart
               </button>

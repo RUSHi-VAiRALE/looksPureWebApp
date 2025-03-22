@@ -138,14 +138,15 @@ export default function TrackOrderPage() {
             <div className="p-6 flex flex-wrap gap-4">
               <button
                 onClick={resetTracking}
-                className="bg-gray-100 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors font-medium"
+                type="submit"
+                className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-800 transition-colors font-medium"
               >
-                Track Another Order
+                Track Order
               </button>
               
               <Link 
                 href="/contact"
-                className="bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 transition-colors font-medium"
+                className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors font-medium"
               >
                 Need Help?
               </Link>

@@ -18,7 +18,7 @@ export default function BestsellerPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <FaCrown className="text-amber-500 mr-2 text-3xl" />
+            <FaCrown className="text-black mr-2 text-3xl" />
             <h1 className="text-3xl font-bold text-gray-900">Our Bestsellers</h1>
           </div>
           <p className="max-w-2xl mx-auto text-gray-600">
@@ -28,7 +28,9 @@ export default function BestsellerPage() {
         </div>
         
         {/* Featured Bestseller */}
-
+        <div className="mb-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl overflow-hidden">
+          {/* Content for featured bestseller would go here */}
+        </div>
         
         {/* Bestseller Categories */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -38,7 +40,7 @@ export default function BestsellerPage() {
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === category
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-black text-white'
                   : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
               }`}
             >

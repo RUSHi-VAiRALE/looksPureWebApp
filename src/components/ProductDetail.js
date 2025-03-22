@@ -206,11 +206,11 @@ export default function ProductDetail({ product }) {
             </div>
             
             {/* Add to Cart & Buy Now */}
-            <div className="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="mt-8">
               <button 
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
-                className={`flex-1 bg-emerald-600 text-white py-3 px-6 rounded-md hover:bg-emerald-700 transition-colors flex items-center justify-center ${isAddingToCart ? 'opacity-75 cursor-not-allowed' : ''}`}
+                className={`w-full bg-black text-white py-3 px-6 rounded-none transition-colors flex items-center justify-center ${isAddingToCart ? 'opacity-75 cursor-not-allowed' : 'hover:bg-gray-800'}`}
               >
                 {isAddingToCart ? (
                   <>
@@ -226,12 +226,6 @@ export default function ProductDetail({ product }) {
                     Add to Cart
                   </>
                 )}
-              </button>
-              <button 
-                onClick={handleBuyNow}
-                className="flex-1 bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition-colors"
-              >
-                Buy Now
               </button>
             </div>
             

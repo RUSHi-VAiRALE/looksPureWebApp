@@ -8,23 +8,38 @@ export default function Hero() {
   const slides = [
     {
       id: 1,
-      image: "https://cdn.pixabay.com/photo/2018/08/14/13/48/botanical-3605603_1280.jpg",
-      alt: "Slide 1"
+      type: 'video',
+      src: "https://cdn.pixabay.com/video/2024/05/19/212632_tiny.mp4",
+      alt: "Skincare application video"
     },
     {
-      id: 2, 
-      image: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg",
-      alt: "Slide 2"
+      id: 2,
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2018/08/14/13/48/botanical-3605603_1280.jpg",
+      alt: "Natural skincare ingredients"
     },
     {
-      id: 3,
-      image: "https://cdn.pixabay.com/photo/2023/12/04/15/14/bottle-8429706_1280.jpg", 
-      alt: "Slide 3"
+      id: 3, 
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg",
+      alt: "Organic ingredients"
+    },
+    {
+      id: 4,
+      type: 'video',
+      src: "https://cdn.pixabay.com/video/2017/09/15/12004-234428494_tiny.mp4",
+      alt: "Product showcase video"
+    },
+    {
+      id: 5,
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2023/12/04/15/14/bottle-8429706_1280.jpg", 
+      alt: "Product bottle"
     }
   ]
   
   return (
-    <section className="relative w-full overflow-hidden h-[80vh] z-10">
+    <section className="relative w-full overflow-hidden h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] z-10">
       <Carousel
         slides={slides}
         currentSlide={currentSlide}

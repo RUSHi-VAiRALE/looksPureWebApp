@@ -71,20 +71,20 @@ export default function TrendingProducts({
       {/* Category Tabs */}
       {categories.length > 1 && (
         <div className="flex justify-center mb-10">
-          <div className="inline-flex border-b border-gray-200">
+          <div className="inline-flex flex items-center">
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`px-6 py-2 text-base font-medium transition-all duration-300 relative ${
+                className={`px-6 py-2 text-lg font-medium transition-all duration-300 tracking-[0.3em] ${
                   activeCategory === index 
                     ? 'text-black' 
-                    : 'text-gray-500 hover:text-gray-800'
+                    : 'text-black hover:text-gray-800'
                 }`}
                 onClick={() => handleCategoryChange(index)}
               >
                 {category}
                 {activeCategory === index && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>
+                  <div className="h-px w-full bg-black mt-2"></div>
                 )}
               </button>
             ))}
@@ -127,7 +127,7 @@ export default function TrendingProducts({
                   <div className="flex items-center mb-2">
                     <div className="flex mr-2">
                       {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} className="text-yellow-400 w-3 h-3" />
+                        <FaStar key={i} className="text-black w-3 h-3" />
                       ))}
                     </div>
                     <span className="text-xs text-gray-500">({product.reviews})</span>
@@ -173,7 +173,7 @@ export default function TrendingProducts({
         <div className="flex justify-center mt-10">
           <Link 
             href={viewAllLink}
-            className="px-8 py-3 border border-black text-black hover:bg-black hover:text-white transition-colors duration-300 uppercase text-sm tracking-wider font-medium"
+            className="px-8 py-3 border border-black text-white bg-black hover:bg-white hover:text-black transition-colors duration-300 uppercase text-sm tracking-wider font-medium"
           >
             View All
           </Link>

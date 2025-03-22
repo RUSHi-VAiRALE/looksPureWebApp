@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Jost } from 'next/font/google';
 import "./globals.css";
 import Footer from '@/components/Footer'
 import MainNavbar from '@/components/MainNavbar'
@@ -12,9 +12,17 @@ export const metadata = {
   description: 'Premium natural and organic beauty products',
 };
 
+// Initialize the Jost font
+const jost = Jost({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jost',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={jost.className}>
       <body>
         
         <CartProvider>
