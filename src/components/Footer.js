@@ -12,14 +12,14 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-300 overflow-hidden">
+    <footer className="relative bg-black text-gray-300 overflow-hidden">
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/10 to-teal-900/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-pink-900/5 to-purple-900/5"></div>
       
       {/* Radial Gradient Accent */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/20 rounded-full filter blur-3xl"></div>
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl"></div>
       </div>
 
       {/* Main Footer Content */}
@@ -30,32 +30,32 @@ export default function Footer() {
             {/* Logo Section */}
             <div className="space-y-4">
               <Link href="/" className="block">
-                <span className="text-3xl font-serif font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+                <span className="text-3xl font-serif font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                   LooksPure
                 </span>
               </Link>
-              <p className="text-sm">
+              <p className="text-sm text-gray-400">
                 Your trusted source for natural and toxin-free beauty products.
               </p>
             </div>
 
-            {/* Rest of the footer sections remain unchanged */}
+            {/* About Us Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold text-white">About Us</h3>
                 <button 
-                  className="md:hidden"
+                  className="md:hidden text-gray-400"
                   onClick={() => toggleSection('about')}
                 >
                   {openSection === 'about' ? <FiChevronUp /> : <FiChevronDown />}
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'about' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/values" className="block hover:text-emerald-400">Our Values</Link>
-                <Link href="/privacy" className="block hover:text-emerald-400">Privacy Policy</Link>
-                <Link href="/terms" className="block hover:text-emerald-400">Terms & Conditions</Link>
-                <Link href="/disclaimer" className="block hover:text-emerald-400">Disclaimer</Link>
-                <Link href="/corporate" className="block hover:text-emerald-400">Corporate Information</Link>
+                <Link href="/values" className="block text-gray-400 hover:text-pink-300">Our Values</Link>
+                <Link href="/privacy" className="block text-gray-400 hover:text-pink-300">Privacy Policy</Link>
+                <Link href="/terms" className="block text-gray-400 hover:text-pink-300">Terms & Conditions</Link>
+                <Link href="/disclaimer" className="block text-gray-400 hover:text-pink-300">Disclaimer</Link>
+                <Link href="/corporate" className="block text-gray-400 hover:text-pink-300">Corporate Information</Link>
               </div>
             </div>
 
@@ -64,18 +64,18 @@ export default function Footer() {
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold text-white">Quick Links</h3>
                 <button 
-                  className="md:hidden"
+                  className="md:hidden text-gray-400"
                   onClick={() => toggleSection('quick')}
                 >
                   {openSection === 'quick' ? <FiChevronUp /> : <FiChevronDown />}
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'quick' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/knowledge" className="block hover:text-emerald-400">Knowledge</Link>
-                <Link href="/faqs" className="block hover:text-emerald-400">FAQs</Link>
-                <Link href="/return-policy" className="block hover:text-emerald-400">Return & Refund Policy</Link>
-                <Link href="/track" className="block hover:text-emerald-400">Track Order</Link>
-                <Link href="/help" className="block hover:text-emerald-400">Help Center</Link>
+                <Link href="/knowledge" className="block text-gray-400 hover:text-pink-300">Knowledge</Link>
+                <Link href="/faqs" className="block text-gray-400 hover:text-pink-300">FAQs</Link>
+                <Link href="/return-policy" className="block text-gray-400 hover:text-pink-300">Return & Refund Policy</Link>
+                <Link href="/track" className="block text-gray-400 hover:text-pink-300">Track Order</Link>
+                <Link href="/help" className="block text-gray-400 hover:text-pink-300">Help Center</Link>
               </div>
             </div>
 
@@ -84,27 +84,27 @@ export default function Footer() {
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold text-white">Contact Us</h3>
                 <button 
-                  className="md:hidden"
+                  className="md:hidden text-gray-400"
                   onClick={() => toggleSection('contact')}
                 >
                   {openSection === 'contact' ? <FiChevronUp /> : <FiChevronDown />}
                 </button>
               </div>
               <div className={`space-y-4 ${openSection === 'contact' ? 'block' : 'hidden md:block'}`}>
-                <p className="text-sm">
+                <p className="text-sm text-gray-400">
                   Need help? Fill out our form or email<br />
-                  <a href="mailto:help@lookspure.com" className="hover:text-emerald-400">
+                  <a href="mailto:help@lookspure.com" className="text-gray-300 hover:text-pink-300">
                     help@lookspure.com
                   </a>
                 </p>
                 <div className="flex space-x-4">
-                  <a href="#" className="hover:text-emerald-400">
+                  <a href="#" className="text-gray-400 hover:text-pink-300">
                     <FaFacebookF size={20} />
                   </a>
-                  <a href="#" className="hover:text-emerald-400">
+                  <a href="#" className="text-gray-400 hover:text-pink-300">
                     <FaInstagram size={20} />
                   </a>
-                  <a href="#" className="hover:text-emerald-400">
+                  <a href="#" className="text-gray-400 hover:text-pink-300">
                     <FaYoutube size={20} />
                   </a>
                 </div>
@@ -114,15 +114,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800/50 backdrop-blur-sm">
+        <div className="border-t border-gray-800 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
-              <p className="text-sm">
+              <p className="text-sm text-gray-400">
                 Copyright © {new Date().getFullYear()} LooksPure. All rights reserved.
               </p>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-gray-400">
                 <span className="text-sm">Made with</span>
-                <span className="text-emerald-400">♥</span>
+                <span className="text-pink-400">♥</span>
                 <span className="text-sm">in India</span>
               </div>
             </div>
