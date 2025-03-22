@@ -46,6 +46,8 @@ export default function Home() {
             image: "https://cdn.pixabay.com/photo/2023/12/19/01/10/ai-generated-8456887_1280.jpg",
             link: "/products/cloud-nine-blush"
           }}
+          useGradient={true}
+          gradientColors="from-pink-200 via-purple-200 to-blue-200"
         />
         <InstagramFeed posts={instagramPosts} />
         <TrendingProducts 

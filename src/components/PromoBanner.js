@@ -9,7 +9,9 @@ export default function PromoBanner({
   height = 'half', // 'half' or 'full'
   autoPlay = true,
   interval = 5000,
-  title = "DEAL FOR YOU"
+  title = "DEAL FOR YOU",
+  useGradient = false,
+  gradientColors = 'from-pink-200 via-purple-200 to-blue-200' // Default gradient colors
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   
@@ -38,7 +40,7 @@ export default function PromoBanner({
     : 'h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px]';
   
   return (
-    <div className="my-12">
+    <div className={`my-12 ${useGradient ? `bg-gradient-to-r ${gradientColors} py-8 rounded-lg` : ''}`}>
       {/* Title heading */}
       {title && (
         <h2 className="text-center text-xl md:text-2xl font-medium tracking-wider mb-6">
@@ -46,7 +48,7 @@ export default function PromoBanner({
         </h2>
       )}
       
-      <div className={`relative w-full overflow-hidden ${heightClass}`}>
+      <div className={`relative w-full overflow-hidden ${heightClass} ${useGradient ? 'px-4' : ''}`}>
         {/* Banner Images */}
         <div className="relative w-full h-full">
           {banners.map((banner, index) => (

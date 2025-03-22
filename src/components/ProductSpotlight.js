@@ -15,7 +15,7 @@ export default function ProductSpotlight({
   return (
     <section className="relative w-full h-[80vh] overflow-hidden">
       {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-800 via-emerald-100 to-white z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 z-0"></div>
       
       <div className="relative z-10 h-full container mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row h-full items-center">
