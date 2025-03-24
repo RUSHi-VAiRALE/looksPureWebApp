@@ -5,20 +5,71 @@ import Image from 'next/image';
 import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
 import { useCart } from '@/context/CartContext';
 import { getProductsByCategory, getBestsellers } from '@/data/products';
+import DesktopFilters from './DesktopFilters';
+import MobileFilters from './MobileFilters';
+import SortOptions from './SortOptions';
 
 export default function ProductGrid({ category = 'All', bestsellersOnly = false }) {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [favorites, setFavorites] = useState({});
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [priceRange, setPriceRange] = useState([0, 2000]);
+  const [sortOption, setSortOption] = useState('featured');
+  const [showSortOptions, setShowSortOptions] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const { addToCart } = useCart();
   
   useEffect(() => {
     // Load products based on props
+    let loadedProducts;
     if (bestsellersOnly) {
-      setProducts(getBestsellers());
+      loadedProducts = getBestsellers();
     } else {
-      setProducts(getProductsByCategory(category));
+      loadedProducts = getProductsByCategory(category);
     }
+    setProducts(loadedProducts);
+    setFilteredProducts(loadedProducts);
   }, [category, bestsellersOnly]);
+
+  // Apply filters and sorting
+  useEffect(() => {
+    let result = [...products];
+    
+    // Apply in-stock filter
+    if (inStockOnly) {
+      result = result.filter(product => product.inStock);
+    }
+    
+    // Apply price range filter
+    result = result.filter(product => 
+      product.price >= priceRange[0] && product.price <= priceRange[1]
+    );
+    
+    // Apply sorting
+    switch (sortOption) {
+      case 'bestseller':
+        result.sort((a, b) => (b.isBestseller ? 1 : 0) - (a.isBestseller ? 1 : 0));
+        break;
+      case 'az':
+        result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'za':
+        result.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'priceHighToLow':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case 'priceLowToHigh':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      default:
+        // Default sorting (featured)
+        break;
+    }
+    
+    setFilteredProducts(result);
+  }, [products, inStockOnly, priceRange, sortOption]);
 
   const toggleFavorite = (productId) => {
     setFavorites(prev => ({
@@ -28,73 +79,137 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
   };
 
   const handleAddToCart = (product) => {
-    addToCart(product, 1, product.shades[0]);
+    addToCart(product, 1);
   };
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map((product) => (
-        <div key={product.id} className="group relative bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-          {/* Favorite Button */}
-          <button 
-            onClick={() => toggleFavorite(product.id)}
-            className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 rounded-full"
-          >
-            {favorites[product.id] ? (
-              <FaHeart className="text-red-500 w-5 h-5" />
-            ) : (
-              <FaRegHeart className="text-gray-400 w-5 h-5" />
-            )}
-          </button>
-          
-          {/* Bestseller Badge */}
-          {product.isBestseller && (
-            <div className="absolute top-2 left-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
-              BESTSELLER
+  // Product card component to avoid repetition
+  const ProductCard = ({ product }) => (
+    <div className="group relative bg-white overflow-hidden">
+      {/* Sale Badge */}
+      {product.onSale && (
+        <div className="absolute top-0 left-0 z-10 bg-black text-white text-xs font-bold px-3 py-1">
+          {product.discountPercentage ? `SAVE ${product.discountPercentage}%` : 'ON SALE'}
+        </div>
+      )}
+      
+      {/* Product Image */}
+      <Link href={`/products/${product.id}`} className="block aspect-square overflow-hidden">
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={300}
+          height={300}
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+        />
+      </Link>
+      
+      {/* Product Info */}
+      <div className="pt-4 pb-2 px-1">
+        <div className="uppercase text-center text-xs font-medium mb-1">
+          {product.name}
+        </div>
+        
+        <div className="text-center mb-2">
+          {product.onSale ? (
+            <div className="flex justify-center items-center space-x-2">
+              <p className="text-sm font-medium">₹{product.salePrice?.toFixed(2) || product.price.toFixed(2)}</p>
+              <p className="text-xs text-gray-500 line-through">₹{product.price.toFixed(2)}</p>
             </div>
+          ) : (
+            <p className="text-sm font-medium">₹{product.price.toFixed(2)}</p>
           )}
-          
-          {/* Product Image */}
-          <Link href={`/products/${product.id}`} className="block aspect-square overflow-hidden">
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={300}
-              height={300}
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+        </div>
+        
+        {/* Rating Stars */}
+        <div className="flex justify-center items-center mb-2">
+          {[...Array(5)].map((_, i) => (
+            <FaStar 
+              key={i} 
+              className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`} 
             />
-          </Link>
-          
-          {/* Product Info */}
-          <div className="p-4">
-            <Link href={`/products/${product.id}`} className="block">
-              <h3 className="text-sm font-medium text-gray-900 hover:text-emerald-600 transition-colors">
-                {product.name}
-              </h3>
-              <p className="mt-1 text-xs text-gray-500">{product.category}</p>
-            </Link>
-            
-            {/* Rating */}
-            <div className="mt-1 flex items-center">
-              <div className="flex items-center">
-                <FaStar className="text-yellow-400 w-3 h-3" />
-                <span className="ml-1 text-xs text-gray-500">{product.rating} ({product.reviewCount})</span>
-              </div>
-            </div>
-            
-            {/* Price and Add to Cart */}
-            <div className="mt-2 flex justify-between items-center">
-              <p className="text-sm font-medium text-gray-900">₹{product.price.toFixed(2)}</p>
-              <button 
-                onClick={() => handleAddToCart(product)}
-                className="text-xs bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors"
-              >
-                Add to Cart
-              </button>
+          ))}
+          <span className="ml-1 text-xs text-gray-500">({product.reviewCount})</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="relative">
+      {/* Mobile Filters - Only visible on smaller screens */}
+      <div className="md:hidden">
+        <MobileFilters 
+          inStockOnly={inStockOnly}
+          setInStockOnly={setInStockOnly}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          showSortOptions={showSortOptions}
+          setShowSortOptions={setShowSortOptions}
+        />
+        
+        {/* Mobile Product Grid */}
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop View with Sticky Filters */}
+      <div className="hidden md:block">
+        <div className="w-full flex justify-end mb-6 border-b pb-4">
+          <SortOptions 
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+          />
+        </div>
+        
+        <div className="flex">
+          {/* Left sidebar with filters */}
+          <div className="w-48 flex-shrink-0">
+            <div className="sticky top-24">
+              <DesktopFilters 
+                inStockOnly={inStockOnly}
+                setInStockOnly={setInStockOnly}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+              />
             </div>
           </div>
+          
+          {/* Product Grid - Right side */}
+          <div className="flex-1 pl-8">
+            <div className="grid grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            
+            {/* Empty state when no products match filters */}
+            {filteredProducts.length === 0 && (
+              <div className="py-12 text-center">
+                <p className="text-gray-500">No products match your current filters.</p>
+                <button 
+                  onClick={() => {
+                    setInStockOnly(false);
+                    setPriceRange([0, 2000]);
+                    setSortOption('featured');
+                  }}
+                  className="mt-4 text-sm text-black underline"
+                >
+                  Reset all filters
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
