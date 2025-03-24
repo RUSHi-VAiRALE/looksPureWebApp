@@ -1,14 +1,17 @@
 'use client'
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { FiSearch, FiShoppingCart, FiStar, FiUser } from 'react-icons/fi';
+import { FiSearch, FiShoppingCart, FiStar, FiUser, FiX } from 'react-icons/fi';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import MobileMenu from './MobileMenu';
+import SearchDialog from './SearchDialog';
 
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   
@@ -50,7 +53,7 @@ export default function MainNavbar() {
     };
 
     // Prevent body scroll when menu is open
-    if (isMenuOpen) {
+    if (isMenuOpen || isSearchOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -61,39 +64,42 @@ export default function MainNavbar() {
       window.removeEventListener('scroll', handleScroll);
       document.body.style.overflow = '';
     };
-  }, [scrolled, isHomePage, isMenuOpen]);
+  }, [scrolled, isHomePage, isMenuOpen, isSearchOpen]);
+
+  // Determine if we should apply scrolled styles (either actually scrolled or hovered)
+  const shouldApplyScrolledStyles = scrolled || isHovered;
 
   const navClasses = isHomePage
     ? `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        shouldApplyScrolledStyles ? 'bg-white shadow-md' : 'bg-transparent'
       }`
     : 'fixed top-[36px] w-full z-40 bg-white shadow-md';
 
   const textClasses = isHomePage
-    ? scrolled
+    ? shouldApplyScrolledStyles
       ? 'text-gray-700 hover:text-black after:bg-black'
       : 'text-white hover:text-white after:bg-white'
     : 'text-gray-700 hover:text-black after:bg-black';
 
   const iconClasses = isHomePage
-    ? scrolled
+    ? shouldApplyScrolledStyles
       ? 'text-gray-700 hover:text-black hover:bg-gray-100'
       : 'text-white hover:text-white hover:bg-white/20'
     : 'text-gray-700 hover:text-black hover:bg-gray-100';
 
   const logoClasses = isHomePage
-    ? scrolled
+    ? shouldApplyScrolledStyles
       ? 'bg-black bg-clip-text text-transparent'
       : 'text-white'
     : 'bg-black bg-clip-text text-transparent';
 
   // Update the textClasses to always include black for active routes
   const getNavLinkClasses = (path) => {
-    const baseClasses = "text-lg font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
+    const baseClasses = "text-md transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
     const activeIndicator = isActive(path) ? 'after:w-full' : 'after:w-0 hover:after:w-full';
     const afterTransition = "after:transition-all";
     
-    if (!isHomePage || scrolled) {
+    if (!isHomePage || shouldApplyScrolledStyles) {
       return `${baseClasses} ${activeIndicator} ${afterTransition} ${
         isActive(path) 
           ? 'text-black after:bg-black' 
@@ -110,9 +116,13 @@ export default function MainNavbar() {
 
   return (
     <>
-      <nav className={navClasses}>
-        <div className={`container mx-auto px-6 max-w-7xl ${!isHomePage || scrolled ? 'bg-white' : 'bg-transparent'}`}>
-          <div className={`flex items-center justify-between h-20 ${!isHomePage || scrolled ? 'bg-white' : 'bg-transparent'}`}>
+      <nav 
+        className={navClasses}
+        onMouseEnter={() => isHomePage && setIsHovered(true)}
+        onMouseLeave={() => isHomePage && setIsHovered(false)}
+      >
+        <div className={`container mx-auto px-6 max-w-7xl ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
+          <div className={`flex items-center justify-between h-20 ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
             <div className="md:hidden order-1">
               <button 
@@ -157,7 +167,7 @@ export default function MainNavbar() {
               <button 
                 onClick={() => setCartOpen(true)}
                 className={`p-2 rounded-full transition-colors duration-200 relative ${
-                  !isHomePage || scrolled 
+                  !isHomePage || shouldApplyScrolledStyles 
                     ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                     : 'text-white hover:text-white hover:bg-white/20'
                 }`}
@@ -170,23 +180,19 @@ export default function MainNavbar() {
                 )}
               </button>
               
-              {/* <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
-                !isHomePage || scrolled 
-                  ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 
-                  : 'text-white hover:text-white hover:bg-white/20'
-              }`}>
-                <FiStar size={22} />
-              </button> */}
-              <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
-                !isHomePage || scrolled 
-                  ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 
-                  : 'text-white hover:text-white hover:bg-white/20'
-              }`}>
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className={`p-2 rounded-full transition-colors duration-200 ${
+                  !isHomePage || shouldApplyScrolledStyles 
+                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
+                    : 'text-white hover:text-white hover:bg-white/20'
+                }`}
+              >
                 <FiSearch size={22} />
               </button>
               <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
-                !isHomePage || scrolled 
-                  ? 'text-gray-700 hover:text-emerald-500 hover:bg-gray-100' 
+                !isHomePage || shouldApplyScrolledStyles 
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
               }`}>
                 <FiUser size={22} />
@@ -195,6 +201,9 @@ export default function MainNavbar() {
           </div>
         </div>
       </nav>
+
+      {/* Use the SearchDialog component */}
+      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Use the MobileMenu component */}
       <MobileMenu 

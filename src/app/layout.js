@@ -12,12 +12,13 @@ export const metadata = {
   description: 'Premium natural and organic beauty products',
 };
 
-// Initialize the Jost font
+// Initialize the Jost font with sans-serif fallback
 const jost = Jost({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-jost',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  fallback: ['sans-serif'],
 });
 
 export default function RootLayout({ children }) {
