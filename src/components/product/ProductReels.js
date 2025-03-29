@@ -92,7 +92,7 @@ export default function ProductReels({ reels }) {
                 >
                   <video
                     src={reel.media}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full hover:cursor-pointer object-cover"
                     autoPlay
                     loop
                     playsInline
@@ -110,16 +110,16 @@ export default function ProductReels({ reels }) {
             <button
               onClick={prev}
               disabled={currentIndex === 0}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md disabled:opacity-50"
+              className="absolute left-0 top-1/2 hover:cursor-pointer -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md disabled:opacity-50"
             >
-              <FiChevronLeft size={24} />
+              <FiChevronLeft size={20} />
             </button>
             <button
               onClick={next}
               disabled={currentIndex >= reels.length - visibleReels}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md disabled:opacity-50"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:cursor-pointer disabled:opacity-50"
             >
-              <FiChevronRight size={24} />
+              <FiChevronRight size={20} />
             </button>
           </>
         )}

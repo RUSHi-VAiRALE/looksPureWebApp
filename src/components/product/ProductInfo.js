@@ -79,9 +79,9 @@ export default function ProductInfo({
       </div>
       
       {/* Description */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <p className="text-base text-gray-700">{product.description}</p>
-      </div>
+      </div> */}
       
       {/* Quantity */}
       <div className="mt-8">

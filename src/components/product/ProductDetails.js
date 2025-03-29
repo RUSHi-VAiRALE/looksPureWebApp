@@ -81,7 +81,7 @@ export default function ProductDetails({ product, expandedSection, toggleSection
           </div>
           <div>
             <h4 className="font-medium text-gray-900 mb-2">What is the shelf life of this product?</h4>
-            <p>The shelf life of this product is 24 months from the date of manufacture. Once opened, it's best to use within 12 months.</p>
+            <p>The shelf life of this product is 24 months from the date of manufacture. Once opened, it&apos;s best to use within 12 months.</p>
           </div>
         </div>
       </ProductExpandableSection>
