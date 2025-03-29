@@ -17,7 +17,7 @@ export default function ProductDetails({ product, expandedSection, toggleSection
           {/* Product Images in Description */}
           <div className="grid grid-cols-1 gap-4 mt-6">
             {product.images.map((image, index) => (
-              <div key={index} className="aspect-square rounded-lg overflow-hidden">
+              <div key={index} className="aspect-square overflow-hidden">
                 <Image
                   src={image.src}
                   alt={image.alt}

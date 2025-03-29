@@ -15,7 +15,7 @@ export default function ProductImageCarousel({ images }) {
   };
   
   return (
-    <div className="relative aspect-square rounded-lg overflow-hidden">
+    <div className="relative aspect-square overflow-hidden">
       <Image
         src={images[selectedImage].src}
         alt={images[selectedImage].alt}
