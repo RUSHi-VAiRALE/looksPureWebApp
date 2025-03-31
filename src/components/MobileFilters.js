@@ -32,19 +32,19 @@ export default function MobileFilters({
   return (
     <>
       {/* Mobile Filter and Sort Buttons - Styled like the image and made sticky */}
-      <div className="sticky top-0 z-30 bg-white flex border-b border-t">
+      <div className="sticky top-0 z-30 bg-white flex border-b-1 border-t-1 border-gray-300">
         <button
           onClick={() => setShowFilters(true)}
-          className="flex-1 py-3 text-center text-sm uppercase border-r"
+          className="flex-1 py-3 text-center text-[12px] text-gray-500 tracking-widest uppercase border-r-1 border-gray-300"
         >
           Filter
         </button>
         
         <button
           onClick={() => setShowSortOptions(true)}
-          className="flex-1 py-3 text-center text-sm uppercase flex items-center justify-center"
+          className="flex-1 py-3 text-center text-[12px] text-gray-500 tracking-widest uppercase flex items-center justify-center"
         >
-          Sort By <FaChevronDown className="ml-1 text-xs" />
+          Sort By <FaChevronDown className="ml-1 text-[12px]" />
         </button>
       </div>
       

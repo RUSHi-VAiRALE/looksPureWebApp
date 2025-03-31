@@ -20,17 +20,17 @@ export default function SortOptions({ sortOption, setSortOption }) {
   }, []);
 
   return (
-    <div className="relative" ref={sortRef}>
+    <div className="relative border-l-1 border-gray-300" ref={sortRef}>
       <button
         onClick={() => setShowSortOptions(!showSortOptions)}
-        className="flex items-center text-sm text-gray-700 px-4 py-2 uppercase"
+        className="flex items-center text-[12px] text-gray-400 hover:text-black tracking-widest px-12 py-4 uppercase"
       >
         <span>SORT BY</span>
         <FaChevronDown className={`transition-transform ${showSortOptions ? 'rotate-180' : ''} ml-1`} />
       </button>
       
       {showSortOptions && (
-        <div className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-60 bg-[#F3F3F3] border border-gray-200 shadow-lg z-10">
           <div className="py-1">
             {[
               { value: 'featured', label: 'Featured' },
@@ -46,8 +46,8 @@ export default function SortOptions({ sortOption, setSortOption }) {
                   setSortOption(option.value);
                   setShowSortOptions(false);
                 }}
-                className={`block w-full text-left px-4 py-2 text-sm ${
-                  sortOption === option.value ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'
+                className={`block w-full text-left px-4 py-2 text-sm cursor-pointer ${
+                  sortOption === option.value ? 'bg-gray-100 text-gray-600' : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
                 {option.label}

@@ -12,13 +12,13 @@ export default function SkincarePage() {
   const categories = ['all', 'dry', 'oily', 'combination', 'sensitive'];
   
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen w-full">
       {/* Hero Banner */}
       <Hero />
       
       {/* Skin Type Filter */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop By Skin Type</h2>
+      <div className="w-full mx-auto">
+        {/* <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop By Skin Type</h2>
 
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           {categories.map((category) => (
@@ -34,7 +34,7 @@ export default function SkincarePage() {
               {category === 'all' ? 'All Types' : category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
           ))}
-        </div>
+        </div> */}
         
         {/* Product Grid */}
         <ProductGrid category="Skincare" />

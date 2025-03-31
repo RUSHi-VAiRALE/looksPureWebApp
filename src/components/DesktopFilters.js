@@ -90,10 +90,10 @@ export default function DesktopFilters({
       {/* Filter sections - Left side */}
       <div className="space-y-6">
         {/* Availability Filter */}
-        <div className="border-b pb-4">
+        <div className="border-b-1 border-gray-300 pb-4">
           <button 
             onClick={() => setShowAvailability(!showAvailability)}
-            className="flex items-center justify-between w-full text-sm font-medium text-gray-900 mb-3 uppercase"
+            className="flex items-center justify-between w-full text-[13px] tracking-widest text-gray-900 mb-3 uppercase"
           >
             <span>AVAILABILITY</span>
             <FaChevronDown className={`transition-transform ${showAvailability ? 'rotate-180' : ''}`} />
@@ -106,7 +106,7 @@ export default function DesktopFilters({
                 type="checkbox"
                 checked={inStockOnly}
                 onChange={() => setInStockOnly(!inStockOnly)}
-                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                className="h-4 w-4 text-gray-300 text-md focus:ring-black border-gray-300 rounded"
               />
               <label htmlFor="inStockOnly" className="ml-2 text-sm text-gray-700">
                 In stock only
@@ -116,10 +116,10 @@ export default function DesktopFilters({
         </div>
         
         {/* Price Filter */}
-        <div className="border-b pb-4">
+        <div className="pb-4">
           <button 
             onClick={() => setShowPrice(!showPrice)}
-            className="flex items-center justify-between w-full text-sm font-medium text-gray-900 mb-3 uppercase"
+            className="flex items-center justify-between w-full text-[13px] tracking-widest text-gray-900 mb-3 uppercase"
           >
             <span>PRICE</span>
             <FaChevronDown className={`transition-transform ${showPrice ? 'rotate-180' : ''}`} />
@@ -134,7 +134,7 @@ export default function DesktopFilters({
                 step="100"
                 value={priceRange[1]}
                 onChange={handlePriceRangeChange}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-[2px] bg-black rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500">
                 <span>₹0</span>

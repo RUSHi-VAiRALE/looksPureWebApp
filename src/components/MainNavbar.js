@@ -124,7 +124,7 @@ export default function MainNavbar() {
         <div className={`container mx-auto px-6 max-w-7xl ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
           <div className={`flex items-center justify-between h-20 ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
-            <div className="md:hidden order-1">
+            <div className="lg:hidden order-1">
               <button 
                 className={`p-2 rounded-full transition-colors duration-200 ${iconClasses}`}
                 onClick={() => setIsMenuOpen(true)}
@@ -136,21 +136,21 @@ export default function MainNavbar() {
             </div>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center group order-2 md:order-1 mx-auto md:mx-0">
+            <Link href="/" className="flex items-center group order-2 lg:order-1 mx-auto md:mx-0">
               <span className={`text-3xl font-serif font-bold transition-all duration-300 ${logoClasses}`}>
                 LooksPure
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 order-2">
-              <Link href="/new" className={getNavLinkClasses('/skincare')}>
+            <div className="hidden lg:flex items-center space-x-8 order-2">
+              <Link href="/new" className={getNavLinkClasses('/new')}>
                 New
               </Link>
               <Link href="/skincare" className={getNavLinkClasses('/skincare')}>
                 Skin Care
               </Link>
-              <Link href="/offers" className={getNavLinkClasses('/skincare')}>
+              <Link href="/offers" className={getNavLinkClasses('/offers')}>
                 Offers
               </Link>
               <Link href="/bestseller" className={getNavLinkClasses('/bestseller')}>

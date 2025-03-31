@@ -84,7 +84,7 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
 
   // Product card component to avoid repetition
   const ProductCard = ({ product }) => (
-    <div className="group relative bg-white overflow-hidden">
+    <div className="group relative overflow-hidden">
       {/* Sale Badge */}
       {product.onSale && (
         <div className="absolute top-0 left-0 z-10 bg-black text-white text-xs font-bold px-3 py-1">
@@ -135,7 +135,7 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
   );
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* Mobile Filters - Only visible on smaller screens */}
       <div className="md:hidden">
         <MobileFilters 
@@ -152,7 +152,7 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
         />
         
         {/* Mobile Product Grid */}
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-4 px-4 sm:px-6 lg:px-12">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -160,15 +160,15 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
       </div>
 
       {/* Desktop View with Sticky Filters */}
-      <div className="hidden md:block">
-        <div className="w-full flex justify-end mb-6 border-b pb-4">
+      <div className="hidden md:block w-full">
+        <div className="w-full flex justify-end mb-6 border-b-1 border-gray-300">
           <SortOptions 
             sortOption={sortOption}
             setSortOption={setSortOption}
           />
         </div>
         
-        <div className="flex">
+        <div className="flex px-4 sm:px-6 lg:px-12">
           {/* Left sidebar with filters */}
           <div className="w-48 flex-shrink-0">
             <div className="sticky top-24">

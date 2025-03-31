@@ -41,7 +41,7 @@ export default function Hero() {
   ]
   
   return (
-    <section className="relative w-full overflow-hidden h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] z-10">
+    <section className="relative w-full overflow-hidden h-[40vh] lg:h-[80vh] z-10">
       <Carousel
         slides={slides}
         currentSlide={currentSlide}
