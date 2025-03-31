@@ -152,7 +152,7 @@ export default function CartDrawer() {
                         <div className="mt-6">
                           <Link
                             href="/checkout"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-emerald-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-emerald-700"
+                            className="flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900"
                           >
                             Checkout
                           </Link>
