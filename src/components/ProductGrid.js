@@ -93,9 +93,9 @@ export default function ProductGrid({ category = 'All', bestsellersOnly = false 
       )}
       
       {/* Product Image */}
-      <Link href={`/products/${product.id}`} className="block aspect-square overflow-hidden">
+      <Link href={`/singleProduct/${product.id}`} className="block aspect-square overflow-hidden">
         <Image
-          src={product.image}
+          src="https://cdn.pixabay.com/photo/2024/05/13/20/10/ai-generated-8759668_1280.jpg"
           alt={product.name}
           width={300}
           height={300}

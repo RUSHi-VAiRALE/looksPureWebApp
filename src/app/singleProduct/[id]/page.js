@@ -5,7 +5,6 @@ import Announcement from "@/components/Announcement";
 export default function ProductDetails(){
     return (
         <>
-        <Announcement />
             <ProductDetail product = {productDetails}/>
         </>
     )

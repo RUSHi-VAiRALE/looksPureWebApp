@@ -14,11 +14,15 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
       // Start animation after menu slide-in completes
       const timer = setTimeout(() => {
         setAnimationStarted(true);
-      }, 500);
+      }, 300); // Reduced from 500ms to 300ms for better timing
       return () => clearTimeout(timer);
     } else {
-      setAnimationStarted(false);
-      setShowLoginDialog(false);
+      // Add a small delay before resetting animation state
+      const timer = setTimeout(() => {
+        setAnimationStarted(false);
+        setShowLoginDialog(false);
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
   
@@ -39,9 +43,12 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
     <>
       {/* Full Screen Mobile Menu - Slides from left to right */}
       <div 
-        className={`fixed inset-0 bg-white w-[90%] z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-0 bg-white w-[90%] z-50 transform transition-all duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
         }`}
+        style={{ 
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
       >
         <div className="h-full flex flex-col">
           <div className="flex justify-between items-center p-6 border-b">
@@ -70,7 +77,8 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                       : 'translate-y-[10px] opacity-0'
                     }`}
                   style={{ 
-                    transitionDelay: animationStarted ? `${index * 200}ms` : '0ms'
+                    transitionDelay: animationStarted ? `${index * 150}ms` : '0ms',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
                   {item.label}
@@ -85,7 +93,10 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
               ? 'translate-y-0 opacity-100' 
               : 'translate-y-[20px] opacity-0'
             }`}
-            style={{ transitionDelay: animationStarted ? `${menuItems.length * 100 + 100}ms` : '0ms' }}
+            style={{ 
+              transitionDelay: animationStarted ? `${menuItems.length * 100 + 100}ms` : '0ms',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
           >
             <a href="#" 
               onClick={handleLoginClick}

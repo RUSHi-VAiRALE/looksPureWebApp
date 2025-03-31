@@ -13,17 +13,27 @@ export default function MainNavbar() {
   const [isHovered, setIsHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
-  const isHomePage = pathname === '/';
+  
+  // Changed to treat all pages like home page
+  const isHomePage = true;
   
   // Get cart state and functions
   const { cart, cartOpen, setCartOpen, getCartCount } = useCart();
   const cartItemCount = getCartCount();
 
-  // Function to check if a route is active
+  // Function to check if a route is active - improved to handle any path
   const isActive = (path) => {
     if (path === '/') {
       return pathname === '/';
     }
+    
+    // Handle dynamic routes like /singleProduct/[id]
+    if (pathname.includes('/singleProduct/')) {
+      if (path === '/singleProduct') {
+        return true;
+      }
+    }
+    
     return pathname.startsWith(path);
   };
 
@@ -38,15 +48,13 @@ export default function MainNavbar() {
       if (isScrolled !== scrolled) {
         setScrolled(isScrolled);
         
-        // Control announcement bar visibility only on homepage
-        if (isHomePage) {
-          const announcementBar = document.querySelector('.announcement-bar');
-          if (announcementBar) {
-            if (isScrolled) {
-              announcementBar.style.transform = 'translateY(-100%)';
-            } else {
-              announcementBar.style.transform = 'translateY(0)';
-            }
+        // Control announcement bar visibility on all pages now
+        const announcementBar = document.querySelector('.announcement-bar');
+        if (announcementBar) {
+          if (isScrolled) {
+            announcementBar.style.transform = 'translateY(-100%)';
+          } else {
+            announcementBar.style.transform = 'translateY(0)';
           }
         }
       }
@@ -69,37 +77,33 @@ export default function MainNavbar() {
   // Determine if we should apply scrolled styles (either actually scrolled or hovered)
   const shouldApplyScrolledStyles = scrolled || isHovered;
 
-  const navClasses = isHomePage
-    ? `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-all duration-300 ${
-        shouldApplyScrolledStyles ? 'bg-white shadow-md' : 'bg-transparent'
-      }`
-    : 'fixed top-[36px] w-full z-40 bg-white shadow-md';
+  // Updated navClasses to apply to all pages
+  const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-all duration-300 ${
+    shouldApplyScrolledStyles ? 'bg-white shadow-md' : 'bg-transparent'
+  }`;
 
-  const textClasses = isHomePage
-    ? shouldApplyScrolledStyles
-      ? 'text-gray-700 hover:text-black after:bg-black'
-      : 'text-white hover:text-white after:bg-white'
-    : 'text-gray-700 hover:text-black after:bg-black';
+  // Updated textClasses to apply to all pages
+  const textClasses = shouldApplyScrolledStyles
+    ? 'text-gray-700 hover:text-black after:bg-black'
+    : 'text-white hover:text-white after:bg-white';
 
-  const iconClasses = isHomePage
-    ? shouldApplyScrolledStyles
-      ? 'text-gray-700 hover:text-black hover:bg-gray-100'
-      : 'text-white hover:text-white hover:bg-white/20'
-    : 'text-gray-700 hover:text-black hover:bg-gray-100';
+  // Updated iconClasses to apply to all pages
+  const iconClasses = shouldApplyScrolledStyles
+    ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+    : 'text-white hover:text-white hover:bg-white/20';
 
-  const logoClasses = isHomePage
-    ? shouldApplyScrolledStyles
-      ? 'bg-black bg-clip-text text-transparent'
-      : 'text-white'
-    : 'bg-black bg-clip-text text-transparent';
+  // Updated logoClasses to apply to all pages
+  const logoClasses = shouldApplyScrolledStyles
+    ? 'bg-black bg-clip-text text-transparent'
+    : 'text-white';
 
-  // Update the textClasses to always include black for active routes
+  // Update the getNavLinkClasses to apply to all pages
   const getNavLinkClasses = (path) => {
     const baseClasses = "text-md transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
     const activeIndicator = isActive(path) ? 'after:w-full' : 'after:w-0 hover:after:w-full';
     const afterTransition = "after:transition-all";
     
-    if (!isHomePage || shouldApplyScrolledStyles) {
+    if (shouldApplyScrolledStyles) {
       return `${baseClasses} ${activeIndicator} ${afterTransition} ${
         isActive(path) 
           ? 'text-black after:bg-black' 
@@ -118,11 +122,11 @@ export default function MainNavbar() {
     <>
       <nav 
         className={navClasses}
-        onMouseEnter={() => isHomePage && setIsHovered(true)}
-        onMouseLeave={() => isHomePage && setIsHovered(false)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <div className={`container mx-auto px-6 max-w-7xl ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
-          <div className={`flex items-center justify-between h-20 ${!isHomePage || shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
+        <div className={`container mx-auto px-6 max-w-7xl ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
+          <div className={`flex items-center justify-between h-20 ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
             <div className="lg:hidden order-1">
               <button 
@@ -167,7 +171,7 @@ export default function MainNavbar() {
               <button 
                 onClick={() => setCartOpen(true)}
                 className={`p-2 rounded-full transition-colors duration-200 relative ${
-                  !isHomePage || shouldApplyScrolledStyles 
+                  shouldApplyScrolledStyles 
                     ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                     : 'text-white hover:text-white hover:bg-white/20'
                 }`}
@@ -183,7 +187,7 @@ export default function MainNavbar() {
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={`p-2 rounded-full transition-colors duration-200 ${
-                  !isHomePage || shouldApplyScrolledStyles 
+                  shouldApplyScrolledStyles 
                     ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                     : 'text-white hover:text-white hover:bg-white/20'
                 }`}
@@ -191,7 +195,7 @@ export default function MainNavbar() {
                 <FiSearch size={22} />
               </button>
               <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
-                !isHomePage || shouldApplyScrolledStyles 
+                shouldApplyScrolledStyles 
                   ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
               }`}>

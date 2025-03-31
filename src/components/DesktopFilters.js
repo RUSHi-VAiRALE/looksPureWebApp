@@ -13,6 +13,8 @@ export default function DesktopFilters({
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [showAvailability, setShowAvailability] = useState(true);
   const [showPrice, setShowPrice] = useState(true);
+  const [minPrice, setMinPrice] = useState(priceRange[0]);
+  const [maxPrice, setMaxPrice] = useState(priceRange[1]);
   const sortRef = useRef(null);
 
   // Close sort dropdown when clicking outside
@@ -28,9 +30,28 @@ export default function DesktopFilters({
     };
   }, []);
 
-  const handlePriceRangeChange = (e) => {
-    const value = parseInt(e.target.value);
-    setPriceRange([0, value]);
+  // Update local state when priceRange prop changes
+  useEffect(() => {
+    setMinPrice(priceRange[0]);
+    setMaxPrice(priceRange[1]);
+  }, [priceRange]);
+
+  const handleMinPriceChange = (e) => {
+    const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+    if (isNaN(value)) return;
+    
+    const newMin = Math.min(value, maxPrice);
+    setMinPrice(newMin);
+    setPriceRange([newMin, maxPrice]);
+  };
+
+  const handleMaxPriceChange = (e) => {
+    const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+    if (isNaN(value)) return;
+    
+    const newMax = Math.max(value, minPrice);
+    setMaxPrice(newMax);
+    setPriceRange([minPrice, newMax]);
   };
 
   const getSortLabel = () => {
@@ -126,19 +147,86 @@ export default function DesktopFilters({
           </button>
           
           {showPrice && (
-            <div className="space-y-2 mt-2">
-              <input
-                type="range"
-                min="0"
-                max="2000"
-                step="100"
-                value={priceRange[1]}
-                onChange={handlePriceRangeChange}
-                className="w-full h-[2px] bg-black rounded-lg appearance-none cursor-pointer"
-              />
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>₹0</span>
-                <span>₹{priceRange[1]}</span>
+            <div className="space-y-4 mt-2">
+              {/* Price Range Slider */}
+              <div className="relative pt-5 pr-2">
+                <div className="h-[2px] rounded-lg">
+                  <div 
+                    className="absolute h-[2px] bg-black rounded-lg"
+                    style={{
+                      left: `${(minPrice / 2000) * 100}%`,
+                      right: `${100 - (maxPrice / 2000) * 100}%`
+                    }}
+                  ></div>
+                </div>
+                
+                <input
+                  type="range"
+                  min="0"
+                  max="2000"
+                  step="100"
+                  value={minPrice}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (value <= maxPrice) {
+                      setMinPrice(value);
+                      setPriceRange([value, maxPrice]);
+                    }
+                  }}
+                  className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
+                  style={{ zIndex: 2 }}
+                />
+                
+                <input
+                  type="range"
+                  min="0"
+                  max="2000"
+                  step="100"
+                  value={maxPrice}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (value >= minPrice) {
+                      setMaxPrice(value);
+                      setPriceRange([minPrice, value]);
+                    }
+                  }}
+                  className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
+                  style={{ zIndex: 2 }}
+                />
+                
+                <div className="relative">
+                  <div 
+                    className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
+                    style={{ left: `${(minPrice / 2000) * 100}%` }}
+                  ></div>
+                  <div 
+                    className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
+                    style={{ left: `${(maxPrice / 2000) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              
+              {/* Price Input Fields */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-500 mr-1">₹</span>
+                  <input
+                    type="text"
+                    value={minPrice}
+                    onChange={handleMinPriceChange}
+                    className="w-16 p-1 text-sm border border-gray-300 rounded"
+                  />
+                </div>
+                <span className="text-sm text-gray-500">to</span>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-500 mr-1">₹</span>
+                  <input
+                    type="text"
+                    value={maxPrice}
+                    onChange={handleMaxPriceChange}
+                    className="w-16 p-1 text-sm border border-gray-300 rounded"
+                  />
+                </div>
               </div>
             </div>
           )}

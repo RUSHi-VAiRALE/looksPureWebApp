@@ -1,5 +1,6 @@
 'use client'
 import { FaFilter, FaSort, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
 
 export default function MobileFilters({
   inStockOnly,
@@ -13,9 +14,89 @@ export default function MobileFilters({
   showSortOptions,
   setShowSortOptions
 }) {
-  const handlePriceRangeChange = (e) => {
-    const value = parseInt(e.target.value);
-    setPriceRange([0, value]);
+  const filterDrawerRef = useRef(null);
+  const sortSheetRef = useRef(null);
+  const [isFilterClosing, setIsFilterClosing] = useState(false);
+  const [showPrice, setShowPrice] = useState(true);
+  const [showAvailability, setShowAvailability] = useState(true);
+  const [isSortClosing, setIsSortClosing] = useState(false);
+  const [minPrice, setMinPrice] = useState(priceRange[0]);
+  const [maxPrice, setMaxPrice] = useState(priceRange[1]);
+
+  useEffect(() => {
+    if (showFilters && filterDrawerRef.current) {
+      // Force reflow to ensure animation works
+      filterDrawerRef.current.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        if (filterDrawerRef.current) {
+          filterDrawerRef.current.style.transform = 'translateX(0)';
+        }
+      }, 10);
+      setIsFilterClosing(false);
+    }
+  }, [showFilters]);
+
+  useEffect(() => {
+    if (showSortOptions && sortSheetRef.current) {
+      // Force reflow to ensure animation works
+      sortSheetRef.current.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        if (sortSheetRef.current) {
+          sortSheetRef.current.style.transform = 'translateY(0)';
+        }
+      }, 10);
+      setIsSortClosing(false);
+    }
+  }, [showSortOptions]);
+
+  // Update local state when priceRange prop changes
+  useEffect(() => {
+    setMinPrice(priceRange[0]);
+    setMaxPrice(priceRange[1]);
+  }, [priceRange]);
+
+  const handleCloseFilters = () => {
+    if (filterDrawerRef.current) {
+      setIsFilterClosing(true);
+      filterDrawerRef.current.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        setShowFilters(false);
+        setIsFilterClosing(false);
+      }, 300);
+    } else {
+      setShowFilters(false);
+    }
+  };
+
+  const handleCloseSortOptions = () => {
+    if (sortSheetRef.current) {
+      setIsSortClosing(true);
+      sortSheetRef.current.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        setShowSortOptions(false);
+        setIsSortClosing(false);
+      }, 300);
+    } else {
+      setShowSortOptions(false);
+    }
+  };
+
+  const handleMinPriceChange = (e) => {
+    const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+    if (isNaN(value)) return;
+    
+    const newMin = Math.min(value, maxPrice);
+    setMinPrice(newMin);
+    setPriceRange([newMin, maxPrice]);
+  };
+
+  const handleMaxPriceChange = (e) => {
+    const value = e.target.value === '' ? 0 : parseInt(e.target.value);
+    if (isNaN(value)) return;
+    
+    const newMax = Math.max(value, minPrice);
+    setMaxPrice(newMax);
+    setPriceRange([minPrice, newMax]);
   };
 
   const getSortLabel = () => {
@@ -49,14 +130,22 @@ export default function MobileFilters({
       </div>
       
       {/* Mobile Filter Drawer - Opens from right */}
-      {showFilters && (
+      {(showFilters || isFilterClosing) && (
         <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowFilters(false)}></div>
-          <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out">
-            <div className="p-4 border-b">
+          <div 
+            className="absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out" 
+            style={{ opacity: isFilterClosing ? 0 : 1 }}
+            onClick={handleCloseFilters}
+          ></div>
+          <div 
+            ref={filterDrawerRef}
+            className="absolute right-0 top-0 h-full w-[90%] bg-white shadow-xl transition-transform duration-300 ease-in-out"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)' }}
+          >
+            <div className="p-4 border-b-1 border-gray-300">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-medium">Filters</h2>
-                <button onClick={() => setShowFilters(false)}>
+                <h2 className="text-md text-gray-500 tracking-widest uppercase">Filters</h2>
+                <button onClick={handleCloseFilters}>
                   <FaTimes />
                 </button>
               </div>
@@ -64,15 +153,16 @@ export default function MobileFilters({
             
             <div className="p-4 space-y-6 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 60px)' }}>
               {/* Availability Filter */}
-              <div className="border-b pb-4">
+              <div className="border-b-1 border-gray-300 pb-4">
                 <button 
-                  className="flex items-center justify-between w-full text-sm font-medium text-gray-900 mb-3 uppercase"
+                  onClick={() => setShowAvailability(!showAvailability)}
+                  className="flex items-center justify-between w-full text-[13px] tracking-widest text-gray-900 mb-3 uppercase"
                 >
                   <span>Availability</span>
-                  <FaChevronDown />
+                  <FaChevronDown className={`transition-transform ${showAvailability ? 'rotate-180' : ''}`}/>
                 </button>
                 
-                <div className="flex items-center mt-2">
+                {showAvailability && <div className="flex items-center mt-2">
                   <input
                     id="mobileInStockOnly"
                     type="checkbox"
@@ -83,40 +173,108 @@ export default function MobileFilters({
                   <label htmlFor="mobileInStockOnly" className="ml-2 text-sm text-gray-700">
                     In stock only
                   </label>
-                </div>
+                </div>}
               </div>
               
               {/* Price Filter */}
-              <div className="border-b pb-4">
+              <div className="pb-4">
                 <button 
-                  className="flex items-center justify-between w-full text-sm font-medium text-gray-900 mb-3 uppercase"
+                  onClick={() => setShowPrice(!showPrice)}
+                  className="flex items-center justify-between w-full text-[13px] tracking-widest text-gray-900 mb-3 uppercase"
                 >
                   <span>Price</span>
-                  <FaChevronDown />
+                  <FaChevronDown className={`transition-transform ${showPrice ? 'rotate-180' : ''}`}/>
                 </button>
                 
-                <div className="space-y-2 mt-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="2000"
-                    step="100"
-                    value={priceRange[1]}
-                    onChange={handlePriceRangeChange}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500">
-                    <span>₹0</span>
-                    <span>₹{priceRange[1]}</span>
+                {showPrice && <div className="space-y-4 mt-2">
+                  {/* Price Range Slider */}
+                  <div className="relative pt-5 pr-2">
+                    <div className="h-[2px] bg-gray-300 rounded-lg">
+                      <div 
+                        className="absolute h-[2px] bg-black rounded-lg"
+                        style={{
+                          left: `${(minPrice / 2000) * 100}%`,
+                          right: `${100 - (maxPrice / 2000) * 100}%`
+                        }}
+                      ></div>
+                    </div>
+                    
+                    <input
+                      type="range"
+                      min="0"
+                      max="2000"
+                      step="100"
+                      value={minPrice}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (value <= maxPrice) {
+                          setMinPrice(value);
+                          setPriceRange([value, maxPrice]);
+                        }
+                      }}
+                      className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
+                      style={{ zIndex: 2 }}
+                    />
+                    
+                    <input
+                      type="range"
+                      min="0"
+                      max="2000"
+                      step="100"
+                      value={maxPrice}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (value >= minPrice) {
+                          setMaxPrice(value);
+                          setPriceRange([minPrice, value]);
+                        }
+                      }}
+                      className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
+                      style={{ zIndex: 2 }}
+                    />
+                    
+                    <div className="relative">
+                      <div 
+                        className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
+                        style={{ left: `${(minPrice / 2000) * 100}%` }}
+                      ></div>
+                      <div 
+                        className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
+                        style={{ left: `${(maxPrice / 2000) * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
+                  
+                  {/* Price Input Fields */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-sm text-gray-500 mr-1">₹</span>
+                      <input
+                        type="text"
+                        value={minPrice}
+                        onChange={handleMinPriceChange}
+                        className="w-16 p-1 text-sm border border-gray-300 rounded"
+                      />
+                    </div>
+                    <span className="text-sm text-gray-500">to</span>
+                    <div className="flex items-center">
+                      <span className="text-sm text-gray-500 mr-1">₹</span>
+                      <input
+                        type="text"
+                        value={maxPrice}
+                        onChange={handleMaxPriceChange}
+                        className="w-16 p-1 text-sm border border-gray-300 rounded"
+                      />
+                    </div>
+                  </div>
+                </div>}
               </div>
               
               <button
-                onClick={() => setShowFilters(false)}
-                className="w-full bg-black text-white py-2 rounded-md mt-4"
+                onClick={handleCloseFilters}
+                className="absolute bottom-12 w-full bg-black text-white py-2 rounded-md mt-4"
               >
-                Apply Filters
+                View Results
               </button>
             </div>
           </div>
@@ -124,14 +282,22 @@ export default function MobileFilters({
       )}
       
       {/* Mobile Sort Bottom Sheet - Opens from bottom */}
-      {showSortOptions && (
+      {(showSortOptions || isSortClosing) && (
         <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowSortOptions(false)}></div>
-          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-xl">
-            <div className="p-4 border-b">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-medium">Sort By</h2>
-                <button onClick={() => setShowSortOptions(false)}>
+          <div 
+            className="absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out" 
+            style={{ opacity: isSortClosing ? 0 : 1 }}
+            onClick={handleCloseSortOptions}
+          ></div>
+          <div 
+            ref={sortSheetRef}
+            className="absolute bottom-0 left-0 right-0 bg-[#F3F3F3] shadow-xl transition-transform duration-300 ease-in-out"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)' }}
+          >
+            <div className="p-4 border-b-1 border-gray-300">
+              <div className="flex relative justify-center items-center">
+                <h2 className="text-lg tracking-widest text-gray-600">SORT BY</h2>
+                <button className='absolute right-0' onClick={handleCloseSortOptions}>
                   <FaTimes />
                 </button>
               </div>
@@ -150,10 +316,10 @@ export default function MobileFilters({
                   key={option.value}
                   onClick={() => {
                     setSortOption(option.value);
-                    setShowSortOptions(false);
+                    handleCloseSortOptions();
                   }}
-                  className={`block w-full text-left px-4 py-3 text-sm border-b border-gray-100 ${
-                    sortOption === option.value ? 'bg-gray-50 font-medium' : ''
+                  className={`block w-full text-left text-gray-500 px-4 py-3 text-md ${
+                    sortOption === option.value ? 'text-gray-900' : ''
                   }`}
                 >
                   {option.label}

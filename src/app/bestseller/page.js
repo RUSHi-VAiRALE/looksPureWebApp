@@ -1,38 +1,18 @@
-'use client'
-import Hero from '@/components/Hero';
 import ProductGrid from '@/components/ProductGrid';
-import { FaCrown } from 'react-icons/fa';
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import Hero from '@/components/Hero';
 
 export default function BestsellerPage() {
-    const [selectedCategory, setSelectedCategory] = useState('Skincare');
-    const categories = ['Skincare', 'Makeup', 'Hair Care', 'Fragrance']
+    // const [selectedCategory, setSelectedCategory] = useState('Skincare');
+    // const categories = ['Skincare', 'Makeup', 'Hair Care', 'Fragrance']
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
+    <main className="min-h-screen w-full">
+      {/* Hero Banner */}
       <Hero />
       
-      {/* Bestseller Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <FaCrown className="text-black mr-2 text-3xl" />
-            <h1 className="text-3xl font-bold text-gray-900">Our Bestsellers</h1>
-          </div>
-          <p className="max-w-2xl mx-auto text-gray-600">
-            Discover our most loved products that have won the hearts of our customers. 
-            These bestsellers are customer favorites for a reason!
-          </p>
-        </div>
-        
-        {/* Featured Bestseller */}
-        <div className="mb-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl overflow-hidden">
-          {/* Content for featured bestseller would go here */}
-        </div>
-        
-        {/* Bestseller Categories */}
+      {/* Skin Type Filter */}
+      <div className="w-full mx-auto">
+        {/* <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop By Skin Type</h2>
+
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           {categories.map((category) => (
             <button
@@ -44,17 +24,16 @@ export default function BestsellerPage() {
                   : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
               }`}
             >
-              {category}
+              {category === 'all' ? 'All Types' : category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
           ))}
-        </div>
+        </div> */}
         
-        {/* Bestseller Products Grid */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">All Bestsellers</h2>
-          <ProductGrid bestsellersOnly={true} />
-        </div>
+        {/* Product Grid */}
+        <ProductGrid category="Skincare" />
       </div>
+      
+      {/* Newsletter */}
     </main>
   );
 }

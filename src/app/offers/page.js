@@ -1,13 +1,8 @@
-
 import ProductGrid from '@/components/ProductGrid';
 import Hero from '@/components/Hero';
 
-export default function SkincarePage() {
-  // const [selectedCategory, setSelectedCategory] = useState('all');
-  // const categories = ['all', 'dry', 'oily', 'combination', 'sensitive'];
-  
-  return (
-    <main className="min-h-screen w-full">
+function Offers() {
+  return (<main className="min-h-screen w-full">
       {/* Hero Banner */}
       <Hero />
       
@@ -37,5 +32,7 @@ export default function SkincarePage() {
       
       {/* Newsletter */}
     </main>
-  );
+  )
 }
+
+export default Offers
