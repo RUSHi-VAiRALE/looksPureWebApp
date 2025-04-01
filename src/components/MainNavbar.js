@@ -14,6 +14,16 @@ export default function MainNavbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   
+  // Check if current page should have forced scrolled style
+  const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track');
+  
+  // Set initial scrolled state based on the current page
+  useEffect(() => {
+    if (shouldForceScrolledStyle && window.scrollY > 10) {
+      setScrolled(true);
+    }
+  }, [pathname, shouldForceScrolledStyle]);
+  
   // Changed to treat all pages like home page
   const isHomePage = true;
   
@@ -43,6 +53,7 @@ export default function MainNavbar() {
   }, [pathname]);
 
   useEffect(() => {
+    
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
       if (isScrolled !== scrolled) {
@@ -72,10 +83,10 @@ export default function MainNavbar() {
       window.removeEventListener('scroll', handleScroll);
       document.body.style.overflow = '';
     };
-  }, [scrolled, isHomePage, isMenuOpen, isSearchOpen]);
+  }, [scrolled, isHomePage, isMenuOpen, isSearchOpen, shouldForceScrolledStyle]);
 
-  // Determine if we should apply scrolled styles (either actually scrolled or hovered)
-  const shouldApplyScrolledStyles = scrolled || isHovered;
+  // Determine if we should apply scrolled styles (either actually scrolled or hovered or forced)
+  const shouldApplyScrolledStyles = scrolled || isHovered || shouldForceScrolledStyle;
 
   // Updated navClasses to apply to all pages
   const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-all duration-300 ${
