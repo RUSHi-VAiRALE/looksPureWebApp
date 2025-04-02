@@ -28,7 +28,7 @@ export default function CartPage() {
               <FiShoppingBag className="mx-auto h-16 w-16 text-gray-400" />
               <h3 className="mt-4 text-xl font-medium text-gray-900">Your cart is empty</h3>
               <p className="mt-2 text-gray-500">
-                Looks like you haven't added any products to your cart yet.
+                Looks like you haven&apos;t added any products to your cart yet.
               </p>
               <div className="mt-6">
                 <Link
