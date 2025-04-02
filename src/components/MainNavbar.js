@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
+import { FaShippingFast } from "react-icons/fa";
 
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,11 +16,12 @@ export default function MainNavbar() {
   const pathname = usePathname();
   
   // Check if current page should have forced scrolled style
-  const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track');
+  const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart');
   
   // Set initial scrolled state based on the current page
   useEffect(() => {
     if (shouldForceScrolledStyle && window.scrollY > 10) {
+      console.log(shouldForceScrolledStyle)
       setScrolled(true);
     }
   }, [pathname, shouldForceScrolledStyle]);
@@ -137,7 +139,7 @@ export default function MainNavbar() {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className={`container mx-auto px-6 max-w-7xl ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
-          <div className={`flex items-center justify-between h-20 ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
+          <div className={`flex items-center justify-between h-16 ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
             <div className="lg:hidden order-1">
               <button 
@@ -158,7 +160,7 @@ export default function MainNavbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8 order-2">
+            <div className="hidden lg:flex items-center space-x-12 order-2">
               <Link href="/new" className={getNavLinkClasses('/new')}>
                 New
               </Link>
@@ -172,30 +174,14 @@ export default function MainNavbar() {
                 Bestseller
               </Link>
               
-              <Link href="/track" className={getNavLinkClasses('/track')}>
+              {/* <Link href="" className={getNavLinkClasses('/track')}>
                 Track Order
-              </Link>
+              </Link> */}
             </div>
 
             {/* Icons - Right side */}
             <div className="flex items-center space-x-2 md:space-x-4 order-3">
-              <button 
-                onClick={() => setCartOpen(true)}
-                className={`p-2 rounded-full transition-colors duration-200 relative ${
-                  shouldApplyScrolledStyles 
-                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                    : 'text-white hover:text-white hover:bg-white/20'
-                }`}
-              >
-                <FiShoppingCart size={22} />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItemCount > 9 ? '9+' : cartItemCount}
-                  </span>
-                )}
-              </button>
-              
-              <button 
+             <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={`p-2 rounded-full transition-colors duration-200 ${
                   shouldApplyScrolledStyles 
@@ -212,6 +198,27 @@ export default function MainNavbar() {
               }`}>
                 <FiUser size={22} />
               </button>
+              <Link href="/cart" 
+                className={`p-2 rounded-full transition-colors duration-200 relative ${
+                  shouldApplyScrolledStyles 
+                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
+                    : 'text-white hover:text-white hover:bg-white/20'
+                }`}
+              >
+                <FiShoppingCart size={22} />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemCount > 9 ? '9+' : cartItemCount}
+                  </span>
+                )}
+              </Link>
+              <Link href="/track" className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
+                shouldApplyScrolledStyles 
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
+                  : 'text-white hover:text-white hover:bg-white/20'
+              }`}>
+                <FaShippingFast size={22}/>
+              </Link>
             </div>
           </div>
         </div>

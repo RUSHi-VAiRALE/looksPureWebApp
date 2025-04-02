@@ -51,7 +51,7 @@ export function CartProvider({ children }) {
     });
     
     // Open cart drawer when adding items
-    setCartOpen(true);
+    //setCartOpen(true);
   };
   
   const removeFromCart = (productId, shadeId) => {
@@ -61,7 +61,11 @@ export function CartProvider({ children }) {
   };
   
   const updateQuantity = (productId, shadeId, newQuantity) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 1) {setCart(prevCart => 
+      prevCart.filter(item => !(item.id === productId && item.selectedShade.id === shadeId))
+    )
+    return;
+  }
     
     setCart(prevCart => 
       prevCart.map(item => 
