@@ -31,7 +31,6 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
     { path: '/skincare', label: 'Skin Care' },
     { path: '/offers', label: 'Offers' },
     { path: '/bestseller', label: 'Bestseller' },
-    { path: '/track', label: 'Track Order' },
   ];
 
   const handleLoginClick = (e) => {
