@@ -51,11 +51,11 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'about' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/values" className="block text-gray-400 hover:text-pink-300">Our Values</Link>
-                <Link href="/privacy" className="block text-gray-400 hover:text-pink-300">Privacy Policy</Link>
-                <Link href="/terms" className="block text-gray-400 hover:text-pink-300">Terms & Conditions</Link>
-                <Link href="/disclaimer" className="block text-gray-400 hover:text-pink-300">Disclaimer</Link>
-                <Link href="/corporate" className="block text-gray-400 hover:text-pink-300">Corporate Information</Link>
+                <Link href="/values" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Our Values</Link>
+                <Link href="/privacy" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Privacy Policy</Link>
+                <Link href="/terms" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Terms & Conditions</Link>
+                <Link href="/disclaimer" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Disclaimer</Link>
+                <Link href="/corporate" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Corporate Information</Link>
               </div>
             </div>
 
@@ -71,11 +71,11 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'quick' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/knowledge" className="block text-gray-400 hover:text-pink-300">Knowledge</Link>
-                <Link href="/faqs" className="block text-gray-400 hover:text-pink-300">FAQs</Link>
-                <Link href="/return-policy" className="block text-gray-400 hover:text-pink-300">Return & Refund Policy</Link>
-                <Link href="/track" className="block text-gray-400 hover:text-pink-300">Track Order</Link>
-                <Link href="/help" className="block text-gray-400 hover:text-pink-300">Help Center</Link>
+                <Link href="/knowledge" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Knowledge</Link>
+                <Link href="/faqs" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">FAQs</Link>
+                <Link href="/return-policy" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Return & Refund Policy</Link>
+                <Link href="/track" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Track Order</Link>
+                <Link href="/help" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Help Center</Link>
               </div>
             </div>
 
@@ -93,18 +93,18 @@ export default function Footer() {
               <div className={`space-y-4 ${openSection === 'contact' ? 'block' : 'hidden md:block'}`}>
                 <p className="text-sm text-gray-400">
                   Need help? Fill out our form or email<br />
-                  <a href="mailto:help@lookspure.com" className="text-gray-300 hover:text-pink-300">
+                  <a href="mailto:help@lookspure.com" className="text-gray-300 hover:text-white hover:font-semibold">
                     help@lookspure.com
                   </a>
                 </p>
                 <div className="flex space-x-4">
-                  <a href="#" className="text-gray-400 hover:text-pink-300">
+                  <a href="#" className="text-gray-400 hover:text-white">
                     <FaFacebookF size={20} />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-pink-300">
+                  <a href="#" className="text-gray-400 hover:text-white">
                     <FaInstagram size={20} />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-pink-300">
+                  <a href="#" className="text-gray-400 hover:text-white">
                     <FaYoutube size={20} />
                   </a>
                 </div>
