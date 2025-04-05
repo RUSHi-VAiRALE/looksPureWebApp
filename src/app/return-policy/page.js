@@ -17,7 +17,7 @@ export default function ReturnPolicyPage() {
       <p className="mb-4">Once we receive and inspect your return, we will send you an email to notify you that we have received your returned item. We will also notify you of the approval or rejection of your refund. If approved, your refund will be processed, and a credit will automatically be applied to your original method of payment within 7-10 business days.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Late or Missing Refunds</h2>
-      <p className="mb-4">If you haven't received a refund yet, first check your bank account again. Then contact your credit card company, it may take some time before your refund is officially posted. Next contact your bank. There is often some processing time before a refund is posted. If you've done all of this and you still have not received your refund yet, please contact us at returns@lookspure.com.</p>
+      <p className="mb-4">If you haven&apos;t received a refund yet, first check your bank account again. Then contact your credit card company, it may take some time before your refund is officially posted. Next contact your bank. There is often some processing time before a refund is posted. If you&apos;ve done all of this and you still have not received your refund yet, please contact us at returns@lookspure.com.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Damaged or Defective Items</h2>
       <p className="mb-4">If you receive a damaged or defective item, please contact us immediately at returns@lookspure.com with photos of the damaged product and packaging. We will work with you to resolve the issue promptly.</p>

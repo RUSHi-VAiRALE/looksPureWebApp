@@ -20,7 +20,7 @@ export default function ValuesPage() {
       <p className="mb-4">We are dedicated to sustainable practices throughout our supply chain, from sourcing ingredients to packaging. We aim to minimize our environmental footprint.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Transparency</h2>
-      <p className="mb-4">We believe in complete transparency about our ingredients, manufacturing processes, and business practices. You deserve to know exactly what you're putting on your skin.</p>
+      <p className="mb-4">We believe in complete transparency about our ingredients, manufacturing processes, and business practices. You deserve to know exactly what you&apos;re putting on your skin.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Ethical Testing</h2>
       <p className="mb-4">We never test on animals. All our products are cruelty-free and many are vegan. We test our products on willing human volunteers only.</p>
