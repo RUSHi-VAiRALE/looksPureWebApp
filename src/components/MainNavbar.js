@@ -7,6 +7,8 @@ import { useCart } from '@/context/CartContext';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
 import { FaShippingFast } from "react-icons/fa";
+import logo from "../../public/2.png"
+import Image from "next/image";
 
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +18,9 @@ export default function MainNavbar() {
   const pathname = usePathname();
   
   // Check if current page should have forced scrolled style
-  const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart');
+  const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart') || pathname.includes('/values')
+  || pathname.includes('/privacy') || pathname.includes('/terms')||pathname.includes('/disclaimer') || pathname.includes('/corporate')||pathname.includes('/knowledge')
+  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy');
   
   // Set initial scrolled state based on the current page
   useEffect(() => {
@@ -153,7 +157,14 @@ export default function MainNavbar() {
             </div>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center group order-2 lg:order-1 mx-auto md:mx-0">
+            <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0">
+              <Image 
+                src={logo}
+                alt="logo"
+                width={30}
+                height={30}
+                className="object-contain"
+              />
               <span className={`text-3xl font-serif font-bold transition-all duration-300 ${logoClasses}`}>
                 LooksPure
               </span>

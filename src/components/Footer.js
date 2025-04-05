@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa'
+import { usePathname } from 'next/navigation'
 
 export default function Footer() {
   const [openSection, setOpenSection] = useState(null)
+  const pathname = usePathname()
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section)
@@ -51,11 +53,36 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'about' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/values" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Our Values</Link>
-                <Link href="/privacy" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Privacy Policy</Link>
-                <Link href="/terms" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Terms & Conditions</Link>
-                <Link href="/disclaimer" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Disclaimer</Link>
-                <Link href="/corporate" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Corporate Information</Link>
+                <Link 
+                  href="/values" 
+                  className={`block w-fit ${pathname === '/values' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Our Values
+                </Link>
+                <Link 
+                  href="/privacy" 
+                  className={`block w-fit ${pathname === '/privacy' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Privacy Policy
+                </Link>
+                <Link 
+                  href="/terms" 
+                  className={`block w-fit ${pathname === '/terms' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Terms & Conditions
+                </Link>
+                <Link 
+                  href="/disclaimer" 
+                  className={`block w-fit ${pathname === '/disclaimer' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Disclaimer
+                </Link>
+                <Link 
+                  href="/corporate" 
+                  className={`block w-fit ${pathname === '/corporate' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Corporate Information
+                </Link>
               </div>
             </div>
 
@@ -71,11 +98,36 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'quick' ? 'block' : 'hidden md:block'}`}>
-                <Link href="/knowledge" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Knowledge</Link>
-                <Link href="/faqs" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">FAQs</Link>
-                <Link href="/return-policy" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Return & Refund Policy</Link>
-                <Link href="/track" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Track Order</Link>
-                <Link href="/help" className="block w-fit text-gray-400 hover:text-white hover:font-semibold">Help Center</Link>
+                <Link 
+                  href="/knowledge" 
+                  className={`block w-fit ${pathname === '/knowledge' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Knowledge
+                </Link>
+                <Link 
+                  href="/faqs" 
+                  className={`block w-fit ${pathname === '/faqs' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  FAQs
+                </Link>
+                <Link 
+                  href="/return-policy" 
+                  className={`block w-fit ${pathname === '/return-policy' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Return & Refund Policy
+                </Link>
+                <Link 
+                  href="/track" 
+                  className={`block w-fit ${pathname === '/track' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Track Order
+                </Link>
+                <Link 
+                  href="/help" 
+                  className={`block w-fit ${pathname === '/help' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
+                >
+                  Help Center
+                </Link>
               </div>
             </div>
 

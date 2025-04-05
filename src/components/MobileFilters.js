@@ -22,6 +22,9 @@ export default function MobileFilters({
   const [isSortClosing, setIsSortClosing] = useState(false);
   const [minPrice, setMinPrice] = useState(priceRange[0]);
   const [maxPrice, setMaxPrice] = useState(priceRange[1]);
+  
+  // Maximum price constant
+  const MAX_PRICE = 2000;
 
   useEffect(() => {
     if (showFilters && filterDrawerRef.current) {
@@ -95,8 +98,8 @@ export default function MobileFilters({
     if (isNaN(value)) return;
     
     const newMax = Math.max(value, minPrice);
-    setMaxPrice(newMax);
-    setPriceRange([minPrice, newMax]);
+    setMaxPrice(newMax > MAX_PRICE ? MAX_PRICE : newMax);
+    setPriceRange([minPrice, newMax > MAX_PRICE ? MAX_PRICE : newMax]);
   };
 
   const getSortLabel = () => {
@@ -188,22 +191,23 @@ export default function MobileFilters({
                 
                 {showPrice && <div className="space-y-4 mt-2">
                   {/* Price Range Slider */}
-                  <div className="relative pt-5 pr-2">
-                    <div className="h-[2px] bg-gray-300 rounded-lg">
+                  <div className="relative pt-5 pr-2 mb-8">
+                    <div className="h-[2px] bg-gray-200 rounded-lg">
                       <div 
                         className="absolute h-[2px] bg-black rounded-lg"
                         style={{
-                          left: `${(minPrice / 2000) * 100}%`,
-                          right: `${100 - (maxPrice / 2000) * 100}%`
+                          left: `${(minPrice / MAX_PRICE) * 100}%`,
+                          right: `${100 - (maxPrice / MAX_PRICE) * 100}%`
                         }}
                       ></div>
                     </div>
                     
+                    {/* Min price slider */}
                     <input
                       type="range"
                       min="0"
-                      max="2000"
-                      step="100"
+                      max={MAX_PRICE}
+                      step="50"
                       value={minPrice}
                       onChange={(e) => {
                         const value = parseInt(e.target.value);
@@ -212,15 +216,16 @@ export default function MobileFilters({
                           setPriceRange([value, maxPrice]);
                         }
                       }}
-                      className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
-                      style={{ zIndex: 2 }}
+                      className="absolute top-0 left-0 w-full h-6 appearance-none bg-transparent cursor-pointer"
+                      style={{ zIndex: 3, opacity: 0 }}
                     />
                     
+                    {/* Max price slider */}
                     <input
                       type="range"
                       min="0"
-                      max="2000"
-                      step="100"
+                      max={MAX_PRICE}
+                      step="50"
                       value={maxPrice}
                       onChange={(e) => {
                         const value = parseInt(e.target.value);
@@ -229,18 +234,22 @@ export default function MobileFilters({
                           setPriceRange([minPrice, value]);
                         }
                       }}
-                      className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
-                      style={{ zIndex: 2 }}
+                      className="absolute top-0 left-0 w-full h-6 appearance-none bg-transparent cursor-pointer"
+                      style={{ zIndex: 4, opacity: 0 }}
                     />
                     
+                    {/* Slider handles */}
                     <div className="relative">
+                      {/* Min price handle */}
                       <div 
-                        className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
-                        style={{ left: `${(minPrice / 2000) * 100}%` }}
+                        className="absolute top-0.5 w-2 h-2 border-2 bg-black rounded-full -mt-[7px] cursor-pointer"
+                        style={{ left: `${(minPrice / MAX_PRICE) * 100}%`, zIndex: 5 }}
                       ></div>
+                      
+                      {/* Max price handle */}
                       <div 
-                        className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
-                        style={{ left: `${(maxPrice / 2000) * 100}%` }}
+                        className="absolute top-0.5 w-2 h-2 border-2 bg-black border-black rounded-full -mt-[7px] cursor-pointer"
+                        style={{ left: `${(maxPrice / MAX_PRICE) * 100}%`, zIndex: 5 }}
                       ></div>
                     </div>
                   </div>
@@ -267,9 +276,10 @@ export default function MobileFilters({
                       />
                     </div>
                   </div>
-                </div>}
+                </div>
+}
               </div>
-              
+                  
               <button
                 onClick={handleCloseFilters}
                 className="absolute bottom-12 w-full bg-black text-white py-2 rounded-md mt-4"

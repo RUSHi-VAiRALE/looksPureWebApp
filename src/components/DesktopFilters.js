@@ -16,6 +16,9 @@ export default function DesktopFilters({
   const [minPrice, setMinPrice] = useState(priceRange[0]);
   const [maxPrice, setMaxPrice] = useState(priceRange[1]);
   const sortRef = useRef(null);
+  
+  // Maximum price constant
+  const MAX_PRICE = 2000;
 
   // Close sort dropdown when clicking outside
   useEffect(() => {
@@ -50,8 +53,8 @@ export default function DesktopFilters({
     if (isNaN(value)) return;
     
     const newMax = Math.max(value, minPrice);
-    setMaxPrice(newMax);
-    setPriceRange([minPrice, newMax]);
+    setMaxPrice(newMax > MAX_PRICE ? MAX_PRICE : newMax);
+    setPriceRange([minPrice, newMax > MAX_PRICE ? MAX_PRICE : newMax]);
   };
 
   const getSortLabel = () => {
@@ -146,25 +149,27 @@ export default function DesktopFilters({
             <FaChevronDown className={`transition-transform ${showPrice ? 'rotate-180' : ''}`} />
           </button>
           
+          {/* Price Filter section */}
           {showPrice && (
             <div className="space-y-4 mt-2">
               {/* Price Range Slider */}
-              <div className="relative pt-5 pr-2">
-                <div className="h-[2px] rounded-lg">
+              <div className="relative pt-5 pr-2 mb-8">
+                <div className="h-[2px] bg-gray-200 rounded-lg">
                   <div 
                     className="absolute h-[2px] bg-black rounded-lg"
                     style={{
-                      left: `${(minPrice / 2000) * 100}%`,
-                      right: `${100 - (maxPrice / 2000) * 100}%`
+                      left: `${(minPrice / MAX_PRICE) * 100}%`,
+                      right: `${100 - (maxPrice / MAX_PRICE) * 100}%`
                     }}
                   ></div>
                 </div>
                 
+                {/* Min price slider */}
                 <input
                   type="range"
                   min="0"
-                  max="2000"
-                  step="100"
+                  max={MAX_PRICE}
+                  step="50"
                   value={minPrice}
                   onChange={(e) => {
                     const value = parseInt(e.target.value);
@@ -173,15 +178,16 @@ export default function DesktopFilters({
                       setPriceRange([value, maxPrice]);
                     }
                   }}
-                  className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
-                  style={{ zIndex: 2 }}
+                  className="absolute top-0 left-0 w-full h-6 appearance-none bg-transparent cursor-pointer"
+                  style={{ zIndex: 3, opacity: 0 }}
                 />
                 
+                {/* Max price slider */}
                 <input
                   type="range"
                   min="0"
-                  max="2000"
-                  step="100"
+                  max={MAX_PRICE}
+                  step="50"
                   value={maxPrice}
                   onChange={(e) => {
                     const value = parseInt(e.target.value);
@@ -190,18 +196,22 @@ export default function DesktopFilters({
                       setPriceRange([minPrice, value]);
                     }
                   }}
-                  className="absolute top-0 left-0 w-full h-[2px] appearance-none pointer-events-none opacity-0"
-                  style={{ zIndex: 2 }}
+                  className="absolute top-0 left-0 w-full h-6 appearance-none bg-transparent cursor-pointer"
+                  style={{ zIndex: 4, opacity: 0 }}
                 />
                 
+                {/* Slider handles */}
                 <div className="relative">
+                  {/* Min price handle */}
                   <div 
-                    className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
-                    style={{ left: `${(minPrice / 2000) * 100}%` }}
+                    className="absolute top-0.5 w-2 h-2 border-2 bg-black rounded-full -mt-[7px] cursor-pointer"
+                    style={{ left: `${(minPrice / MAX_PRICE) * 100}%`, zIndex: 5 }}
                   ></div>
+                  
+                  {/* Max price handle */}
                   <div 
-                    className="absolute w-2 h-2 border-2 bg-black border-black rounded-full -mt-[5px] cursor-pointer"
-                    style={{ left: `${(maxPrice / 2000) * 100}%` }}
+                    className="absolute top-0.5 w-2 h-2 border-2 bg-black border-black rounded-full -mt-[7px] cursor-pointer"
+                    style={{ left: `${(maxPrice / MAX_PRICE) * 100}%`, zIndex: 5 }}
                   ></div>
                 </div>
               </div>
@@ -227,6 +237,11 @@ export default function DesktopFilters({
                     className="w-16 p-1 text-sm border border-gray-300 rounded"
                   />
                 </div>
+              </div>
+              
+              {/* Price difference display */}
+              <div className="text-center text-sm text-gray-500">
+                Price range: ₹{maxPrice - minPrice}
               </div>
             </div>
           )}
