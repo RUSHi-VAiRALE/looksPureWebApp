@@ -14,7 +14,7 @@ export default function KnowledgePage() {
       <p className="mb-4">Natural ingredients have been used for centuries in beauty routines. Learn about common natural ingredients and their benefits for your skin and hair.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Harmful Ingredients to Avoid</h2>
-      <p className="mb-4">Many conventional beauty products contain ingredients that may be harmful to your health. Learn about ingredients to avoid and why they're problematic.</p>
+      <p className="mb-4">Many conventional beauty products contain ingredients that may be harmful to your health. Learn about ingredients to avoid and why they&apos;re problematic.</p>
       
       <h2 className="text-xl font-semibold mt-6 mb-3">Skincare Routines</h2>
       <p className="mb-4">Discover effective skincare routines for different skin types and concerns. Learn how to build a natural skincare routine that works for you.</p>
