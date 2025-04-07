@@ -8,6 +8,58 @@ export default function SearchDialog({ isOpen, onClose }) {
   const searchInputRef = useRef(null);
   const dialogRef = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [placeholderText, setPlaceholderText] = useState('');
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  const [charIndex, setCharIndex] = useState(0);
+
+  const placeholders = [
+    'Search for Shampoo...',
+    'Search for Serum...',
+    'Search for Facewash...'
+  ];
+
+  // Typewriter effect for placeholder
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const currentPlaceholder = placeholders[placeholderIndex];
+    
+    if (isTyping) {
+      if (charIndex < currentPlaceholder.length) {
+        const typingTimer = setTimeout(() => {
+          setPlaceholderText(currentPlaceholder.substring(0, charIndex + 1));
+          setCharIndex(charIndex + 1);
+        }, 100); // Typing speed
+        
+        return () => clearTimeout(typingTimer);
+      } else {
+        // Pause at the end of typing
+        const pauseTimer = setTimeout(() => {
+          setIsTyping(false);
+        }, 1500); // Pause duration
+        
+        return () => clearTimeout(pauseTimer);
+      }
+    } else {
+      if (charIndex > 0) {
+        const deletingTimer = setTimeout(() => {
+          setPlaceholderText(currentPlaceholder.substring(0, charIndex - 1));
+          setCharIndex(charIndex - 1);
+        }, 50); // Deleting speed (faster than typing)
+        
+        return () => clearTimeout(deletingTimer);
+      } else {
+        // Move to next placeholder
+        const nextTimer = setTimeout(() => {
+          setPlaceholderIndex((placeholderIndex + 1) % placeholders.length);
+          setIsTyping(true);
+        }, 500); // Delay before starting next word
+        
+        return () => clearTimeout(nextTimer);
+      }
+    }
+  }, [isOpen, placeholderIndex, charIndex, isTyping, placeholders]);
 
   // Focus the search input when dialog opens
   useEffect(() => {
@@ -35,6 +87,15 @@ export default function SearchDialog({ isOpen, onClose }) {
     };
   }, [isOpen, onClose]);
 
+  // Reset animation state when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
+      setPlaceholderText('');
+      setCharIndex(0);
+      setIsTyping(true);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -52,7 +113,7 @@ export default function SearchDialog({ isOpen, onClose }) {
               <input 
                 ref={searchInputRef}
                 type="text" 
-                placeholder="Search products..." 
+                placeholder={placeholderText}
                 className="w-full outline-none text-lg"
               />
             </div>
