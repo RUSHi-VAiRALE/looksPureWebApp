@@ -7,7 +7,7 @@ import { useCart } from '@/context/CartContext';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
 import { FaShippingFast } from "react-icons/fa";
-import logo from "../../public/2.png"
+import logo from "../../public/lookspure.png"
 import Image from "next/image";
 
 export default function MainNavbar() {
@@ -20,7 +20,7 @@ export default function MainNavbar() {
   // Check if current page should have forced scrolled style
   const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart') || pathname.includes('/values')
   || pathname.includes('/privacy') || pathname.includes('/terms')||pathname.includes('/disclaimer') || pathname.includes('/corporate')||pathname.includes('/knowledge')
-  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy');
+  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy') || pathname.includes('/bestseller');
   
   // Set initial scrolled state based on the current page
   useEffect(() => {
@@ -94,9 +94,9 @@ export default function MainNavbar() {
   // Determine if we should apply scrolled styles (either actually scrolled or hovered or forced)
   const shouldApplyScrolledStyles = scrolled || isHovered || shouldForceScrolledStyle;
 
-  // Updated navClasses to apply to all pages
-  const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-all duration-300 ${
-    shouldApplyScrolledStyles ? 'bg-white shadow-md' : 'bg-transparent'
+  // Updated navClasses to apply to all pages with explicit background-color transition
+  const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-colors duration-500 ease-in-out ${
+    shouldApplyScrolledStyles ? 'bg-[#F3F3F3] shadow-md' : 'bg-transparent'
   }`;
 
   // Updated textClasses to apply to all pages
@@ -116,7 +116,7 @@ export default function MainNavbar() {
 
   // Update the getNavLinkClasses to apply to all pages
   const getNavLinkClasses = (path) => {
-    const baseClasses = "text-md transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
+    const baseClasses = "text-md uppercase tracking-widest text-[14px] transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
     const activeIndicator = isActive(path) ? 'after:w-full' : 'after:w-0 hover:after:w-full';
     const afterTransition = "after:transition-all";
     
@@ -142,8 +142,8 @@ export default function MainNavbar() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className={`container mx-auto px-6 max-w-7xl ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
-          <div className={`flex items-center justify-between h-16 ${shouldApplyScrolledStyles ? 'bg-white' : 'bg-transparent'}`}>
+        <div className={`container mx-auto px-6 max-w-7xl transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3]' : 'bg-transparent'}`}>
+          <div className={`flex items-center justify-between h-16 transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3]' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
             <div className="lg:hidden order-1">
               <button 
@@ -157,17 +157,14 @@ export default function MainNavbar() {
             </div>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0">
+            <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0 pb-4">
               <Image 
                 src={logo}
                 alt="logo"
-                width={30}
-                height={30}
-                className="object-contain"
+                width={120}
+                height={120}
+                className="object-contain w-48 lg:w-64 "
               />
-              <span className={`text-3xl font-serif font-bold transition-all duration-300 ${logoClasses}`}>
-                LooksPure
-              </span>
             </Link>
 
             {/* Desktop Navigation */}

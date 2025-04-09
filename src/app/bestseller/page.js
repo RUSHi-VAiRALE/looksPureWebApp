@@ -1,16 +1,18 @@
 import ProductGrid from '@/components/ProductGrid';
 import Hero from '@/components/Hero';
+import { productDetails } from '@/data/productDetails';
+import Image from 'next/image';
 
 export default function BestsellerPage() {
     // const [selectedCategory, setSelectedCategory] = useState('Skincare');
     // const categories = ['Skincare', 'Makeup', 'Hair Care', 'Fragrance']
   return (
-    <main className="min-h-screen w-full">
+    <main className="max-w-2xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Hero Banner */}
-      <Hero />
+      {/* <Hero /> */}
       
       {/* Skin Type Filter */}
-      <div className="w-full mx-auto">
+      {/* <div className="w-full mx-auto"> */}
         {/* <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop By Skin Type</h2>
 
         <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -30,9 +32,33 @@ export default function BestsellerPage() {
         </div> */}
         
         {/* Product Grid */}
-        <ProductGrid category="Skincare" />
-      </div>
-      
+        {/* <ProductGrid category="Skincare" />
+      </div> */}
+      <div className="space-y-4">
+          {/* <p>{productDetails.longDescription}</p> */}
+          
+          {/* Product Images in Description */}
+          <div className="grid grid-cols-1 gap-4 mt-20">
+            {productDetails.images.map((image, index) => (
+              <div key={index} className="aspect-square overflow-hidden">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-center object-cover"
+                />
+              </div>
+            ))}
+          </div>
+          
+          {/* <h3 className="font-medium text-gray-900 mt-6 mb-2">Features:</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            {productDetails.features.map((feature, index) => (
+              <li key={index}>{feature}</li>
+            ))}
+          </ul> */}
+        </div>
       {/* Newsletter */}
     </main>
   );

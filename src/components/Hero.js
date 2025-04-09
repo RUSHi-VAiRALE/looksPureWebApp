@@ -1,11 +1,17 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Carousel } from './Carousel'
+import { usePathname } from 'next/navigation'
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const pathname = usePathname()
   
-  const slides = [
+  // Determine if we're on the homepage
+  const isHomePage = pathname === '/'
+  
+  // Different slides for homepage vs other pages
+  const homepageSlides = [
     {
       id: 1,
       type: 'video',
@@ -27,62 +33,71 @@ export default function Hero() {
     },
     {
       id: 4,
-      type: 'video',
-      src: "https://cdn.pixabay.com/video/2017/09/15/12004-234428494_tiny.mp4",
-      hdSrc: "https://cdn.pixabay.com/video/2017/09/15/12004-234428494_tiny.mp4",
-      alt: "Product showcase video"
-    },
-    {
-      id: 5,
       type: 'image',
-      src: "https://cdn.pixabay.com/photo/2023/12/04/15/14/bottle-8429706_1280.jpg", 
-      alt: "Product bottle"
+      src: "https://cdn.pixabay.com/photo/2016/11/23/14/37/wood-1853403_1280.jpg",
+      alt: "Sustainable packaging"
     }
   ]
   
+  // Page-specific single images
+  const pageImages = {
+    '/skincare': {
+      id: 1,
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2018/08/14/13/48/botanical-3605603_1280.jpg",
+      alt: "Skincare products",
+      animation: 'zoom-out'
+    },
+    '/new': {
+      id: 1,
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg",
+      alt: "New arrivals",
+      animation: 'zoom-out'
+    },
+    '/offers': {
+      id: 1,
+      type: 'image',
+      src: "https://cdn.pixabay.com/photo/2020/07/09/06/01/red-maple-5385956_1280.jpg",
+      alt: "Special offers",
+      animation: 'zoom-out'
+    }
+  }
+  
+  // Determine which slides to use
+  const slides = isHomePage ? homepageSlides : [pageImages[pathname] || homepageSlides[1]]
+  
   return (
-    <section className="relative w-full overflow-hidden h-[40vh] lg:h-[80vh] z-10">
-      <Carousel
-        slides={slides}
-        currentSlide={currentSlide}
-        setCurrentSlide={setCurrentSlide}
-        autoPlay={true}
+    <div className="relative w-full h-[70vh] md:h-[80vh]">
+      <Carousel 
+        slides={slides} 
+        currentSlide={currentSlide} 
+        setCurrentSlide={setCurrentSlide} 
+        autoPlay={isHomePage} // Only autoplay on homepage
         interval={5000}
+        singleImageAnimation={!isHomePage ? 'zoom-out' : null} // Apply zoom-out animation only for single images
       />
       
-      {/* Indicators */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`h-2 w-2 rounded-full transition-all ${
-              currentSlide === index 
-                ? 'bg-white w-4' 
-                : 'bg-white/50'
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Navigation Arrows */}
-      <button 
-        onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-        className="absolute sm:left-12 left-5 top-1/2 -translate-y-1/2 bg-black/20 p-2 rounded-full text-white hover:bg-black/40 transition-colors"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
-      <button
-        onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="absolute sm:right-12 right-5 top-1/2 -translate-y-1/2 bg-black/20 p-2 rounded-full text-white hover:bg-black/40 transition-colors"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-    </section>
+      {/* Overlay text */}
+      {/* <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center text-white z-10 px-4">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+            {isHomePage ? 'Pure Beauty, Naturally' : 
+             pathname === '/skincare' ? 'Skincare Collection' :
+             pathname === '/new' ? 'New Arrivals' :
+             pathname === '/offers' ? 'Special Offers' : 'LooksPure'}
+          </h1>
+          <p className="text-xl md:text-2xl max-w-2xl mx-auto drop-shadow-md">
+            {isHomePage ? 'Discover clean, effective skincare for your natural beauty journey' : 
+             pathname === '/skincare' ? 'Nourish your skin with our natural formulations' :
+             pathname === '/new' ? 'Be the first to try our latest innovations' :
+             pathname === '/offers' ? 'Limited time deals on premium products' : 'Premium natural skincare'}
+          </p>
+        </div>
+      </div> */}
+      
+      {/* Gradient overlay for better text visibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+    </div>
   )
 }
