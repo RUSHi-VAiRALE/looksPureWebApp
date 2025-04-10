@@ -1,75 +1,171 @@
 'use client'
-import { useState } from 'react';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { useState, useEffect, useRef } from 'react'
 
 // export const metadata = {
-//   title: 'FAQs | LooksPure',
-//   description: 'Frequently asked questions about LooksPure products and services',
+//   title: 'Frequently Asked Questions | LooksPure',
+//   description: 'Find answers to common questions about LooksPure products and services',
 // }
 
 export default function FAQsPage() {
-  const [openFaq, setOpenFaq] = useState(null);
+  const [openFaq, setOpenFaq] = useState(null)
+  const headingRef = useRef(null)
+  const contentRef = useRef(null)
   
+  useEffect(() => {
+    if (headingRef.current) {
+      headingRef.current.classList.add('animate-fadeIn')
+    }
+    if (contentRef.current) {
+      contentRef.current.classList.add('animate-fadeInUp')
+    }
+  }, [])
+
   const toggleFaq = (index) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
-  
+    setOpenFaq(openFaq === index ? null : index)
+  }
+
   const faqs = [
     {
-      question: "What makes LooksPure products different?",
-      answer: "LooksPure products are made with 100% natural ingredients and are free from harmful chemicals like parabens, sulfates, and synthetic fragrances. We prioritize your health and the environment in all our formulations."
+      category: "Orders & Shipping",
+      questions: [
+        {
+          question: "How long does shipping take?",
+          answer: "Standard shipping typically takes 3-5 business days within India. Express shipping options are available at checkout for 1-2 business day delivery in select areas."
+        },
+        {
+          question: "Do you ship internationally?",
+          answer: "Yes, we ship to select international destinations. International shipping typically takes 7-14 business days depending on the destination country and customs processing."
+        },
+        {
+          question: "How can I track my order?",
+          answer: "Once your order ships, you'll receive a tracking number via email. You can also track your order by logging into your account or visiting our Track Order page."
+        },
+        {
+          question: "What is your return policy?",
+          answer: "We accept returns within 30 days of purchase for unused items in their original packaging. Please visit our Return Policy page for detailed information."
+        }
+      ]
     },
     {
-      question: "Are your products suitable for sensitive skin?",
-      answer: "Most of our products are formulated to be gentle and suitable for sensitive skin. However, we always recommend performing a patch test before using any new product, especially if you have sensitive skin or allergies."
+      category: "Products & Ingredients",
+      questions: [
+        {
+          question: "Are your products cruelty-free?",
+          answer: "Yes, all LooksPure products are 100% cruelty-free. We never test on animals and do not work with suppliers who test on animals."
+        },
+        {
+          question: "Are your products vegan?",
+          answer: "Most of our products are vegan. Products that contain beeswax, honey, or other animal-derived ingredients are clearly labeled on our website and packaging."
+        },
+        {
+          question: "Do your products contain parabens or sulfates?",
+          answer: "No, all LooksPure products are formulated without parabens, sulfates, phthalates, and other potentially harmful ingredients. We prioritize clean, effective formulations."
+        },
+        {
+          question: "How do I know which products are right for my skin type?",
+          answer: "We recommend taking our skin quiz on the website to get personalized product recommendations. You can also contact our customer service team for personalized advice."
+        }
+      ]
     },
     {
-      question: "Are your products cruelty-free?",
-      answer: "Yes, all LooksPure products are cruelty-free. We never test on animals and we do not work with suppliers who test on animals."
-    },
-    {
-      question: "How long will my order take to arrive?",
-      answer: "Domestic orders typically arrive within 3-5 business days. International shipping times vary by location, but generally take 7-14 business days."
-    },
-    {
-      question: "What is your return policy?",
-      answer: "We accept returns within 30 days of purchase for unused and unopened products. Please visit our Return & Refund Policy page for more details."
-    },
-    {
-      question: "Do you ship internationally?",
-      answer: "Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location."
-    },
-    {
-      question: "Are your packaging materials eco-friendly?",
-      answer: "Yes, we use recyclable, biodegradable, or reusable packaging materials whenever possible as part of our commitment to sustainability."
+      category: "Account & Payment",
+      questions: [
+        {
+          question: "How do I create an account?",
+          answer: "You can create an account by clicking the 'Account' icon in the top right corner of our website and selecting 'Create Account'. You'll need to provide your email address and create a password."
+        },
+        {
+          question: "What payment methods do you accept?",
+          answer: "We accept all major credit cards (Visa, Mastercard, American Express), PayPal, UPI, and net banking for Indian customers."
+        },
+        {
+          question: "Is my payment information secure?",
+          answer: "Yes, we use industry-standard encryption and security measures to protect your payment information. We are PCI DSS compliant and never store your full credit card details on our servers."
+        },
+        {
+          question: "Can I change or cancel my order after it's placed?",
+          answer: "We process orders quickly to ensure fast shipping. Please contact our customer service team immediately if you need to change or cancel your order, but we cannot guarantee changes once the order processing has begun."
+        }
+      ]
     }
-  ];
-  
+  ]
+
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-      <h1 className="text-5xl font-bold mb-10">Frequently Asked Questions</h1>
-      
-      <div className="space-y-6 text-lg">
-        <p>Find answers to commonly asked questions about our products, shipping, returns, and more.</p>
+      <div className="relative">
+        {/* Decorative elements */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
         
-        <div className="mt-10 space-y-4">
-          {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-gray-200 pb-4">
-              <button
-                onClick={() => toggleFaq(index)}
-                className="flex justify-between items-center w-full text-left font-medium text-gray-900 py-4 focus:outline-none"
-              >
-                <span className="text-xl">{faq.question}</span>
-                {openFaq === index ? <FiChevronUp size={24} /> : <FiChevronDown size={24} />}
-              </button>
-              
-              {openFaq === index && (
-                <div className="mt-2 text-gray-600 pb-4">
-                  <p>{faq.answer}</p>
+        <div className="relative">
+          <h1 
+            ref={headingRef}
+            className="text-5xl font-bold mb-10 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
+          >
+            Frequently Asked Questions
+          </h1>
+          
+          <div 
+            ref={contentRef}
+            className="space-y-10 text-lg opacity-0 transform translate-y-8 transition-all duration-700"
+          >
+            {faqs.map((category, categoryIndex) => (
+              <div key={categoryIndex} className="mb-12">
+                <h2 className="text-3xl font-bold mb-6 inline-block border-b-2 border-gray-300 pb-2">
+                  {category.category}
+                </h2>
+                
+                <div className="space-y-4">
+                  {category.questions.map((faq, faqIndex) => {
+                    const index = `${categoryIndex}-${faqIndex}`
+                    return (
+                      <div 
+                        key={index} 
+                        className="border border-gray-200 rounded-lg overflow-hidden transition-all duration-300"
+                      >
+                        <button
+                          onClick={() => toggleFaq(index)}
+                          className={`flex justify-between items-center w-full text-left font-medium p-6 focus:outline-none transition-colors duration-300 ${
+                            openFaq === index ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-50'
+                          }`}
+                        >
+                          <span className="text-xl">{faq.question}</span>
+                          <span className={`transition-transform duration-300 ${
+                            openFaq === index ? 'transform rotate-45' : ''
+                          }`}>
+                            +
+                          </span>
+                        </button>
+                        
+                        <div 
+                          className={`overflow-hidden transition-all duration-500 ${
+                            openFaq === index 
+                              ? 'max-h-96 opacity-100' 
+                              : 'max-h-0 opacity-0'
+                          }`}
+                        >
+                          <div className="p-6 bg-gray-50">
+                            <p>{faq.answer}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
-              )}
+              </div>
+            ))}
+            
+            <div className="mt-16 p-8 bg-gray-50 rounded-lg border border-gray-200">
+              <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
+              <p className="mb-6">If you couldn't find the answer to your question, please contact our customer support team.</p>
+              <a 
+                href="/help" 
+                className="inline-block px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition-colors duration-300"
+              >
+                Contact Support
+              </a>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </main>

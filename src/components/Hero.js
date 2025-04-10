@@ -68,7 +68,7 @@ export default function Hero() {
   const slides = isHomePage ? homepageSlides : [pageImages[pathname] || homepageSlides[1]]
   
   return (
-    <div className="relative w-full h-[70vh] md:h-[70vh]">
+    <div className="relative w-full h-[50vh] md:h-[60vh]">
       <Carousel 
         slides={slides} 
         currentSlide={currentSlide} 
