@@ -5,38 +5,53 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function TrackOrderPage() {
-  const [orderNumber, setOrderNumber] = useState('');
-  const [email, setEmail] = useState('');
+  const [searchType, setSearchType] = useState('orderID');
+  const [trackingNumber, setTrackingNumber] = useState('');
   const [isTracking, setIsTracking] = useState(false);
-  const [orderDetails, setOrderDetails] = useState({
-    id: orderNumber,
-    date: '15 May, 2023',
-    status: 'In Transit',
-    estimatedDelivery: '20 May, 2023',
-    items: [
-      { id: 1, name: 'Hydrating Face Serum', price: 1299, quantity: 1, image: 'https://cdn.pixabay.com/photo/2018/01/16/10/20/cosmetics-3085578_1280.jpg' },
-      { id: 2, name: 'Natural Glow Blush', price: 899, quantity: 2, image: 'https://cdn.pixabay.com/photo/2016/10/22/20/55/makeup-brushes-1761648_1280.jpg' }
-    ],
-    shippingAddress: {
-      name: 'Priya Sharma',
-      street: '123 Green Avenue',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pincode: '400001'
-    },
-    trackingSteps: [
-      { id: 1, title: 'Order Placed', date: '15 May, 2023', completed: true },
-      { id: 2, title: 'Processing', date: '16 May, 2023', completed: true },
-      { id: 3, title: 'Shipped', date: '17 May, 2023', completed: true },
-      { id: 4, title: 'In Transit', date: '18 May, 2023', completed: true },
-      { id: 5, title: 'Out for Delivery', date: 'Pending', completed: false },
-      { id: 6, title: 'Delivered', date: 'Pending', completed: false }
-    ]
-  });
+  const [orderDetails, setOrderDetails] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!trackingNumber.trim()) return;
+    
+    // Simulate fetching order details
+    setIsTracking(true);
+    
+    // Mock data for demonstration
+    setTimeout(() => {
+      setOrderDetails({
+        id: trackingNumber || '12345678',
+        date: '15 May, 2023',
+        status: 'In Transit',
+        estimatedDelivery: '20 May, 2023',
+        items: [
+          { id: 1, name: 'Hydrating Face Serum', price: 1299, quantity: 1, image: 'https://cdn.pixabay.com/photo/2018/01/16/10/20/cosmetics-3085578_1280.jpg' },
+          { id: 2, name: 'Natural Glow Blush', price: 899, quantity: 2, image: 'https://cdn.pixabay.com/photo/2016/10/22/20/55/makeup-brushes-1761648_1280.jpg' }
+        ],
+        shippingAddress: {
+          name: 'Priya Sharma',
+          street: '123 Green Avenue',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400001'
+        },
+        trackingSteps: [
+          { id: 1, title: 'Order Placed', date: '15 May, 2023', completed: true },
+          { id: 2, title: 'Processing', date: '16 May, 2023', completed: true },
+          { id: 3, title: 'Shipped', date: '17 May, 2023', completed: true },
+          { id: 4, title: 'In Transit', date: '18 May, 2023', completed: true },
+          { id: 5, title: 'Out for Delivery', date: 'Pending', completed: false },
+          { id: 6, title: 'Delivered', date: 'Pending', completed: false }
+        ]
+      });
+    }, 1000);
+  };
   
   const resetTracking = () => {
     setIsTracking(false);
     setOrderDetails(null);
+    setTrackingNumber('');
   };
   
   return (
@@ -46,6 +61,71 @@ export default function TrackOrderPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Track Your Order</h1>
           <p className="text-gray-600">Enter your order details to track your package</p>
         </div>
+        
+        {!isTracking || !orderDetails ? (
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <div className="text-lg font-medium mb-4">Search By:</div>
+                <div className="flex items-center space-x-8 mb-6">
+                  <label className="flex items-center cursor-pointer">
+                    <div className="relative w-6 h-6 mr-2">
+                      <input 
+                        type="radio" 
+                        name="searchType" 
+                        value="orderID" 
+                        checked={searchType === 'orderID'} 
+                        onChange={() => setSearchType('orderID')}
+                        className="opacity-0 absolute w-full h-full cursor-pointer"
+                      />
+                      <div className={`w-5 h-5 border-2 rounded-full flex items-center justify-center ${searchType === 'orderID' ? 'border-black' : 'border-gray-400'}`}>
+                        {searchType === 'orderID' && <div className="w-3 h-3 bg-black rounded-full"></div>}
+                      </div>
+                    </div>
+                    <span>Order ID/No</span>
+                  </label>
+                  
+                  <label className="flex items-center cursor-pointer">
+                    <div className="relative w-6 h-6 mr-2">
+                      <input 
+                        type="radio" 
+                        name="searchType" 
+                        value="trackingID" 
+                        checked={searchType === 'trackingID'} 
+                        onChange={() => setSearchType('trackingID')}
+                        className="opacity-0 absolute w-full h-full cursor-pointer"
+                      />
+                      <div className={`w-5 h-5 border-2 rounded-full flex items-center justify-center ${searchType === 'trackingID' ? 'border-black' : 'border-gray-400'}`}>
+                        {searchType === 'trackingID' && <div className="w-3 h-3 bg-black rounded-full"></div>}
+                      </div>
+                    </div>
+                    <span>Tracking ID/AWB</span>
+                  </label>
+                </div>
+                
+                <div className="flex flex-col md:flex-row gap-4">
+                  <input
+                    type="text"
+                    value={trackingNumber}
+                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    placeholder={searchType === 'orderID' ? "Enter Your Order ID starting with #" : "Enter Your Tracking ID/AWB"}
+                    className="flex-1 border border-gray-300 rounded px-4 py-3 focus:outline-none focus:ring-1 focus:ring-black"
+                    required
+                  />
+                  
+                  <button
+                    type="submit"
+                    className="bg-black text-white py-3 px-6 rounded hover:bg-gray-800 transition-colors font-medium"
+                  >
+                    Track Your Order
+                  </button>
+                </div>
+              </div>
+              
+              <p className="text-gray-700">Check current status of your shipment.</p>
+            </form>
+          </div>
+        ) : (
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             {/* Order Header */}
             <div className="bg-emerald-600 text-white p-6">
@@ -138,20 +218,20 @@ export default function TrackOrderPage() {
             <div className="p-6 flex flex-wrap gap-4">
               <button
                 onClick={resetTracking}
-                type="submit"
-                className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-800 transition-colors font-medium"
+                className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors font-medium"
               >
-                Track Order
+                Track Another Order
               </button>
               
               <Link 
-                href="/contact"
-                className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors font-medium"
+                href="/help"
+                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors font-medium"
               >
                 Need Help?
               </Link>
             </div>
           </div>
+        )}
       </div>
     </main>
   );

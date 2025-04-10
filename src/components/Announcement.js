@@ -35,7 +35,7 @@ export default function Announcement() {
       <div className="container mx-auto text-center text-sm font-medium relative flex items-center justify-center">
         <button 
           onClick={prevAnnouncement} 
-          className=" text-white mr-6 lg:mr-20 hover:text-gray-300 cursor-pointer transition-colors"
+          className=" text-white mr-6 lg:mr-32 hover:text-gray-300 cursor-pointer transition-colors"
           aria-label="Previous announcement"
         >
           <FiChevronLeft size={20} />
@@ -47,7 +47,7 @@ export default function Announcement() {
         
         <button 
           onClick={nextAnnouncement}  
-          className=" text-white ml-6 lg:ml-20 hover:text-gray-300 cursor-pointer transition-colors"
+          className=" text-white ml-6 lg:ml-32 hover:text-gray-300 cursor-pointer transition-colors"
           aria-label="Next announcement"
         >
           <FiChevronRight size={20} />

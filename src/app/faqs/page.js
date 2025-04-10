@@ -1,14 +1,18 @@
 'use client'
-import { useState } from 'react'
-import PageTemplate from '@/components/PageTemplate'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { useState } from 'react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+
+// export const metadata = {
+//   title: 'FAQs | LooksPure',
+//   description: 'Frequently asked questions about LooksPure products and services',
+// }
 
 export default function FAQsPage() {
-  const [openFaq, setOpenFaq] = useState(null)
+  const [openFaq, setOpenFaq] = useState(null);
   
   const toggleFaq = (index) => {
-    setOpenFaq(openFaq === index ? null : index)
-  }
+    setOpenFaq(openFaq === index ? null : index);
+  };
   
   const faqs = [
     {
@@ -39,31 +43,35 @@ export default function FAQsPage() {
       question: "Are your packaging materials eco-friendly?",
       answer: "Yes, we use recyclable, biodegradable, or reusable packaging materials whenever possible as part of our commitment to sustainability."
     }
-  ]
+  ];
   
   return (
-    <PageTemplate title="Frequently Asked Questions">
-      <p className="mb-6">Find answers to commonly asked questions about our products, shipping, returns, and more.</p>
+    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
+      <h1 className="text-5xl font-bold mb-10">Frequently Asked Questions</h1>
       
-      <div className="space-y-4">
-        {faqs.map((faq, index) => (
-          <div key={index} className="border-b border-gray-200 pb-4">
-            <button
-              onClick={() => toggleFaq(index)}
-              className="flex justify-between items-center w-full text-left font-medium text-gray-900 focus:outline-none"
-            >
-              <span>{faq.question}</span>
-              {openFaq === index ? <FiChevronUp /> : <FiChevronDown />}
-            </button>
-            
-            {openFaq === index && (
-              <div className="mt-2 text-gray-600">
-                <p>{faq.answer}</p>
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="space-y-6 text-lg">
+        <p>Find answers to commonly asked questions about our products, shipping, returns, and more.</p>
+        
+        <div className="mt-10 space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border-b border-gray-200 pb-4">
+              <button
+                onClick={() => toggleFaq(index)}
+                className="flex justify-between items-center w-full text-left font-medium text-gray-900 py-4 focus:outline-none"
+              >
+                <span className="text-xl">{faq.question}</span>
+                {openFaq === index ? <FiChevronUp size={24} /> : <FiChevronDown size={24} />}
+              </button>
+              
+              {openFaq === index && (
+                <div className="mt-2 text-gray-600 pb-4">
+                  <p>{faq.answer}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </PageTemplate>
+    </main>
   )
 }
