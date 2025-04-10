@@ -63,7 +63,7 @@ export default function DisclaimerPage() {
                 The product descriptions, images, and information provided on our website are for informational purposes 
                 only. We make every effort to display as accurately as possible the colors, features, specifications, 
                 and details of the products available on the site. However, we cannot guarantee that your computer 
-                monitor's display of any color will be accurate, and product packaging and materials may contain more 
+                monitor&apos;s display of any color will be accurate, and product packaging and materials may contain more 
                 and/or different information than that shown on our website.
               </p>
               <p>
@@ -114,7 +114,7 @@ export default function DisclaimerPage() {
               <h2 className="text-2xl font-bold mb-4">Changes to This Disclaimer</h2>
               <p className="mb-4">
                 We may update our disclaimer from time to time. We will notify you of any changes by posting the new 
-                disclaimer on this page and updating the "Last Updated" date.
+                disclaimer on this page and updating the &apos;Last Updated&apos; date.
               </p>
               <p>
                 You are advised to review this disclaimer periodically for any changes. Changes to this disclaimer are 

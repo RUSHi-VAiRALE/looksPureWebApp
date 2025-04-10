@@ -157,7 +157,7 @@ export default function FAQsPage() {
             
             <div className="mt-16 p-8 bg-gray-50 rounded-lg border border-gray-200">
               <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
-              <p className="mb-6">If you couldn't find the answer to your question, please contact our customer support team.</p>
+              <p className="mb-6">If you couldn&apos;t find the answer to your question, please contact our customer support team.</p>
               <a 
                 href="/help" 
                 className="inline-block px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition-colors duration-300"

@@ -71,7 +71,7 @@ export default function CorporatePage() {
                 </p>
                 <p>
                   Our mission is to revolutionize the beauty industry by providing honest, science-backed 
-                  products that empower consumers to make informed choices about their skincare. We're dedicated 
+                  products that empower consumers to make informed choices about their skincare. We&apos;re dedicated 
                   to cutting through the marketing noise and offering straightforward solutions that work.
                 </p>
               </div>
@@ -141,7 +141,7 @@ export default function CorporatePage() {
                   </div>
                   <h3 className="text-xl font-bold text-center mb-4">Sustainability</h3>
                   <p className="text-sm text-center">
-                    We're committed to reducing our environmental footprint through sustainable sourcing, 
+                    We&apos;re committed to reducing our environmental footprint through sustainable sourcing, 
                     eco-friendly packaging, and carbon-neutral shipping.
                   </p>
                 </div>
@@ -182,7 +182,7 @@ export default function CorporatePage() {
               <h2 className="text-3xl font-bold mb-6">Join Our Team</h2>
               <div className="bg-gray-50 p-8 rounded-lg border border-gray-200">
                 <p className="mb-6">
-                  We're always looking for passionate individuals who share our vision for transforming the beauty industry. 
+                  We&apos;re always looking for passionate individuals who share our vision for transforming the beauty industry. 
                   Check out our current openings or send us your resume for future opportunities.
                 </p>
                 <a 
