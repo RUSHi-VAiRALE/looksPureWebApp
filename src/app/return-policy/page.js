@@ -23,7 +23,7 @@ export default function ReturnPolicyPage() {
         
         <h2 className="text-2xl font-bold mt-10 mb-4">Late or Missing Refunds</h2>
         <p>
-          If you haven't received a refund yet, first check your bank account again. Then contact your credit card company, it may take some time before your refund is officially posted. Next contact your bank. There is often some processing time before a refund is posted. If you've done all of this and you still have not received your refund yet, please contact us at returns@lookspure.com.
+          If you haven&apos;t received a refund yet, first check your bank account again. Then contact your credit card company, it may take some time before your refund is officially posted. Next contact your bank. There is often some processing time before a refund is posted. If you&apos;ve done all of this and you still have not received your refund yet, please contact us at returns@lookspure.com.
         </p>
         
         <h2 className="text-2xl font-bold mt-10 mb-4">Damaged or Defective Items</h2>
