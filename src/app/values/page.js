@@ -14,11 +14,11 @@ export default function ValuesPage() {
         </p>
         
         <p>
-          For example, the <em>blind march</em> towards beauty products with 'Natural' claims is really concerning. There is a misconception that 100% natural is safe & effective and anything that sounds like a chemical is unsafe. This is completely wrong.
+          For example, the <em>blind march</em> towards beauty products with &apos;Natural&apos; claims is really concerning. There is a misconception that 100% natural is safe & effective and anything that sounds like a chemical is unsafe. This is completely wrong.
         </p>
         
         <p className="font-semibold">
-          "Everything is a chemical – water is a chemical – therefore, chemical-free products don't exist."
+        &apos;Everything is a chemical – water is a chemical – therefore, chemical-free products don&apos;t exist.&apos;
         </p>
         
         <p>

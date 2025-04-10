@@ -26,7 +26,7 @@ export default function KnowledgePage() {
         
         <h2 className="text-2xl font-bold mt-10 mb-4">Harmful Ingredients to Avoid</h2>
         <p>
-          Many conventional beauty products contain ingredients that may be harmful to your health. Learn about ingredients to avoid and why they're problematic.
+          Many conventional beauty products contain ingredients that may be harmful to your health. Learn about ingredients to avoid and why they&apos;re problematic.
         </p>
         <ul className="list-disc pl-6 mt-2 space-y-2">
           <li><strong>Parabens</strong> - Potential hormone disruptors</li>
