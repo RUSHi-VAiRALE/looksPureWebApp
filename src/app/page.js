@@ -11,9 +11,6 @@ import PromoBanner from "@/components/PromoBanner";
 import ProductSpotlight from '@/components/ProductSpotlight';
 import InstagramFeed from '@/components/InstagramFeed';
 import { instagramPosts } from '@/data/instagramPosts';
-import ProductDetail from "@/components/ProductDetail";
-import { productDetails } from '@/data/productDetails';
-import ZohoInventoryDemo from '@/components/ZohoInventoryDemo';
 import FutureOfCare from '@/components/FutureOfCare';
 import CustomerReviews from '@/components/CustomerReviews'; // Import the new component
 import { customerReviews } from '@/data/customerReviews'; // Import the review data
@@ -23,14 +20,6 @@ export default function Home() {
     <div className="min-h-screen">
       <main>
         {/* Your page content goes here */}
-     
-        {/* Zoho Inventory API Demo */}
-        {/* <div className="py-8 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">Zoho Inventory Integration</h2>
-            <ZohoInventoryDemo />
-          </div>
-        </div> */}
         
         <Hero />
         
