@@ -41,7 +41,7 @@ export default function Announcement() {
           <FiChevronLeft size={20} />
         </button>
         
-        <div className="border-b-1 uppercase text-[10px] sm:text-[12px] font-light tracking-widest">
+        <div className="border-b-1 uppercase text-[12px] font-light tracking-widest">
           {announcements[currentAnnouncement]}
         </div>
         

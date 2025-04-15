@@ -4,6 +4,7 @@ import MainNavbar from "@/components/MainNavbar";
 import Hero from "@/components/Hero"
 import ProductCarousel from '@/components/ProductCarousel'
 import { dealBanners, heroBanners } from '@/data/promoBanners';
+// In your page.js file, add the TrendingProducts component
 import TrendingProducts from '@/components/TrendingProducts';
 import { newLaunches, bestsellers } from "@/data/trendingProducts";
 import { eliteEdition,onTheGoEssentials } from "@/data/eliteProducts";
@@ -12,11 +13,7 @@ import ProductSpotlight from '@/components/ProductSpotlight';
 import InstagramFeed from '@/components/InstagramFeed';
 import { instagramPosts } from '@/data/instagramPosts';
 import ProductDetail from "@/components/ProductDetail";
-import { productDetails } from '@/data/productDetails';
-import ZohoInventoryDemo from '@/components/ZohoInventoryDemo';
-import FutureOfCare from '@/components/FutureOfCare';
-import CustomerReviews from '@/components/CustomerReviews'; // Import the new component
-import { customerReviews } from '@/data/customerReviews'; // Import the review data
+import { productDetails } from '@/data/productDetails'; // Add this import
 
 export default function Home() {
   return (
@@ -24,16 +21,7 @@ export default function Home() {
       <main>
         {/* Your page content goes here */}
      
-        {/* Zoho Inventory API Demo */}
-        {/* <div className="py-8 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">Zoho Inventory Integration</h2>
-            <ZohoInventoryDemo />
-          </div>
-        </div> */}
-        
         <Hero />
-        
         <TrendingProducts 
             title="TRENDING AT LOOKSPURE"
             categories={["NEW LAUNCHES", "BESTSELLERS"]}
@@ -41,10 +29,6 @@ export default function Home() {
             viewAllLinks={["/new-launches", "/bestsellers"]}
             showRatings={true}
         />
-        
-        {/* Add the Customer Reviews component */}
-        
-        {/* Rest of your components remain unchanged */}
         <PromoBanner banners={dealBanners} height="half"/>
         <TrendingProducts 
             title=""
@@ -73,8 +57,6 @@ export default function Home() {
             viewAllLinks={["/elite-edition","/on-the-go-essential"]}
             showRatings={true}
         />
-        <FutureOfCare /> {/* Add the new component here */}
-        <CustomerReviews reviewsData={customerReviews} />
       </main>
     </div>
   );
