@@ -38,8 +38,8 @@ function Offers() {
           {/* Product Images in Description */}
           <div className="grid grid-cols-1 gap-4 mt-10">
             {productDetails.images.map((image, index) => (
-              <Link href="/offers/1">
-                <div key={index} className="aspect-square overflow-hidden">
+              <Link key={index} href="/offers/1">
+                <div className="aspect-square overflow-hidden">
                 <Image
                   src={image.src}
                   alt={image.alt}
