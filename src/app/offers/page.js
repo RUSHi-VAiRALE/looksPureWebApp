@@ -2,8 +2,9 @@ import ProductGrid from '@/components/ProductGrid';
 import Hero from '@/components/Hero';
 import { productDetails } from '@/data/productDetails';
 import Image from 'next/image';
+import Link from 'next/link';
 function Offers() {
-  return (<main className="max-w-2xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  return (<main className="max-w-2xl mx-auto px-4 py-8 pt-32 sm:px-6 lg:px-8">
       {/* Hero Banner */}
       {/* <Hero /> */}
       
@@ -30,13 +31,15 @@ function Offers() {
         {/* Product Grid */}
         {/* <ProductGrid category="Skincare" />
       </div> */}
+      <h1 className='text-center text-3xl tracking-widest mt-8'>OFFER</h1>
       <div className="space-y-4">
           {/* <p>{productDetails.longDescription}</p> */}
           
           {/* Product Images in Description */}
-          <div className="grid grid-cols-1 gap-4 mt-20">
+          <div className="grid grid-cols-1 gap-4 mt-10">
             {productDetails.images.map((image, index) => (
-              <div key={index} className="aspect-square overflow-hidden">
+              <Link href="/offers/1">
+                <div key={index} className="aspect-square overflow-hidden">
                 <Image
                   src={image.src}
                   alt={image.alt}
@@ -45,6 +48,7 @@ function Offers() {
                   className="w-full h-full object-center object-cover"
                 />
               </div>
+              </Link>
             ))}
           </div>
           
