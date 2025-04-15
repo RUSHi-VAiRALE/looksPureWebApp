@@ -157,7 +157,7 @@ export default function MainNavbar() {
             </div>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0 pb-4">
+            <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0 pb-0 sm:pb-4">
               <Image 
                 src={logo}
                 alt="logo"
@@ -220,7 +220,7 @@ export default function MainNavbar() {
                   </span>
                 )}
               </Link>
-              <Link href="/track" className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
+              <Link href="/track" className={`p-2 rounded-full transition-colors duration-200 ${
                 shouldApplyScrolledStyles 
                   ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
