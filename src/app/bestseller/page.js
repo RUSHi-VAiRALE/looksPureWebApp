@@ -8,12 +8,13 @@ export default function BestsellerPage() {
   return (
     <main className="min-h-screen w-full">
       {/* Hero Banner */}
-      <Hero />
+      
       
       {/* Skin Type Filter */}
-      <div className="w-full mx-auto">
+      <div className="w-full mx-auto pt-28">
+      <h1 className='text-center text-3xl tracking-widest my-10'>BESTSELLERS</h1>
         {/* <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop By Skin Type</h2>
-
+        
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           {categories.map((category) => (
             <button

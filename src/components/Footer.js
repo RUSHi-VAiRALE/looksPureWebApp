@@ -44,7 +44,7 @@ export default function Footer() {
             {/* About Us Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
-                <h3 className="text-lg font-semibold text-white">About Us</h3>
+                <h3 className="text-lg font-semibold font-serif text-white">About Us</h3>
                 <button 
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('about')}
@@ -89,7 +89,7 @@ export default function Footer() {
             {/* Quick Links Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
-                <h3 className="text-lg font-semibold text-white">Quick Links</h3>
+                <h3 className="text-lg font-semibold font-serif text-white">Quick Links</h3>
                 <button 
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('quick')}
@@ -134,7 +134,7 @@ export default function Footer() {
             {/* Contact Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
-                <h3 className="text-lg font-semibold text-white">Contact Us</h3>
+                <h3 className="text-lg font-semibold font-serif text-white">Contact Us</h3>
                 <button 
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('contact')}
