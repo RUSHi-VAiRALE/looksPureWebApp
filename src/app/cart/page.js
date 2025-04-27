@@ -3,6 +3,10 @@ import { FiShoppingBag, FiTrash2, FiArrowLeft } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { auth } from '@/lib/firebase';
 
 export default function CartPage() {
   const { 
@@ -11,7 +15,144 @@ export default function CartPage() {
     updateQuantity, 
     getCartTotal 
   } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const router = useRouter();
 
+  // Check if Razorpay is loaded
+  useEffect(() => {
+    const loadRazorpayScript = () => {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+      });
+    };
+
+    loadRazorpayScript();
+  }, []);
+
+  const handleOpenRazorpay = async (data) => {
+    const options = {
+      key: 'rzp_test_VHhB5zXuk19mbh',
+      amount: data.amount,
+      currency: data.currency,
+      name: "LooksPure",
+      description: 'Purchase from LooksPure',
+      order_id: data.id,
+      handler: async function(response) {
+        console.log(response);
+        
+        // Create order details from cart items
+        const orderItems = cart.map(item => ({
+          productId: item.id,
+          productName: item.name,
+          productImage: item.image,
+          quantity: item.quantity,
+          price: item.price,
+          shade: item.selectedShade.name,
+          shadeId: item.selectedShade.id
+        }));
+        
+        // Get user profile from localStorage
+        const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        
+        // Get Firebase token
+        const token = await auth.currentUser.getIdToken(true);
+        
+        // Verify payment and create order
+        axios.post("/api/orders/create", {
+          paymentResponse: response,
+          orderItems: orderItems,
+          totalAmount: data.amount/100,
+          customerId: userProfile.customerId || null,
+          shippingAddress: userProfile.shippingAddress || null,
+          billingAddress: userProfile.billingAddress || null
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => {
+          console.log("Order created:", res.data);
+          // Clear cart and redirect to success page
+          // This would need to be implemented in your CartContext
+          router.push('/checkout/success?orderId=' + res.data.orderId);
+        })
+        .catch(err => {
+          console.error("Order creation failed:", err);
+          setIsProcessing(false);
+        });
+      },
+      prefill: {
+        name: "",
+        email: auth.currentUser?.email || "",
+        contact: ""
+      },
+      theme: {
+        color: "#000000",
+      }
+    };
+    
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+    setIsProcessing(false);
+  };
+
+  const handlePayment = async () => {
+    setIsProcessing(true);
+    
+    // Check if user is logged in
+    if (!auth.currentUser) {
+      alert("Please login to continue with checkout");
+      router.push('/login');
+      setIsProcessing(false);
+      return;
+    }
+    
+    // Store simplified cart details in localStorage
+    const simplifiedCart = cart.map(item => ({
+      id: item.id,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.image
+    }));
+    
+    localStorage.setItem('cartDetails', JSON.stringify(simplifiedCart));
+    
+    const amount = getCartTotal() * 100; // Convert to smallest currency unit (paise)
+    
+    const _data = {
+      amount: amount,
+      currency: "INR",
+      items: cart.length
+    };
+    
+    try {
+      // Get Firebase token
+      const token = await auth.currentUser.getIdToken(true);
+      
+      axios.post("http://localhost:3000/api/payment/create-order", _data, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          console.log("Payment order created:", res.data);
+          handleOpenRazorpay(res.data);
+        })
+        .catch(err => {
+          console.error("Payment order creation failed:", err);
+          setIsProcessing(false);
+        });
+    } catch (error) {
+      console.error("Payment processing error:", error);
+      setIsProcessing(false);
+    }
+  };
+
+  // Rest of the component remains the same until the checkout button
   return (
       <div className="bg-white min-h-screen pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -23,6 +164,7 @@ export default function CartPage() {
             </Link>
           </div>
 
+          {/* Empty cart section remains the same */}
           {cart.length === 0 ? (
             <div className="py-12 text-center bg-white rounded-lg shadow-sm border border-gray-100">
               <FiShoppingBag className="mx-auto h-16 w-16 text-gray-400" />
@@ -41,8 +183,9 @@ export default function CartPage() {
             </div>
           ) : (
             <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-              {/* Cart Items - Left Side */}
+              {/* Cart Items section remains the same */}
               <div className="lg:col-span-8">
+                {/* Cart items code remains unchanged */}
                 <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200">
                   <ul className="divide-y divide-gray-200">
                     {cart.map((item) => (
@@ -131,12 +274,13 @@ export default function CartPage() {
                   </div>
                   
                   <div className="mt-6">
-                    <Link
-                      href="/checkout"
-                      className="w-full flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900"
+                    <button
+                      onClick={handlePayment}
+                      disabled={isProcessing}
+                      className="w-full flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      Proceed to Checkout
-                    </Link>
+                      {isProcessing ? 'Processing...' : 'Proceed to Checkout'}
+                    </button>
                   </div>
                   
                   <div className="mt-4">

@@ -77,26 +77,6 @@ export default function Hero() {
         interval={5000}
         singleImageAnimation={!isHomePage ? 'zoom-out' : null} // Apply zoom-out animation only for single images
       />
-      
-      {/* Overlay text */}
-      {/* <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white z-10 px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-            {isHomePage ? 'Pure Beauty, Naturally' : 
-             pathname === '/skincare' ? 'Skincare Collection' :
-             pathname === '/new' ? 'New Arrivals' :
-             pathname === '/offers' ? 'Special Offers' : 'LooksPure'}
-          </h1>
-          <p className="text-xl md:text-2xl max-w-2xl mx-auto drop-shadow-md">
-            {isHomePage ? 'Discover clean, effective skincare for your natural beauty journey' : 
-             pathname === '/skincare' ? 'Nourish your skin with our natural formulations' :
-             pathname === '/new' ? 'Be the first to try our latest innovations' :
-             pathname === '/offers' ? 'Limited time deals on premium products' : 'Premium natural skincare'}
-          </p>
-        </div>
-      </div> */}
-      
-      {/* Gradient overlay for better text visibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
     </div>
   )
