@@ -70,7 +70,7 @@ export default function OrderHistory({ user }) {
           <FiPackage size={48} className="text-gray-400" />
         </div>
         <h3 className="text-xl font-medium mb-2">No orders yet</h3>
-        <p className="text-gray-600 mb-6">You haven't placed any orders yet.</p>
+        <p className="text-gray-600 mb-6">You haven&apos;t placed any orders yet.</p>
         <Link href="/skincare" className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 inline-block">
           Start Shopping
         </Link>
