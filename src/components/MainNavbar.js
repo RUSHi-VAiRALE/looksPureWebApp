@@ -2,21 +2,37 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FiSearch, FiShoppingCart, FiStar, FiUser, FiX } from 'react-icons/fi';
-import { usePathname } from 'next/navigation';
+import { SlHandbag } from "react-icons/sl";
+import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import MobileMenu from './MobileMenu';
 import SearchDialog from './SearchDialog';
 import { FaShippingFast } from "react-icons/fa";
 import logo from "../../public/lookspure.png"
 import Image from "next/image";
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
   
+  // Check if user is logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    
+    return () => unsubscribe();
+  }, []);
+
   // Check if current page should have forced scrolled style
   const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart') || pathname.includes('/values')
   || pathname.includes('/privacy') || pathname.includes('/terms')||pathname.includes('/disclaimer') || pathname.includes('/corporate')||pathname.includes('/knowledge')
@@ -25,7 +41,6 @@ export default function MainNavbar() {
   // Set initial scrolled state based on the current page
   useEffect(() => {
     if (shouldForceScrolledStyle && window.scrollY > 10) {
-      console.log(shouldForceScrolledStyle)
       setScrolled(true);
     }
   }, [pathname, shouldForceScrolledStyle]);
@@ -51,6 +66,15 @@ export default function MainNavbar() {
     }
     
     return pathname.startsWith(path);
+  };
+
+  // Handle user profile click
+  const handleProfileClick = () => {
+    if (user) {
+      router.push('/profile');
+    } else {
+      router.push('/login');
+    }
   };
 
   // Close menu when route changes
@@ -163,7 +187,7 @@ export default function MainNavbar() {
                 alt="logo"
                 width={120}
                 height={120}
-                className="object-contain w-48 lg:w-64 "
+                className="object-contain w-48 lg:w-64"
               />
             </Link>
 
@@ -181,15 +205,11 @@ export default function MainNavbar() {
               <Link href="/bestseller" className={getNavLinkClasses('/bestseller')}>
                 Bestseller
               </Link>
-              
-              {/* <Link href="" className={getNavLinkClasses('/track')}>
-                Track Order
-              </Link> */}
             </div>
 
             {/* Icons - Right side */}
             <div className="flex items-center space-x-2 md:space-x-4 order-3">
-             <button 
+              <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={`p-2 rounded-full transition-colors duration-200 ${
                   shouldApplyScrolledStyles 
@@ -199,13 +219,22 @@ export default function MainNavbar() {
               >
                 <FiSearch size={22} />
               </button>
-              <button className={`hidden md:block p-2 rounded-full transition-colors duration-200 ${
-                shouldApplyScrolledStyles 
-                  ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                  : 'text-white hover:text-white hover:bg-white/20'
-              }`}>
+              
+              {/* Updated User Icon with conditional rendering */}
+              <button 
+                onClick={handleProfileClick}
+                className={`hidden md:flex p-2 rounded-full transition-colors duration-200 items-center ${
+                  shouldApplyScrolledStyles 
+                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
+                    : 'text-white hover:text-white hover:bg-white/20'
+                }`}
+              >
                 <FiUser size={22} />
+                {user && (
+                  <span className="ml-1 w-2 h-2 bg-green-500 rounded-full"></span>
+                )}
               </button>
+              
               <Link href="/cart" 
                 className={`p-2 rounded-full transition-colors duration-200 relative ${
                   shouldApplyScrolledStyles 
@@ -213,7 +242,7 @@ export default function MainNavbar() {
                     : 'text-white hover:text-white hover:bg-white/20'
                 }`}
               >
-                <FiShoppingCart size={22} />
+                <SlHandbag size={22} />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {cartItemCount > 9 ? '9+' : cartItemCount}
