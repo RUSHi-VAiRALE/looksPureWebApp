@@ -37,7 +37,7 @@ export default function LoginRegister({ mode = 'login' }) {
       // Fetch user profile data from API
       try {
         const token = await(user.getIdToken())
-        const response = await fetch(`http://localhost:3000/api/customers/profile?email=${user.email}`, {
+        const response = await fetch(`https://ecombackend-mauve.vercel.app/api/customers/profile?email=${user.email}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export default function LoginRegister({ mode = 'login' }) {
       const user = userCredential.user
       
       // Send user data to your API
-      const response = await fetch('http://localhost:3000/api/customers', {
+      const response = await fetch('https://ecombackend-mauve.vercel.app/api/customers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
