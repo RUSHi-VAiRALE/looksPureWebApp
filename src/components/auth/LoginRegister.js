@@ -37,7 +37,7 @@ export default function LoginRegister({ mode = 'login' }) {
       // Fetch user profile data from API
       try {
         const token = await(user.getIdToken())
-        const response = await fetch(`${process.env.API_BASE_URL}/api/customers/profile?email=${user.email}`, {
+        const response = await fetch(`${API_BASE_URL}/api/customers/profile?email=${user.email}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
