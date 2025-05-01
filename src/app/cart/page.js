@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { auth } from '@/lib/firebase';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
 export default function CartPage() {
   const { 
     cart, 
@@ -133,7 +133,7 @@ export default function CartPage() {
       // Get Firebase token
       const token = await auth.currentUser.getIdToken(true);
       
-      axios.post("http://localhost:3000/api/payment/create-order", _data, {
+      axios.post(`${API_BASE_URL}/api/payment/create-order`, _data, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
