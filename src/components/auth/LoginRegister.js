@@ -101,7 +101,7 @@ export default function LoginRegister({ mode = 'login' }) {
       const user = userCredential.user
       
       // Send user data to your API
-      const response = await fetch(`${process.env.API_BASE_URL}/api/customers`, {
+      const response = await fetch(`${API_BASE_URL}/api/customers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

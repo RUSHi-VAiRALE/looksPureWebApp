@@ -36,7 +36,8 @@ export default function MainNavbar() {
   // Check if current page should have forced scrolled style
   const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart') || pathname.includes('/values')
   || pathname.includes('/privacy') || pathname.includes('/terms')||pathname.includes('/disclaimer') || pathname.includes('/corporate')||pathname.includes('/knowledge')
-  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy') || pathname.includes('/offers') || pathname.includes('/bestseller');
+  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy') || pathname.includes('/offers') || pathname.includes('/bestseller') ||
+  pathname.includes('/profile');
   
   // Set initial scrolled state based on the current page
   useEffect(() => {
