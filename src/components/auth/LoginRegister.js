@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { FiArrowLeft, FiEye, FiEyeOff } from 'react-icons/fi'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
 export default function LoginRegister({ mode = 'login' }) {
   const router = useRouter()
   const [isLogin, setIsLogin] = useState(mode === 'login')
@@ -37,7 +37,7 @@ export default function LoginRegister({ mode = 'login' }) {
       // Fetch user profile data from API
       try {
         const token = await(user.getIdToken())
-        const response = await fetch(`https://ecombackend-mauve.vercel.app/api/customers/profile?email=${user.email}`, {
+        const response = await fetch(`${process.env.API_BASE_URL}/api/customers/profile?email=${user.email}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export default function LoginRegister({ mode = 'login' }) {
       const user = userCredential.user
       
       // Send user data to your API
-      const response = await fetch('https://ecombackend-mauve.vercel.app/api/customers', {
+      const response = await fetch(`${process.env.API_BASE_URL}/api/customers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

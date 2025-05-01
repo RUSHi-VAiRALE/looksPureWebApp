@@ -1,5 +1,5 @@
 // Base API service for all API calls
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://ecombackend-mauve.vercel.app/';
+const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
 import { auth } from '@/lib/firebase';
 
 // Helper function for making API requests
