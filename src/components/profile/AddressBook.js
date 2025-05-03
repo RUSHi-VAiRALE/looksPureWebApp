@@ -124,7 +124,7 @@ export default function AddressBook({ user }) {
           </div>
         )}
         
-        {!addresses?.shippingAddress
+        {/* {!addresses?.shippingAddress
  && !isAddingShipping && (
           <button
             onClick={() => setIsAddingShipping(true)}
@@ -132,7 +132,7 @@ export default function AddressBook({ user }) {
           >
             Add Shipping Address
           </button>
-        )}
+        )} */}
       </div>
       
       {/* Billing Address */}
@@ -184,14 +184,14 @@ billingAddress
           </div>
         )}
         
-        {!addresses?.billing && !isAddingBilling && (
+        {/* {!addresses?.billing && !isAddingBilling && (
           <button
             onClick={() => setIsAddingBilling(true)}
             className="mt-4 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
           >
             Add Billing Address
           </button>
-        )}
+        )} */}
         
         {addresses?.shippingAddress && addresses?.
 billingAddress

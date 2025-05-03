@@ -62,7 +62,7 @@ export default function CartPage() {
         const token = await auth.currentUser.getIdToken(true);
         
         // Verify payment and create order
-        axios.post("/api/orders/create", {
+        axios.post(`${API_BASE_URL}/api/orders/create`, {
           paymentResponse: response,
           orderItems: orderItems,
           totalAmount: data.amount/100,

@@ -1,5 +1,5 @@
 export const productDetails = {
-  id: "cloud-nine-blush",
+  id: "2404326000000048001",
   name: "CLOUD NINE",
   subtitle: "NIACINAMIDE GLOW BLUSH",
   tagline: "Blush Brighter, Care Deeper",
