@@ -38,6 +38,16 @@ export default function FutureOfCare() {
       icon: '/icons/global.svg',
       title: 'Only the best',
       description: 'Ingredients sourced from across the world'
+    },
+    {
+      icon: '/icons/global.svg',
+      title: 'Clinically proven result',
+      description: 'Ingredients sourced from across the world'
+    },
+    {
+      icon: '/icons/global.svg',
+      title: 'Cruelty free',
+      description: 'Ingredients sourced from across the world'
     }
   ]
 
@@ -57,7 +67,7 @@ export default function FutureOfCare() {
             ref={headingRef}
             className="text-3xl md:text-4xl font-bold mb-4 opacity-0 transform translate-y-4 transition-all duration-700"
           >
-            The future of personal care is here
+            Your skin deserves the best. Start your beauty journey with Lookspure.
           </h2>
           <p className="text-gray-600">
             Embrace Minimalist, where each element is chosen for its scientific merit, offering you authentic, effective skincare solutions.
