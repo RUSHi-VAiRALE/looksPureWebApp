@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { FiHome, FiBox, FiUsers, FiShoppingBag, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
@@ -8,9 +8,10 @@ import { FiHome, FiBox, FiUsers, FiShoppingBag, FiSettings, FiLogOut, FiMenu, Fi
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
+  
   function NavLink({ href, icon, title, mobile = false }) {
-    const router = useRouter();
-    const isActive = router.pathname === href;
+    const pathname = usePathname();
+    const isActive = pathname === href || pathname?.startsWith(`${href}/`);
     
     const baseClasses = "group flex items-center px-2 py-2 text-sm font-medium rounded-md";
     const activeClasses = "bg-gray-100 text-gray-900";
@@ -28,6 +29,7 @@ export default function AdminLayout({ children }) {
       </Link>
     );
   }
+  
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -62,10 +64,10 @@ export default function AdminLayout({ children }) {
               </div>
               <nav className="mt-5 px-2 space-y-1">
                 <NavLink href="/admin" icon={<FiHome />} title="Dashboard" mobile />
-                {/* <NavLink href="/admin/products" icon={<FiBox />} title="Products" mobile /> */}
-                {/* <NavLink href="/admin/orders" icon={<FiShoppingBag />} title="Orders" mobile />
+                <NavLink href="/admin/products" icon={<FiBox />} title="Products" mobile />
+                <NavLink href="/admin/orders" icon={<FiShoppingBag />} title="Orders" mobile />
                 <NavLink href="/admin/customers" icon={<FiUsers />} title="Customers" mobile />
-                <NavLink href="/admin/settings" icon={<FiSettings />} title="Settings" mobile /> */}
+                <NavLink href="/admin/payments" icon={<FiSettings />} title="Payments" mobile />
               </nav>
             </div>
             
@@ -91,10 +93,10 @@ export default function AdminLayout({ children }) {
                 </div>
                 <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                   <NavLink href="/admin" icon={<FiHome />} title="Dashboard" />
-                  {/* <NavLink href="/admin/products" icon={<FiBox />} title="Products" />
+                  <NavLink href="/admin/products/add" icon={<FiBox />} title="Products" />
                   <NavLink href="/admin/orders" icon={<FiShoppingBag />} title="Orders" />
                   <NavLink href="/admin/customers" icon={<FiUsers />} title="Customers" />
-                  <NavLink href="/admin/settings" icon={<FiSettings />} title="Settings" /> */}
+                  <NavLink href="/admin/payments" icon={<FiSettings />} title="Payments" />
                 </nav>
               </div>
               <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
@@ -141,7 +143,7 @@ export default function AdminLayout({ children }) {
             </div>
           </div>
 
-          <main className="flex-1 relative overflow-y-auto focus:outline-none">
+          <main className="flex-1 relative overflow-y-auto focus:outline-none p-6">
             {children}
           </main>
         </div>
@@ -149,5 +151,3 @@ export default function AdminLayout({ children }) {
     </div>
   );
 }
-
-// Helper component for navigation links
