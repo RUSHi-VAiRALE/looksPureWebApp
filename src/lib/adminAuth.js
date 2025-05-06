@@ -1,4 +1,8 @@
+'use client'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebase';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 /**
  * Checks if the current user has admin privileges

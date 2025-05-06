@@ -22,7 +22,7 @@ export default function UnauthorizedPage() {
             Unauthorized Access
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            You don't have permission to access the admin area.
+            You don&apos;t have permission to access the admin area.
           </p>
           <p className="mt-2 text-center text-sm text-gray-600">
             You will be redirected to the home page in 5 seconds.
