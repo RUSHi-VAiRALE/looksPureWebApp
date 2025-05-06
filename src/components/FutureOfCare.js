@@ -67,15 +67,15 @@ export default function FutureOfCare() {
             ref={headingRef}
             className="text-3xl md:text-4xl font-bold mb-4 opacity-0 transform translate-y-4 transition-all duration-700"
           >
-            Your skin deserves the best. Start your beauty journey with Lookspure.
+            Your skin deserves the best. Start your beauty journey with Lookspure.
           </h2>
           <p className="text-gray-600">
             Embrace Minimalist, where each element is chosen for its scientific merit, offering you authentic, effective skincare solutions.
           </p>
         </div>
         
-        {/* Desktop/Tablet View */}
-        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+        {/* Desktop/Tablet View - Changed to horizontal layout */}
+        <div className="hidden sm:flex sm:flex-wrap sm:justify-center sm:items-center sm:gap-8 md:gap-12 lg:gap-16">
           {features.map((feature, index) => (
             <div 
               key={index}
@@ -108,7 +108,6 @@ export default function FutureOfCare() {
                 </div>
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
             </div>
           ))}
         </div>

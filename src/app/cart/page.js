@@ -16,6 +16,7 @@ export default function CartPage() {
     getCartTotal 
   } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('online');
   const router = useRouter();
 
   // Check if Razorpay is loaded
@@ -68,7 +69,8 @@ export default function CartPage() {
           totalAmount: data.amount/100,
           customerId: userProfile.customerId || null,
           shippingAddress: userProfile.shippingAddress || null,
-          billingAddress: userProfile.billingAddress || null
+          billingAddress: userProfile.billingAddress || null,
+          paymentMethod: 'online'
         }, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -78,7 +80,6 @@ export default function CartPage() {
           console.log("Order created:", res.data);
           // Clear cart and redirect to success page
           // This would need to be implemented in your CartContext
-          router.push('/checkout/success?orderId=' + res.data.orderId);
         })
         .catch(err => {
           console.error("Order creation failed:", err);
@@ -98,6 +99,53 @@ export default function CartPage() {
     const rzp = new window.Razorpay(options);
     rzp.open();
     setIsProcessing(false);
+  };
+
+  const handleCashOnDelivery = async () => {
+    setIsProcessing(true);
+    
+    try {
+      // Create order details from cart items
+      const orderItems = cart.map(item => ({
+        productId: item.id,
+        productName: item.name,
+        productImage: item.image,
+        quantity: item.quantity,
+        price: item.price,
+        shade: item.selectedShade.name,
+        shadeId: item.selectedShade.id
+      }));
+      
+      // Get user profile from localStorage
+      const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      
+      // Get Firebase token
+      const token = await auth.currentUser.getIdToken(true);
+      
+      // Create order with COD payment method
+      axios.post(`${API_BASE_URL}/api/orders/create`, {
+        orderItems: orderItems,
+        totalAmount: getCartTotal(),
+        customerId: userProfile.customerId || null,
+        shippingAddress: userProfile.shippingAddress || null,
+        billingAddress: userProfile.billingAddress || null,
+        paymentMethod: 'cod'
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        console.log("COD Order created:", res.data);
+      })
+      .catch(err => {
+        console.error("COD Order creation failed:", err);
+        setIsProcessing(false);
+      });
+    } catch (error) {
+      console.error("COD Order processing error:", error);
+      setIsProcessing(false);
+    }
   };
 
   const handlePayment = async () => {
@@ -121,6 +169,13 @@ export default function CartPage() {
     
     localStorage.setItem('cartDetails', JSON.stringify(simplifiedCart));
     
+    // If Cash on Delivery is selected
+    if (paymentMethod === 'cod') {
+      handleCashOnDelivery();
+      return;
+    }
+    
+    // Online payment flow
     const amount = getCartTotal() * 100; // Convert to smallest currency unit (paise)
     
     const _data = {
@@ -273,13 +328,42 @@ export default function CartPage() {
                     </div>
                   </div>
                   
+                  {/* Payment Method Selection */}
+                  <div className="mt-6">
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Payment Method</h3>
+                    <div className="space-y-3">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="online"
+                          checked={paymentMethod === 'online'}
+                          onChange={() => setPaymentMethod('online')}
+                          className="h-4 w-4 text-black focus:ring-black border-gray-300"
+                        />
+                        <span className="ml-2 text-sm text-gray-700">Online Payment</span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="cod"
+                          checked={paymentMethod === 'cod'}
+                          onChange={() => setPaymentMethod('cod')}
+                          className="h-4 w-4 text-black focus:ring-black border-gray-300"
+                        />
+                        <span className="ml-2 text-sm text-gray-700">Cash on Delivery</span>
+                      </label>
+                    </div>
+                  </div>
+                  
                   <div className="mt-6">
                     <button
                       onClick={handlePayment}
                       disabled={isProcessing}
                       className="w-full flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isProcessing ? 'Processing...' : 'Proceed to Checkout'}
+                      {isProcessing ? 'Processing...' : paymentMethod === 'online' ? 'Proceed to Payment' : 'Place Order (COD)'}
                     </button>
                   </div>
                   

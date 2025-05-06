@@ -12,6 +12,7 @@ import logo from "../../public/lookspure.png"
 import Image from "next/image";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import trackingLogo from "../../public/tracking.png"
 
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -170,7 +171,7 @@ export default function MainNavbar() {
         <div className={`container mx-auto px-6 max-w-7xl transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3]' : 'bg-transparent'}`}>
           <div className={`flex items-center justify-between h-16 transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3]' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
-            <div className="lg:hidden order-1">
+            <div className="lg:hidden order-1 flex">
               <button 
                 className={`p-2 rounded-full transition-colors duration-200 ${iconClasses}`}
                 onClick={() => setIsMenuOpen(true)}
@@ -178,6 +179,16 @@ export default function MainNavbar() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
+              </button>
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className={`p-2 lg:hidden rounded-full transition-colors duration-200 ${
+                  shouldApplyScrolledStyles 
+                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
+                    : 'text-white hover:text-white hover:bg-white/20'
+                }`}
+              >
+                <FiSearch size={22} />
               </button>
             </div>
 
@@ -212,7 +223,7 @@ export default function MainNavbar() {
             <div className="flex items-center space-x-2 md:space-x-4 order-3">
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className={`p-2 rounded-full transition-colors duration-200 ${
+                className={`p-2 hidden lg:block rounded-full transition-colors duration-200 ${
                   shouldApplyScrolledStyles 
                     ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                     : 'text-white hover:text-white hover:bg-white/20'
@@ -255,7 +266,13 @@ export default function MainNavbar() {
                   ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
                   : 'text-white hover:text-white hover:bg-white/20'
               }`}>
-                <FaShippingFast size={22}/>
+                <Image 
+                  src={trackingLogo}
+                  alt="Track Order"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
               </Link>
             </div>
           </div>

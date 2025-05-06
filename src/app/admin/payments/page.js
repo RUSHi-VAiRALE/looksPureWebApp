@@ -6,6 +6,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { auth } from '@/lib/firebase';
 import axios from 'axios';
 const api_url = process.env.NEXT_PUBLIC_URL
+
 export default function PaymentsPage() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ export default function PaymentsPage() {
     date_end: '',
     payment_mode: ''
   });
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +30,15 @@ export default function PaymentsPage() {
           if (user) {
             const token = await user.getIdToken();
             localStorage.setItem('authToken', token);
+            
+            // Check if user has admin claim
+            const tokenResult = await user.getIdTokenResult();
+            if (!tokenResult.claims.admin) {
+              router.push('/unauthorized');
+              return;
+            }
+            
+            setIsAdmin(true);
             loadPayments();
           } else {
             router.push('/login');

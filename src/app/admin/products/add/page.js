@@ -26,6 +26,7 @@ export default function AddProductPage() {
     tagline: '',
     price: '',
     originalPrice: '',
+    category : '',
     discount: '',
     rating: 4.5,
     reviewCount: 0,
@@ -46,9 +47,9 @@ export default function AddProductPage() {
             if (token.claims.admin) {
               setIsAdmin(true);
             } 
-            // else {
-            //   router.push('/');
-            // }
+            else {
+              router.push('/');
+            }
           } else {
             router.push('/login');
           }

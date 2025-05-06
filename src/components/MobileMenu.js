@@ -3,10 +3,21 @@ import Link from "next/link";
 import { FiSearch, FiStar, FiUser, FiX } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
+import { auth } from '@/lib/firebase';
 
 export default function MobileMenu({ isOpen, onClose, isActive }) {
   const [animationStarted, setAnimationStarted] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [user, setUser] = useState(null);
+  
+  // Check user authentication status
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    });
+    
+    return () => unsubscribe();
+  }, []);
   
   // Reset animation state when menu closes
   useEffect(() => {
@@ -35,7 +46,9 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    setShowLoginDialog(true);
+    if (!user) {
+      setShowLoginDialog(true);
+    }
   };
 
   return (
@@ -86,7 +99,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
             </div>
           </div>
           
-          {/* Login section at bottom */}
+          {/* User profile or login section at bottom */}
           <div className={`p-6 border-t border-gray-100 transform transition-all duration-300 
             ${animationStarted 
               ? 'translate-y-0 opacity-100' 
@@ -97,17 +110,33 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
               transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
-            <a href="#" 
-              onClick={handleLoginClick}
-              className="flex items-center space-x-3 py-2"
-            >
-              <div className="bg-gray-100 p-3 rounded-full">
-                <FiUser size={20} className="text-gray-700" />
-              </div>
-              <div>
-                <span className="block text-gray-700 capitalize">Log in</span>
-              </div>
-            </a>
+            {user ? (
+              <Link 
+                href="/profile" 
+                className="flex items-center space-x-3 py-2"
+                onClick={onClose}
+              >
+                <div className="bg-gray-100 p-3 rounded-full">
+                  <FiUser size={20} className="text-gray-700" />
+                </div>
+                <div>
+                  <span className="block text-gray-700 capitalize">My Profile</span>
+                  <span className="text-xs text-gray-500">{user.email || user.phoneNumber}</span>
+                </div>
+              </Link>
+            ) : (
+              <a href="#" 
+                onClick={handleLoginClick}
+                className="flex items-center space-x-3 py-2"
+              >
+                <div className="bg-gray-100 p-3 rounded-full">
+                  <FiUser size={20} className="text-gray-700" />
+                </div>
+                <div>
+                  <span className="block text-gray-700 capitalize">Account</span>
+                </div>
+              </a>
+            )}
           </div>
         </div>
       </div>
