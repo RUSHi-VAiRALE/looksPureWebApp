@@ -21,7 +21,7 @@ export default function AdminSidebar() {
   
   const menuItems = [
     { path: '/admin', icon: FiHome, label: 'Dashboard' },
-    { path: '/admin/products', icon: FiPackage, label: 'Products' },
+    { path: '/admin/products/add', icon: FiPackage, label: 'Products' },
     { path: '/admin/orders', icon: FiShoppingBag, label: 'Orders' },
     { path: '/admin/customers', icon: FiUsers, label: 'Customers' },
     { path: '/admin/payments', icon: FiDollarSign, label: 'Payments' },
