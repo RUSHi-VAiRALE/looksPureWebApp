@@ -25,7 +25,7 @@ export default function Home() {
         
         <TrendingProducts 
             title="TRENDING AT LOOKSPURE"
-            categories={["NEW LAUNCHES", "BESTSELLERS"]}
+            categories={["skincare", "bodycare"]}
             productData={[newLaunches, bestsellers]}
             viewAllLinks={["/new-launches", "/bestsellers"]}
             showRatings={true}

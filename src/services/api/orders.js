@@ -4,7 +4,7 @@ import fetchAPI from './index';
 export const ordersAPI = {
   // Get user orders
   getUserOrders: async (userId, page = 1, limit = 10) => {
-    return fetchAPI(`/users/${userId}/orders?page=${page}&limit=${limit}`);
+    return fetchAPI(`/api/users/${userId}/orders?page=${page}&limit=${limit}`);
   },
   
   // Get order details

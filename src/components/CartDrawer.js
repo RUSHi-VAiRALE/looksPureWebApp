@@ -82,7 +82,7 @@ export default function CartDrawer() {
                           ) : (
                             <ul className="-my-6 divide-y divide-gray-200">
                               {cart.map((item) => (
-                                <li key={`${item.id}-${item.selectedShade.id}`} className="flex py-6">
+                                <li key={`${item.id}`} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     <Image
                                       src={item.image}
@@ -104,21 +104,21 @@ export default function CartDrawer() {
                                         <p className="ml-4">₹{item.price.toFixed(2)}</p>
                                       </div>
                                       <p className="mt-1 text-sm text-gray-500">{item.subtitle}</p>
-                                      <p className="mt-1 text-sm text-gray-500">
+                                      {/* <p className="mt-1 text-sm text-gray-500">
                                         Shade: {item.selectedShade.name}
-                                      </p>
+                                      </p> */}
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm">
                                       <div className="flex items-center border border-gray-300 rounded-md">
                                         <button
-                                          onClick={() => updateQuantity(item.id, item.selectedShade.id, item.quantity - 1)}
+                                          onClick={() => updateQuantity(item.id,item.quantity - 1)}
                                           className="px-2 py-1 text-gray-600 hover:text-gray-900"
                                         >
                                           -
                                         </button>
                                         <span className="px-2 py-1">{item.quantity}</span>
                                         <button
-                                          onClick={() => updateQuantity(item.id, item.selectedShade.id, item.quantity + 1)}
+                                          onClick={() => updateQuantity(item.id,item.quantity + 1)}
                                           className="px-2 py-1 text-gray-600 hover:text-gray-900"
                                         >
                                           +
@@ -127,7 +127,7 @@ export default function CartDrawer() {
 
                                       <button
                                         type="button"
-                                        onClick={() => removeFromCart(item.id, item.selectedShade.id)}
+                                        onClick={() => removeFromCart(item.id)}
                                         className="font-medium text-red-600 hover:text-red-500"
                                       >
                                         <FiTrash2 />
@@ -151,7 +151,8 @@ export default function CartDrawer() {
                         <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                         <div className="mt-6">
                           <Link
-                            href="/checkout"
+                            onClick={() => setCartOpen(false)}
+                            href="/cart"
                             className="flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900"
                           >
                             Checkout

@@ -3,6 +3,7 @@ import { FaStar, FaRegStar, FaStarHalfAlt, FaHeart, FaRegHeart, FaShoppingBag, F
 import { IoMdCheckmark } from 'react-icons/io';
 import ProductReels from './ProductReels';
 import { productReels } from '@/data/productReels';
+import { useCart } from '@/context/CartContext';
 
 export default function ProductInfo({ 
   product, 
@@ -13,6 +14,7 @@ export default function ProductInfo({
   isAddingToCart 
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const { setCartOpen } = useCart();
   
   // Generate star rating
   const renderStars = (rating) => {
@@ -34,6 +36,15 @@ export default function ProductInfo({
     }
     
     return stars;
+  };
+  
+  // Handle add to cart with drawer opening
+  const handleAddToCartWithDrawer = () => {
+    handleAddToCart();
+    // Open the cart drawer after adding the item
+    setTimeout(() => {
+      setCartOpen(true);
+    }, 300); // Small delay to ensure the item is added first
   };
   
   return (
@@ -67,7 +78,7 @@ export default function ProductInfo({
         {product.originalPrice && (
           <>
             <p className="ml-3 text-lg text-gray-500 line-through">₹{product.originalPrice.toFixed(2)}</p>
-            <p className="ml-3 text-sm font-medium text-red-600">{product.discount}</p>
+            <p className="ml-3 text-sm font-medium text-red-600">{product.discount}%</p>
           </>
         )}
       </div>
@@ -111,7 +122,7 @@ export default function ProductInfo({
       {/* Add to Cart & Buy Now */}
       <div className="mt-8">
         <button 
-          onClick={handleAddToCart}
+          onClick={handleAddToCartWithDrawer}
           disabled={isAddingToCart}
           className={`w-full bg-black text-white py-3 px-6 rounded-none transition-colors flex items-center justify-center ${isAddingToCart ? 'opacity-75 cursor-not-allowed' : 'hover:bg-gray-800'}`}
         >

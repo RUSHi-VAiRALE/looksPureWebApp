@@ -15,7 +15,8 @@ export default function OrderHistory({ user }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await ordersAPI.getUserOrders(user.uid, currentPage);
+        const response = await ordersAPI.getUserOrders(user.customerId, currentPage);
+        console.log('Fetched orders:', response);
         setOrders(response.orders);
         setTotalPages(response.totalPages);
       } catch (error) {
@@ -89,8 +90,8 @@ export default function OrderHistory({ user }) {
           <div key={order.id} className="p-6 hover:bg-gray-50">
             <div className="flex flex-col md:flex-row justify-between mb-4">
               <div>
-                <p className="text-sm text-gray-500">Order #{order.orderNumber}</p>
-                <p className="font-medium">{formatDate(order.orderDate)}</p>
+                <p className="text-sm text-gray-500">Order #{order.id}</p>
+                <p className="font-medium">{formatDate(order.date)}</p>
               </div>
               <div className="mt-2 md:mt-0">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getOrderStatusClass(order.status)}`}>
@@ -101,7 +102,7 @@ export default function OrderHistory({ user }) {
             
             <div className="mt-4 space-y-4">
               {order.items.slice(0, 2).map((item) => (
-                <div key={item.id} className="flex items-center">
+                <div key={item.productId} className="flex items-center">
                   <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden relative flex-shrink-0">
                     <Image
                       src={item.productImage}

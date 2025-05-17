@@ -34,7 +34,7 @@ export default function ProductDetail({ product }) {
     
     // Simulate network delay for better UX
     setTimeout(() => {
-      addToCart(product, quantity, product.shades[selectedShade]);
+      addToCart(product, quantity);
       setIsAddingToCart(false);
     }, 500);
   };
@@ -108,7 +108,7 @@ export default function ProductDetail({ product }) {
         </div>
         
         {/* Related Products */}
-        <RelatedProducts products={product.relatedProducts} />
+        {/* <RelatedProducts products={product.relatedProducts} /> */}
       </div>
     </div>
   );

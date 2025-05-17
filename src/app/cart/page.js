@@ -206,7 +206,6 @@ export default function CartPage() {
       setIsProcessing(false);
     }
   };
-
   // Rest of the component remains the same until the checkout button
   return (
       <div className="bg-white min-h-screen pt-24">
@@ -244,7 +243,8 @@ export default function CartPage() {
                 <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200">
                   <ul className="divide-y divide-gray-200">
                     {cart.map((item) => (
-                      <li key={`${item.id}-${item.selectedShade.id}`} className="p-6">
+                      
+                      <li key={`${item.id}`} className="p-6">
                         <div className="flex flex-col sm:flex-row">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 mb-4 sm:mb-0">
                             <Image
@@ -265,9 +265,6 @@ export default function CartPage() {
                                   </Link>
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-500">{item.subtitle}</p>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  Shade: {item.selectedShade.name}
-                                </p>
                               </div>
                               <p className="text-base font-medium text-gray-900">₹{item.price.toFixed(2)}</p>
                             </div>
@@ -275,14 +272,14 @@ export default function CartPage() {
                             <div className="flex justify-between items-end mt-4">
                               <div className="flex items-center border border-gray-300 rounded-md">
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.selectedShade.id, item.quantity - 1)}
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                   className="px-3 py-1 text-gray-600 hover:text-gray-900"
                                 >
                                   -
                                 </button>
                                 <span className="px-3 py-1">{item.quantity}</span>
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.selectedShade.id, item.quantity + 1)}
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                   className="px-3 py-1 text-gray-600 hover:text-gray-900"
                                 >
                                   +
@@ -291,7 +288,7 @@ export default function CartPage() {
 
                               <button
                                 type="button"
-                                onClick={() => removeFromCart(item.id, item.selectedShade.id)}
+                                onClick={() => removeFromCart(item.id)}
                                 className="flex items-center text-sm font-medium text-red-600 hover:text-red-500"
                               >
                                 <FiTrash2 className="mr-1" />

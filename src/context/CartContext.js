@@ -28,7 +28,7 @@ export function CartProvider({ children }) {
     setCart(prevCart => {
       // Check if product with same ID and shade already exists in cart
       const existingItemIndex = prevCart.findIndex(
-        item => item.id === product.id && item.selectedShade.id === selectedShade.id
+        item => item.id === product.id
       );
       
       if (existingItemIndex >= 0) {
@@ -56,20 +56,20 @@ export function CartProvider({ children }) {
   
   const removeFromCart = (productId, shadeId) => {
     setCart(prevCart => 
-      prevCart.filter(item => !(item.id === productId && item.selectedShade.id === shadeId))
+      prevCart.filter(item => !(item.id === productId))
     );
   };
   
-  const updateQuantity = (productId, shadeId, newQuantity) => {
+  const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) {setCart(prevCart => 
-      prevCart.filter(item => !(item.id === productId && item.selectedShade.id === shadeId))
+      prevCart.filter(item => !(item.id === productId))
     )
     return;
   }
     
     setCart(prevCart => 
       prevCart.map(item => 
-        (item.id === productId && item.selectedShade.id === shadeId)
+        (item.id === productId)
           ? { ...item, quantity: newQuantity }
           : item
       )
