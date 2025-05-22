@@ -32,7 +32,7 @@ export default function SkincarePage() {
         </div> */}
         
         {/* Product Grid */}
-        <ProductGrid category="Skincare" />
+        <ProductGrid category="skincare" />
       </div>
       
       {/* Newsletter */}

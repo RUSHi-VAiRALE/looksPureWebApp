@@ -20,13 +20,13 @@ export default function AdminSidebar() {
   };
   
   const menuItems = [
-    { path: '/admin', icon: FiHome, label: 'Dashboard' },
+    // { path: '/admin', icon: FiHome, label: 'Dashboard' },
     { path: '/admin/products/add', icon: FiPackage, label: 'Products' },
     { path: '/admin/orders', icon: FiShoppingBag, label: 'Orders' },
     { path: '/admin/customers', icon: FiUsers, label: 'Customers' },
     { path: '/admin/payments', icon: FiDollarSign, label: 'Payments' },
     // { path: '/admin/analytics', icon: FiBarChart2, label: 'Analytics' },
-    // { path: '/admin/categories', icon: FiGrid, label: 'Categories' },
+    { path: '/admin/media', icon: FiGrid, label: 'Upload images' },
     // { path: '/admin/settings', icon: FiSettings, label: 'Settings' },
   ];
   
