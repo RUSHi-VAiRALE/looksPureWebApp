@@ -134,6 +134,7 @@ export default function CartPage() {
       })
       .then(res => {
         console.log("COD Order created:", res.data);
+        setIsProcessing(false);
       })
       .catch(err => {
         console.error("COD Order creation failed:", err);

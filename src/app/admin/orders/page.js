@@ -115,7 +115,7 @@ export default function OrdersPage() {
         return 'bg-blue-100 text-blue-800';
     }
   };
-
+  console.log(orders)
   return (
     <AdminLayout>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -205,8 +205,8 @@ export default function OrdersPage() {
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Total</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                          <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                            <span className="sr-only">Actions</span>
+                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Payment mode
                           </th>
                         </tr>
                       </thead>
@@ -232,13 +232,8 @@ export default function OrdersPage() {
                                   {order.status || 'Unknown'}
                                 </span>
                               </td>
-                              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                <button
-                                  onClick={() => router.push(`/admin/orders/${order.salesorder_id}`)}
-                                  className="text-indigo-600 hover:text-indigo-900"
-                                >
-                                  View<span className="sr-only">, {order.reference_number}</span>
-                                </button>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                {(order.paymentMethod === "cod")?"Cash On Delivery" : "Prepaid"}
                               </td>
                             </tr>
                           ))
