@@ -38,11 +38,15 @@ export default function ReturnPolicyPage() {
 
   const sections = [
     {
-      title: "Return Policy",
-      content: "We accept returns within 30 days of purchase. To be eligible for a return, your item must be unused and in the same condition that you received it. It must also be in the original packaging. Several types of goods are exempt from being returned. Perishable goods such as food, flowers, newspapers or magazines cannot be returned. We also do not accept products that are intimate or sanitary goods, hazardous materials, or flammable liquids or gases."
+      title: "Easy Return Policy",
+      content: "Returns/replacements are accepted for unused products only in case of defects, damages during delivery, missing, or wrong products delivered. Return requests can be raised on the 'My Order' section within 15 days of delivery."
     },
     {
-      title: "Refunds",
+      title: "Eligibility for Returns",
+      content: "To be eligible for a return, your item must be unused and in the same condition that you received it. It must also be in the original packaging. Several types of goods are exempt from being returned. Perishable goods such as food, flowers, newspapers or magazines cannot be returned. We also do not accept products that are intimate or sanitary goods, hazardous materials, or flammable liquids or gases."
+    },
+    {
+      title: "Refunds Process",
       content: "Once your return is received and inspected, we will send you an email to notify you that we have received your returned item. We will also notify you of the approval or rejection of your refund. If you are approved, then your refund will be processed, and a credit will automatically be applied to your credit card or original method of payment, within a certain amount of days."
     },
     {

@@ -40,7 +40,7 @@ export default function ValuesPage() {
               ref={headingRef}
               className="text-5xl font-bold mb-12 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
             >
-              Our values
+              Our Values
             </h1>
             
             <div className="space-y-8 text-lg">
@@ -49,7 +49,7 @@ export default function ValuesPage() {
                 className="bg-white p-8 rounded-xl shadow-sm border-l-4 border-black opacity-0 transform translate-x-8 transition-all duration-700"
               >
                 <p>
-                  Founded in 2020 with the belief that beauty industry requires a revolution with respect to <strong className="text-black">TRANSPARENCY</strong>. There is lot of inaccurate advice &amp; incorrect claims being made by beauty brands which results in fear mongering, misconceptions and eventually consumers making wrong decisions.
+                  Founded in 2025, Lookspure was born from a simple but powerful idea: skincare should be <strong className="text-black">HONEST</strong>, uncomplicated, and grounded in truth. We set out to challenge the norms of the beauty industry by championing clarity over confusion and facts over fear.
                 </p>
               </div>
               
@@ -58,7 +58,7 @@ export default function ValuesPage() {
                 className="px-6 py-4 bg-gray-100 rounded-lg opacity-0 transform translate-x-8 transition-all duration-700"
               >
                 <p>
-                  For example, the <em>blind march</em> towards beauty products with &apos;Natural&apos; claims is really concerning. There is a misconception that 100% natural is safe &amp; effective and anything that sounds like a chemical is unsafe. This is completely wrong.
+                  The beauty space has become clouded with <em>misinformation</em>, exaggerated claims, and fear-driven marketing. As a result, consumers are often left overwhelmed and unsure of who or what to trust. We believe it&apos;s time for a change—a shift toward full transparency, where trust replaces doubt and every decision is guided by science and integrity.
                 </p>
               </div>
               
@@ -67,7 +67,7 @@ export default function ValuesPage() {
                 className="p-8 bg-black text-white rounded-xl shadow-md my-8 opacity-0 transform translate-x-8 transition-all duration-700"
               >
                 <p className="font-semibold text-xl italic">
-                  &quot;Everything is a chemical – water is a chemical – therefore, chemical-free products don&apos;t exist.&quot;
+                  &quot;We also believe in calling things what they are. Everything around us—including the air we breathe and the water we drink—is made of chemicals.&quot;
                 </p>
               </div>
               
@@ -76,7 +76,7 @@ export default function ValuesPage() {
                 className="bg-white p-8 rounded-xl shadow-sm border-r-4 border-black opacity-0 transform translate-x-8 transition-all duration-700"
               >
                 <p>
-                  We wanted to address this issue of <em>lack of transparency</em> through a range of products that are straightforward, honest and do what they claim to do. No unnecessary marketing fluff. And this is how <strong className="text-black">Minimalist</strong> was born.
+                  Instead of feeding fear, we focus on what truly matters: the <em>safety, purpose, and proven efficacy</em> of each ingredient. At Lookspure, our mission is clear: to offer products that do exactly what they claim—no marketing fluff, no scare tactics. Just clean, effective skincare made with intention and backed by <strong className="text-black">SCIENCE</strong>.
                 </p>
               </div>
               
@@ -85,7 +85,7 @@ export default function ValuesPage() {
                 className="mt-16 mb-8 text-center opacity-0 transform translate-x-8 transition-all duration-700"
               >
                 <h2 className="text-6xl font-bold text-black">
-                  <span>Hide</span><span className="font-black">Nothing</span><span>.</span>
+                  <span>Honest</span><span className="font-black">Skincare</span><span>.</span>
                 </h2>
                 <div className="mt-4 h-1 w-40 mx-auto bg-black rounded-full"></div>
               </div>

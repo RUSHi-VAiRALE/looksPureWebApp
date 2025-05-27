@@ -2,17 +2,68 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { SiGoogledisplayandvideo360 } from "react-icons/si"
+import { SiGoogledisplayandvideo360 } from "react-icons/si";
+import { getFirestore, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { app } from '@/lib/firebase';
 
 export default function InstagramFeed({ 
-  title = "LOOKSPURE INSTA",
-  posts = [],
+  title = "LOOKSPURE REELS",
   username = "lookspure",
-  viewAllLink = `https://www.instagram.com/lookspure/`
+  viewAllLink = `https://www.instagram.com/lookspure/`,
+  category = "home",
+  maxReels = 10
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const [visiblePosts, setVisiblePosts] = useState(6);
+  
+  // Fetch reels from Firebase
+  useEffect(() => {
+    const fetchReels = async () => {
+      setLoading(true);
+      try {
+        const db = getFirestore(app);
+        
+        // Create query to get reels of specified category
+        const reelsQuery = query(
+          collection(db, 'images'),
+          where('type', '==', 'reel'),
+          where('category', '==', category),
+          orderBy('createdAt', 'desc'),
+          limit(maxReels)
+        );
+        
+        const querySnapshot = await getDocs(reelsQuery);
+        const reelsData = [];
+        
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          
+          // Only add reels that have a file with URL
+          if (data.file && data.file.url) {
+            reelsData.push({
+              id: doc.id,
+              type: 'video',
+              media: data.file.url,
+              caption: data.title || 'Lookspure Reel',
+              link: data.url || viewAllLink, // Use external URL if available, otherwise default
+              description: data.description || ''
+            });
+          }
+        });
+        
+        setPosts(reelsData);
+      } catch (error) {
+        console.error("Error fetching reels:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchReels();
+  }, [category, maxReels, viewAllLink]);
   
   // Handle responsive sizing
   useEffect(() => {
@@ -43,6 +94,34 @@ export default function InstagramFeed({
   
   // Calculate card width based on visible posts
   const cardWidth = `calc(${100 / visiblePosts}% - 1rem)`;
+  
+  if (loading) {
+    return (
+      <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-center text-2xl font-medium tracking-wider mb-10">
+            {title}
+          </h2>
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+  
+  if (posts.length === 0) {
+    return (
+      <section className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-center text-2xl font-medium tracking-wider mb-10">
+            {title}
+          </h2>
+          <p className="text-center text-gray-500">No reels available at the moment.</p>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section className="py-12 px-4">
@@ -116,8 +195,6 @@ export default function InstagramFeed({
             </>
           )}
         </div>
-        
-        
       </div>
     </section>
   );

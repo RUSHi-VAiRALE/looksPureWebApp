@@ -2,7 +2,7 @@ export const instagramPosts = [
   {
     id: 1,
     type: 'video',
-    media: 'https://cdn.pixabay.com/video/2020/10/09/51908-467131978_tiny.mp4',
+    media: 'https://www.instagram.com/reel/DKHWTBUNHMr/?igsh=emVtMGhlbnc5NXc=',
     caption: 'Discover our new skincare routine',
     link: 'https://www.instagram.com/p/example1/'
   },

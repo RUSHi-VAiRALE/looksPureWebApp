@@ -55,13 +55,6 @@ export default function Home() {
           gradientColors="from-pink-200 via-purple-200 to-blue-200"
         />
         <InstagramFeed posts={instagramPosts} />
-        <TrendingProducts 
-            title=""
-            categories={["LOOKSPURE PLAY RANGE",""]}
-            productData={[eliteEdition,onTheGoEssentials]}
-            viewAllLinks={["/elite-edition","/on-the-go-essential"]}
-            showRatings={true}
-        />
         <FutureOfCare /> {/* Add the new component here */}
         <CustomerReviews reviewsData={customerReviews} />
       </main>
