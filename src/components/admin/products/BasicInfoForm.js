@@ -1,10 +1,13 @@
 import React from 'react';
 
+// Assuming this is the structure of your BasicInfoForm component
+// You'll need to modify the discount field to be read-only
+
 export default function BasicInfoForm({ product, handleInputChange, handleNumberInputChange }) {
   return (
     <div>
-      <h3 className="text-lg font-medium leading-6 text-gray-900">Basic Information</h3>
-      <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+      <h2 className="text-lg font-medium text-gray-900 mb-4">Basic Information</h2>
+      <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
         <div className="sm:col-span-3">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
             Product Name *
@@ -105,16 +108,16 @@ export default function BasicInfoForm({ product, handleInputChange, handleNumber
               type="number"
               name="price"
               id="price"
+              value={product.price}
+              onChange={handleNumberInputChange}
+              className="shadow-sm p-2 border-1 focus:ring-black focus:border-black block w-full border-black sm:text-sm rounded-md"
               required
               min="0"
               step="0.01"
-              value={product.price}
-              onChange={handleNumberInputChange}
-              className="shadow-sm p-2 border-1 focus:ring-black focus:border-black block w-full sm:text-sm rounded-md"
             />
           </div>
         </div>
-
+        
         <div className="sm:col-span-2">
           <label htmlFor="originalPrice" className="block text-sm font-medium text-gray-700">
             Original Price (₹)
@@ -124,18 +127,18 @@ export default function BasicInfoForm({ product, handleInputChange, handleNumber
               type="number"
               name="originalPrice"
               id="originalPrice"
-              min="0"
-              step="0.01"
               value={product.originalPrice}
               onChange={handleNumberInputChange}
-              className="shadow-sm p-2 border-1 focus:ring-black focus:border-black block w-full sm:text-sm rounded-md"
+              className="shadow-sm p-2 border-1 focus:ring-black focus:border-black block w-full border-black sm:text-sm rounded-md"
+              min="0"
+              step="0.01"
             />
           </div>
         </div>
-
+        
         <div className="sm:col-span-2">
           <label htmlFor="discount" className="block text-sm font-medium text-gray-700">
-            Discount
+            Discount (%)
           </label>
           <div className="mt-1">
             <input
@@ -143,13 +146,13 @@ export default function BasicInfoForm({ product, handleInputChange, handleNumber
               name="discount"
               id="discount"
               value={product.discount}
-              onChange={handleInputChange}
-              placeholder="e.g. 20% OFF"
-              className="shadow-sm p-2 border-1 focus:ring-black focus:border-black block w-full sm:text-sm rounded-md"
+              className="bg-gray-100 shadow-sm block p-2 border-1 w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+              readOnly
             />
+            <p className="mt-1 text-xs text-gray-500">Automatically calculated</p>
           </div>
         </div>
-
+        
         <div className="sm:col-span-2">
           <label htmlFor="sku" className="block text-sm font-medium text-gray-700">
             SKU *

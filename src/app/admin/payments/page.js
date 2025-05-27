@@ -264,9 +264,6 @@ export default function PaymentsPage() {
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Amount</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Payment Mode</th>
-                          <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                            <span className="sr-only">Actions</span>
-                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
@@ -292,18 +289,6 @@ export default function PaymentsPage() {
                                 <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${getStatusColor(payment.status)}`}>
                                   {payment.payment_mode || 'Unknown'}
                                 </span>
-                              </td>
-                              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                {payment.local_order_id ? (
-                                  <button
-                                    onClick={() => router.push(`/admin/orders/${payment.local_order_id}`)}
-                                    className="text-indigo-600 hover:text-indigo-900"
-                                  >
-                                    View Order<span className="sr-only">, {payment.order_number}</span>
-                                  </button>
-                                ) : (
-                                  <span className="text-gray-400">No Order</span>
-                                )}
                               </td>
                             </tr>
                           ))

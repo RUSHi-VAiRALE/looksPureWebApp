@@ -85,10 +85,25 @@ export default function AddProductPage() {
 
   const handleNumberInputChange = (e) => {
     const { name, value } = e.target;
-    setProduct({
+    const updatedProduct = {
       ...product,
-      [name]: value === '' ? '' : parseFloat(value)
-    });
+      [name]: value === '' ? '' : parseInt(value)
+    };
+    
+    // Automatically calculate discount when price or originalPrice changes
+    if (name === 'price' || name === 'originalPrice') {
+      const price = name === 'price' ? parseInt(value) : parseInt(product.price);
+      const originalPrice = name === 'originalPrice' ? parseInt(value) : parseInt(product.originalPrice);
+      
+      if (originalPrice && price && originalPrice > price) {
+        const discountPercentage = ((originalPrice - price) / originalPrice) * 100;
+        updatedProduct.discount = discountPercentage.toFixed(0);
+      } else {
+        updatedProduct.discount = '';
+      }
+    }
+    
+    setProduct(updatedProduct);
   };
 
   const handleFeatureChange = (index, value) => {
