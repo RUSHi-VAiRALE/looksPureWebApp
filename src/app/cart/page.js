@@ -35,6 +35,7 @@ export default function CartPage() {
   }, []);
 
   const handleOpenRazorpay = async (data) => {
+    console.log("data :",data)
     const options = {
       key: 'rzp_test_VHhB5zXuk19mbh',
       amount: data.amount,
@@ -43,17 +44,15 @@ export default function CartPage() {
       description: 'Purchase from LooksPure',
       order_id: data.id,
       handler: async function(response) {
-        console.log(response);
-        
+        //console.log(response);
+        console.log("cart :" ,cart)
         // Create order details from cart items
-        const orderItems = cart.map(item => ({
+        const orderItems = await cart.map(item => ({
           productId: item.id,
           productName: item.name,
           productImage: item.image,
           quantity: item.quantity,
           price: item.price,
-          shade: item.selectedShade.name,
-          shadeId: item.selectedShade.id
         }));
         
         // Get user profile from localStorage
@@ -112,8 +111,6 @@ export default function CartPage() {
         productImage: item.image,
         quantity: item.quantity,
         price: item.price,
-        shade: item.selectedShade.name,
-        shadeId: item.selectedShade.id
       }));
       
       // Get user profile from localStorage
@@ -164,10 +161,11 @@ export default function CartPage() {
       id: item.id,
       price: item.price,
       quantity: item.quantity,
+      name : item.name,
       image: item.image
     }));
     
-    localStorage.setItem('cartDetails', JSON.stringify(simplifiedCart));
+    localStorage.setItem('cart', JSON.stringify(simplifiedCart));
     
     // If Cash on Delivery is selected
     if (paymentMethod === 'cod') {
