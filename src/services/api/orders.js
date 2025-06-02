@@ -9,7 +9,7 @@ export const ordersAPI = {
   
   // Get order details
   getOrderDetails: async (orderId) => {
-    return fetchAPI(`/orders/${orderId}`);
+    return fetchAPI(`/api/orders/sales/${orderId}`);
   },
   
   // Cancel order
@@ -26,5 +26,31 @@ export const ordersAPI = {
       method: 'POST',
       body: JSON.stringify({ items, reason }),
     });
+  },
+  
+  // Create package for order
+  createPackage: async (packageData) => {
+    return fetchAPI('/api/packages/create', {
+      method: 'POST',
+      body: JSON.stringify(packageData),
+    });
+  },
+  
+  // Create shipment for package
+  createShipment: async (shipmentData) => {
+    return fetchAPI('/api/shipments/create', {
+      method: 'POST',
+      body: JSON.stringify(shipmentData),
+    });
+  },
+  
+  // Get packages for an order
+  getOrderPackages: async (orderId) => {
+    return fetchAPI(`/api/packages/${orderId}`);
+  },
+  
+  // Get shipments for a package
+  getPackageShipments: async (packageId) => {
+    return fetchAPI(`/api/shipments/${packageId}`);
   }
 };

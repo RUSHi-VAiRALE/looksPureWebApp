@@ -41,6 +41,42 @@ export default function OrdersPage() {
     checkAuth();
   }, [router]);
 
+  // Replace with a single combined useEffect
+  useEffect(() => {
+    let unsubscribe;
+    
+    const checkAuthAndLoadOrders = async () => {
+      try {
+        unsubscribe = auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            const token = await user.getIdToken();
+            localStorage.setItem('authToken', token);
+            loadOrders();
+          } else {
+            router.push('/login');
+          }
+        });
+      } catch (error) {
+        console.error('Authentication error:', error);
+        setError('Authentication failed. Please log in again.');
+        setLoading(false);
+      }
+    };
+    
+    checkAuthAndLoadOrders();
+    
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [router, page, limit, statusFilter, dateRange.start, dateRange.end]);
+
+  // Remove this useEffect as it's now combined above
+  useEffect(() => {
+    if (localStorage.getItem('authToken')) {
+      loadOrders();
+    }
+  }, [page, limit, statusFilter, dateRange]);
+
   const loadOrders = async () => {
     try {
       setLoading(true);
@@ -63,12 +99,6 @@ export default function OrdersPage() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (localStorage.getItem('authToken')) {
-      loadOrders();
-    }
-  }, [page, limit, statusFilter, dateRange]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);

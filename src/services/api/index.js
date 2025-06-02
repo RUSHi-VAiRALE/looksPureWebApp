@@ -30,20 +30,27 @@ async function fetchAPI(endpoint, options = {}) {
   
   try {
     const response = await fetch(url, config);
-    
+
     // Handle 401 Unauthorized
     if (response.status === 401) {
-      // Handle token expiration or unauthorized access
       window.location.href = '/login';
       return null;
     }
-    
-    const data = await response.json();
-    
+
+    const contentType = response.headers.get('content-type');
+    let data;
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      // Not JSON, get text (likely an error page)
+      const text = await response.text();
+      throw new Error(text || 'Unexpected response format');
+    }
+
     if (!response.ok) {
       throw new Error(data.message || 'Something went wrong');
     }
-    
+
     return data;
   } catch (error) {
     console.error('API Error:', error);

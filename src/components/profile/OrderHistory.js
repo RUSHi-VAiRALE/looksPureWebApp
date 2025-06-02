@@ -132,13 +132,13 @@ export default function OrderHistory({ user }) {
               <div>
                 <p className="text-sm font-medium">Total: ₹{order.totalAmount.toFixed(2)}</p>
               </div>
-              <Link 
+              {/* <Link 
                 href={`/orders/${order.id}`}
                 className="flex items-center text-sm font-medium text-black hover:text-gray-700"
               >
                 View Order Details
                 <FiChevronRight className="ml-1" />
-              </Link>
+              </Link> */}
             </div>
           </div>
         ))}
