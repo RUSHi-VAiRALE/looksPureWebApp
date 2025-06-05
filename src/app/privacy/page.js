@@ -8,7 +8,7 @@
 export default function PrivacyPage() {
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-      <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+      <h1 className="text-4xl font-medium font-[Poppins] mb-8">Privacy Policy</h1>
 
       <div className="space-y-8">
         <p className="text-gray-500 italic">Last Updated: {new Date().toLocaleDateString()}</p>

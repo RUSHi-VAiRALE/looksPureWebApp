@@ -10,7 +10,7 @@ export default function KnowledgePage() {
   const [activeCategory, setActiveCategory] = useState('ingredients')
   const headingRef = useRef(null)
   const contentRef = useRef(null)
-  
+
   useEffect(() => {
     if (headingRef.current) {
       headingRef.current.classList.add('animate-fadeIn')
@@ -124,21 +124,21 @@ export default function KnowledgePage() {
         {/* Decorative elements */}
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
         <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
-        
+
         <div className="relative">
-          <h1 
+          <h1
             ref={headingRef}
             className="text-5xl font-bold mb-10 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
           >
             Beauty Knowledge
           </h1>
-          
-          <div 
+
+          <div
             ref={contentRef}
             className="space-y-6 text-lg opacity-0 transform translate-y-8 transition-all duration-700"
           >
             <p className="text-xl">Explore our collection of expert articles and guides to help you understand skincare ingredients, build effective routines, and address specific skin concerns.</p>
-            
+
             {/* Category Tabs */}
             <div className="border-b border-gray-200 mt-10">
               <div className="flex flex-wrap space-x-2 sm:space-x-8">
@@ -146,22 +146,21 @@ export default function KnowledgePage() {
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`py-4 px-1 border-b-2 font-medium text-lg transition-colors duration-300 ${
-                      activeCategory === category.id 
-                        ? 'border-black text-black' 
+                    className={`py-4 px-1 border-b-2 font-medium text-lg transition-colors duration-300 ${activeCategory === category.id
+                        ? 'border-black text-black'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
                     {category.name}
                   </button>
                 ))}
               </div>
             </div>
-            
+
             {/* Articles Grid */}
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
               {articles[activeCategory].map((article, index) => (
-                <div 
+                <div
                   key={index}
                   className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                 >
@@ -184,21 +183,21 @@ export default function KnowledgePage() {
                 </div>
               ))}
             </div>
-            
+
             {/* Newsletter Signup */}
             <div className="mt-16 p-8 bg-black text-white rounded-lg">
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="text-2xl font-bold mb-4">Stay Updated with Beauty Knowledge</h2>
                 <p className="mb-6">Subscribe to our newsletter to receive the latest skincare tips, product recommendations, and exclusive content.</p>
                 <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                  <input 
-                    type="email" 
-                    placeholder="Your email address" 
+                  <input
+                    type="email"
+                    placeholder="Your email address"
                     className="flex-grow px-4 py-3 rounded text-black focus:outline-none focus:ring-2 focus:ring-gray-400"
                     required
                   />
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="px-6 py-3 bg-white text-black rounded hover:bg-gray-200 transition-colors duration-300"
                   >
                     Subscribe

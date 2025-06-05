@@ -29,7 +29,7 @@ export default function ReturnPolicyPage() {
 
   const toggleSection = (index) => {
     setActiveSection(activeSection === index ? null : index)
-    
+
     if (sectionRefs.current[index] && activeSection !== index) {
       sectionRefs.current[index].classList.add('animate-fadeIn')
       sectionRefs.current[index].style.opacity = 1
@@ -70,47 +70,43 @@ export default function ReturnPolicyPage() {
           {/* Decorative elements */}
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
           <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
-          
+
           <div className="relative">
-            <h1 
+            <h1
               ref={headingRef}
-              className="text-5xl font-bold mb-12 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
+              className="text-5xl font-medium font-[Poppins] mb-12 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
             >
               Return &amp; Refund Policy
             </h1>
-            
+
             <div className="space-y-6 text-lg">
               <p className="text-gray-500 italic">Last Updated: {new Date().toLocaleDateString()}</p>
-              
+
               <div className="mt-10 space-y-4">
                 {sections.map((section, index) => (
-                  <div 
+                  <div
                     key={index}
                     ref={el => sectionRefs.current[index] = el}
-                    className={`border border-gray-200 rounded-lg overflow-hidden transition-all duration-500 ${
-                      index !== 0 && activeSection !== index ? 'opacity-0' : ''
-                    }`}
+                    className={`border border-gray-200 rounded-lg overflow-hidden transition-all duration-500 ${index !== 0 && activeSection !== index ? 'opacity-0' : ''
+                      }`}
                   >
                     <button
                       onClick={() => toggleSection(index)}
-                      className={`flex justify-between items-center w-full text-left font-medium p-6 focus:outline-none transition-colors duration-300 ${
-                        activeSection === index ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-50'
-                      }`}
+                      className={`flex justify-between items-center w-full text-left font-medium p-6 focus:outline-none transition-colors duration-300 ${activeSection === index ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-50'
+                        }`}
                     >
                       <span className="text-xl">{section.title}</span>
-                      <span className={`transition-transform duration-300 ${
-                        activeSection === index ? 'transform rotate-45' : ''
-                      }`}>
+                      <span className={`transition-transform duration-300 ${activeSection === index ? 'transform rotate-45' : ''
+                        }`}>
                         +
                       </span>
                     </button>
-                    
-                    <div 
-                      className={`overflow-hidden transition-all duration-500 ${
-                        activeSection === index 
-                          ? 'max-h-96 opacity-100' 
+
+                    <div
+                      className={`overflow-hidden transition-all duration-500 ${activeSection === index
+                          ? 'max-h-96 opacity-100'
                           : 'max-h-0 opacity-0'
-                      }`}
+                        }`}
                     >
                       <div className="p-6 bg-gray-50">
                         <p>{section.content}</p>

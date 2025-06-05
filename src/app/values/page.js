@@ -8,7 +8,7 @@
 export default function ValuesPage() {
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-      <h1 className="text-4xl font-bold mb-8">Our Values</h1>
+      <h1 className="text-4xl mb-8 font-medium font-[Poppins]">Our Values</h1>
 
       <div className="space-y-6">
         <p>
@@ -26,10 +26,6 @@ export default function ValuesPage() {
         <p>
           Instead of feeding fear, we focus on what truly matters: the safety, purpose, and proven efficacy of each ingredient. At Lookspure, our mission is clear: to offer products that do exactly what they claim—no marketing fluff, no scare tactics. Just clean, effective skincare made with intention and backed by <strong>SCIENCE</strong>.
         </p>
-
-        <div className="mt-12 text-center">
-          <h2 className="text-4xl font-bold">Honest Skincare.</h2>
-        </div>
       </div>
     </main>
   )
