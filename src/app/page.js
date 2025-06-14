@@ -6,7 +6,7 @@ import ProductCarousel from '@/components/ProductCarousel'
 import { dealBanners, heroBanners } from '@/data/promoBanners';
 import TrendingProducts from '@/components/TrendingProducts';
 import { newLaunches, bestsellers } from "@/data/trendingProducts";
-import { eliteEdition,onTheGoEssentials } from "@/data/eliteProducts";
+import { eliteEdition, onTheGoEssentials } from "@/data/eliteProducts";
 import PromoBanner from "@/components/PromoBanner";
 import ProductSpotlight from '@/components/ProductSpotlight';
 import InstagramFeed from '@/components/InstagramFeed';
@@ -20,29 +20,29 @@ export default function Home() {
     <div className="min-h-screen">
       <main>
         {/* Your page content goes here */}
-        
+
         <Hero />
-        
-        <TrendingProducts 
-            title="TRENDING AT LOOKSPURE"
-            categories={["skincare", "bodycare"]}
-            productData={[newLaunches, bestsellers]}
-            viewAllLinks={["/new-launches", "/bestsellers"]}
-            showRatings={true}
+
+        <TrendingProducts
+          title="TRENDING AT LOOKSPURE"
+          categories={["skincare", "haircare"]}
+          productData={[newLaunches, bestsellers]}
+          viewAllLinks={["/new-launches", "/bestsellers"]}
+          showRatings={true}
         />
-        
+
         {/* Add the Customer Reviews component */}
-        
+
         {/* Rest of your components remain unchanged */}
-        <PromoBanner banners={dealBanners} height="half"/>
-        <TrendingProducts 
+        <PromoBanner banners={dealBanners} height="half" />
+        {/* <TrendingProducts 
             title=""
             categories={["ELITE EDITION","ON-THE-GO ESSENTIAL"]}
             productData={[eliteEdition,onTheGoEssentials]}
             viewAllLinks={["/elite-edition","/on-the-go-essential"]}
             showRatings={true}
-        />
-        <ProductSpotlight 
+        /> */}
+        <ProductSpotlight
           product={{
             title: "CLOUD NINE",
             subtitle: "NIACINAMIDE GLOW BLUSH",
