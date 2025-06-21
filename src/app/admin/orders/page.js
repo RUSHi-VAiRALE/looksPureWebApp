@@ -29,7 +29,7 @@ export default function OrdersPage() {
             router.push('/login');
           }
         });
-        
+
         return () => unsubscribe();
       } catch (error) {
         console.error('Authentication error:', error);
@@ -37,14 +37,14 @@ export default function OrdersPage() {
         setLoading(false);
       }
     };
-    
+
     checkAuth();
   }, [router]);
 
   // Replace with a single combined useEffect
   useEffect(() => {
     let unsubscribe;
-    
+
     const checkAuthAndLoadOrders = async () => {
       try {
         unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -62,9 +62,9 @@ export default function OrdersPage() {
         setLoading(false);
       }
     };
-    
+
     checkAuthAndLoadOrders();
-    
+
     return () => {
       if (unsubscribe) unsubscribe();
     };
@@ -87,7 +87,7 @@ export default function OrdersPage() {
         date_start: dateRange.start || undefined,
         date_end: dateRange.end || undefined
       };
-      
+
       const data = await fetchSalesOrders(params);
       setOrders(data.salesorders || []);
       setTotalCount(data.total_count || 0);
@@ -157,7 +157,7 @@ export default function OrdersPage() {
             </p>
           </div>
         </div>
-        
+
         {/* Filters */}
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
@@ -176,7 +176,7 @@ export default function OrdersPage() {
               <option value="pending">Pending</option>
             </select>
           </div>
-          
+
           <div>
             <label htmlFor="date_start" className="block text-sm font-medium text-gray-700">Start Date</label>
             <input
@@ -188,7 +188,7 @@ export default function OrdersPage() {
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-black focus:border-black sm:text-sm rounded-md"
             />
           </div>
-          
+
           <div>
             <label htmlFor="date_end" className="block text-sm font-medium text-gray-700">End Date</label>
             <input
@@ -201,7 +201,7 @@ export default function OrdersPage() {
             />
           </div>
         </div>
-        
+
         {error && (
           <div className="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
             <div className="flex">
@@ -216,7 +216,7 @@ export default function OrdersPage() {
             </div>
           </div>
         )}
-        
+
         {loading ? (
           <div className="mt-8 flex justify-center">
             <LoadingSpinner />
@@ -236,7 +236,7 @@ export default function OrdersPage() {
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Total</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                              Payment mode
+                            Payment mode
                           </th>
                         </tr>
                       </thead>
@@ -263,7 +263,7 @@ export default function OrdersPage() {
                                 </span>
                               </td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {(order.paymentMethod === "cod")?"Cash On Delivery" : "Prepaid"}
+                                {(order.paymentMethod === "cod") ? "Cash On Delivery" : "Prepaid"}
                               </td>
                             </tr>
                           ))
@@ -280,7 +280,7 @@ export default function OrdersPage() {
                 </div>
               </div>
             </div>
-            
+
             {/* Pagination */}
             {totalCount > 0 && (
               <div className="mt-4 flex items-center justify-between">

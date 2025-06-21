@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { FiX } from 'react-icons/fi';
 
 export default function ShipmentForm({ packageData, orderData, onSubmit, onCancel }) {
-  console.log("packageData : ",packageData)
-  console.log("orderData : ",orderData)
+  console.log("packageData : ", packageData)
+  console.log("orderData : ", orderData)
   const [form, setForm] = useState({
     packageId: packageData.package_id,
     deliveryMethod: '',
