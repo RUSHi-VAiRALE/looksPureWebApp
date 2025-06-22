@@ -238,6 +238,9 @@ export default function OrdersPage() {
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Payment mode
                           </th>
+                          <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                            <span className="sr-only">Actions</span>
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
@@ -265,11 +268,19 @@ export default function OrdersPage() {
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {(order.paymentMethod === "cod") ? "Cash On Delivery" : "Prepaid"}
                               </td>
+                              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                <button
+                                  onClick={() => router.push(`/admin/orders/${order.salesorder_id}`)}
+                                  className="text-black hover:text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md text-sm font-medium transition-colors"
+                                >
+                                  View Details
+                                </button>
+                              </td>
                             </tr>
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="6" className="py-4 text-center text-sm text-gray-500">
+                            <td colSpan="7" className="py-4 text-center text-sm text-gray-500">
                               No orders found
                             </td>
                           </tr>
