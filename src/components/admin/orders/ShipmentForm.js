@@ -11,7 +11,10 @@ export default function ShipmentForm({ packageData, orderData, onSubmit, onCance
     courierName: '',
     shipmentDate: '',
     expectedDeliveryDate: '',
-    shippingAddress: orderData.shipping_address || {
+    subTotal: orderData.total,
+    customerData: orderData.customerData,
+    paymentMethod: orderData.paymentMethod,
+    shippingAddress: orderData.customerData.shipping_address || {
       attention: '',
       address: '',
       street2: '',
@@ -21,7 +24,7 @@ export default function ShipmentForm({ packageData, orderData, onSubmit, onCance
       country: '',
       phone: ''
     },
-    billingAddress: orderData.billing_address || {
+    billingAddress: orderData.customerData.billing_address || {
       attention: '',
       address: '',
       street2: '',
@@ -39,10 +42,10 @@ export default function ShipmentForm({ packageData, orderData, onSubmit, onCance
     orderItems: packageData.line_items.map(item => {
       const orderItem = orderData.line_items.find(li => li.line_item_id === item.lineItemId || li.line_item_id === item.line_item_id);
       return {
-        name: orderItem?.name || '',
-        sku: orderItem?.sku || '',
+        name: item.name || '',
+        sku: item.sku || '',
         units: item.quantity,
-        selling_price: orderItem?.price || 0,
+        selling_price: item.price || 0,
         discount: orderItem?.discount || 0,
         tax: orderItem?.tax || 0,
         hsn: orderItem?.hsn || ''

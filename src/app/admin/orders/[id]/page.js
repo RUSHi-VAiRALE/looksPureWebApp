@@ -50,7 +50,8 @@ export default function OrderDetailPage({ params }) {
     try {
       setLoading(true);
       const orderData = await ordersAPI.getOrderDetails(orderId);
-      setOrder(orderData.salesorder || orderData); // support both formats
+      console.log("orderData : ", orderData)
+      setOrder(orderData.salesorder); // support both formats
 
       // Only fetch packages if they exist
       if (orderData.salesorder?.packages && orderData.salesorder.packages.length > 0) {
@@ -105,7 +106,7 @@ export default function OrderDetailPage({ params }) {
       </AdminLayout>
     );
   }
-  console.log("package : " , packages)
+  console.log("package : ", packages)
   if (error) {
     return (
       <AdminLayout>
@@ -171,21 +172,27 @@ export default function OrderDetailPage({ params }) {
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Email</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {order.email}
+                  {order.customerData.email}
                 </dd>
               </div>
-              {/* <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {order.customerData.phone}
+                </dd>
+              </div>
+              <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  ₹{order.total_amount.toFixed(2)}
+                  ₹{order.total}
                 </dd>
-              </div> */}
-              {/* <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              </div>
+              <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Payment Method</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {order.payment_method}
+                  {order.paymentMethod}
                 </dd>
-              </div> */}
+              </div>
             </dl>
           </div>
         </div>
@@ -206,12 +213,12 @@ export default function OrderDetailPage({ params }) {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Quantity
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Price
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Total
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
