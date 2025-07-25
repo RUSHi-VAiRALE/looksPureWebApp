@@ -18,20 +18,20 @@ export default function TermsPage() {
             This website is owned and operated by LooksPure Wellness Limited, a limited company duly incorporated under and governed by the Companies Act, 2013 and having its registered office at 123 Beauty Lane, Mumbai, Maharashtra 400001, India.
           </p>
           <p className="mb-4">
-            The terms "We" / "Us" / "Our"/"Business" individually and collectively refer to LooksPure Wellness Limited/LooksPure and the terms "Visitor" "User" refer to the users.
+            The terms &quot;We&quot; / &quot;Us&quot; / &quot;Our&quot;/&quot;Business&quot; individually and collectively refer to LooksPure Wellness Limited/LooksPure and the terms &quot;Visitor&quot; &quot;User&quot; refer to the users.
           </p>
           <p>
-            This page states the Terms and Conditions under which you (Visitor) may visit this website ("www.lookspure.com"). By mere accessing or using the website, you are acknowledging, without limitation or qualification, to be bound by these Terms of Use and the Policies, whether you have read the same or not. If you do not accept the Terms and Conditions stated here, we would request you to exit this site. The business, any of its business divisions and / or its subsidiaries, associate companies or subsidiaries to subsidiaries or such other investment companies (in India or abroad) reserve their respective rights to revise these Terms and Conditions at any time by updating this posting. We reserve the right to change these terms and conditions from time to time without any obligation to inform you and it is your responsibility to look through them as often as possible.
+            This page states the Terms and Conditions under which you (Visitor) may visit this website (&quot;www.lookspure.com&quot;). By mere accessing or using the website, you are acknowledging, without limitation or qualification, to be bound by these Terms of Use and the Policies, whether you have read the same or not. If you do not accept the Terms and Conditions stated here, we would request you to exit this site. The business, any of its business divisions and / or its subsidiaries, associate companies or subsidiaries to subsidiaries or such other investment companies (in India or abroad) reserve their respective rights to revise these Terms and Conditions at any time by updating this posting. We reserve the right to change these terms and conditions from time to time without any obligation to inform you and it is your responsibility to look through them as often as possible.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4 text-gray-900">OWNERSHIP OF RIGHTS</h2>
           <p className="mb-4">
-            The "LooksPure" name and logo and all related product and service names, design marks and slogans are the trademarks, logos or service marks of LooksPure Wellness Limited. LooksPure Wellness Limited expressly reserves all intellectual property rights in all text, images, programs, products, processes, technology, content and other materials which appear on this Website.
+            The &quot;LooksPure&quot; name and logo and all related product and service names, design marks and slogans are the trademarks, logos or service marks of LooksPure Wellness Limited. LooksPure Wellness Limited expressly reserves all intellectual property rights in all text, images, programs, products, processes, technology, content and other materials which appear on this Website.
           </p>
           <p>
-            Access to this Website does not confer and shall not be considered as conferring upon anyone any license under any of LooksPure Wellness Limited's intellectual property rights. All rights, including copyright, in this website are owned by or licensed to LooksPure Wellness Limited.
+            Access to this Website does not confer and shall not be considered as conferring upon anyone any license under any of LooksPure Wellness Limited&apos;s intellectual property rights. All rights, including copyright, in this website are owned by or licensed to LooksPure Wellness Limited.
           </p>
         </section>
 
