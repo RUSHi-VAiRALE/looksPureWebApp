@@ -65,13 +65,10 @@ export default function FutureOfCare() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2
             ref={headingRef}
-            className="text-3xl md:text-4xl font-bold mb-4 opacity-0 transform translate-y-4 transition-all duration-700"
+            className="text-xl font-semibold mb-4 opacity-0 transform translate-y-4 transition-all duration-700"
           >
-            Your skin deserves the best. Start your beauty journey with Lookspure.
-          </h2>
-          <p className="text-gray-600">
             Embrace Lookspure, where each element is chosen for effective skincare solutions.
-          </p>
+          </h2>
         </div>
 
         {/* Desktop/Tablet View - Changed to horizontal layout */}

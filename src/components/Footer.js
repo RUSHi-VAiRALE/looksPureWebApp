@@ -17,7 +17,7 @@ export default function Footer() {
     <footer className="relative bg-black text-gray-300 overflow-hidden">
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-pink-900/5 to-purple-900/5"></div>
-      
+
       {/* Radial Gradient Accent */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full filter blur-3xl"></div>
@@ -45,7 +45,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold font-serif text-white">About Us</h3>
-                <button 
+                <button
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('about')}
                 >
@@ -53,32 +53,27 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'about' ? 'block' : 'hidden md:block'}`}>
-                <Link 
-                  href="/values" 
+                <Link
+                  href="/values"
                   className={`block w-fit ${pathname === '/values' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Our Values
                 </Link>
-                <Link 
-                  href="/privacy" 
+                <Link
+                  href="/privacy"
                   className={`block w-fit ${pathname === '/privacy' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Privacy Policy
                 </Link>
-                <Link 
-                  href="/terms" 
+                <Link
+                  href="/terms"
                   className={`block w-fit ${pathname === '/terms' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Terms & Conditions
                 </Link>
-                <Link 
-                  href="/disclaimer" 
-                  className={`block w-fit ${pathname === '/disclaimer' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
-                >
-                  Disclaimer
-                </Link>
-                <Link 
-                  href="/corporate" 
+
+                <Link
+                  href="/corporate"
                   className={`block w-fit ${pathname === '/corporate' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Corporate Information
@@ -90,7 +85,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold font-serif text-white">Quick Links</h3>
-                <button 
+                <button
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('quick')}
                 >
@@ -98,32 +93,27 @@ export default function Footer() {
                 </button>
               </div>
               <div className={`space-y-2 ${openSection === 'quick' ? 'block' : 'hidden md:block'}`}>
-                <Link 
-                  href="/knowledge" 
-                  className={`block w-fit ${pathname === '/knowledge' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
-                >
-                  Knowledge
-                </Link>
-                <Link 
-                  href="/faqs" 
+
+                <Link
+                  href="/faqs"
                   className={`block w-fit ${pathname === '/faqs' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   FAQs
                 </Link>
-                <Link 
-                  href="/return-policy" 
+                <Link
+                  href="/return-policy"
                   className={`block w-fit ${pathname === '/return-policy' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Return & Refund Policy
                 </Link>
-                <Link 
-                  href="/track" 
+                <Link
+                  href="/track"
                   className={`block w-fit ${pathname === '/track' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Track Order
                 </Link>
-                <Link 
-                  href="/help" 
+                <Link
+                  href="/help"
                   className={`block w-fit ${pathname === '/help' ? 'text-white font-semibold' : 'text-gray-400 hover:text-white hover:font-semibold'}`}
                 >
                   Help Center
@@ -135,7 +125,7 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex justify-between items-center md:block">
                 <h3 className="text-lg font-semibold font-serif text-white">Contact Us</h3>
-                <button 
+                <button
                   className="md:hidden text-gray-400"
                   onClick={() => toggleSection('contact')}
                 >
