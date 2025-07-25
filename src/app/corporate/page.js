@@ -28,38 +28,53 @@ export default function CorporatePage() {
 
         {/* Leadership Team */}
         <section>
-          <h2 className="text-2xl font-bold mb-4">Leadership Team</h2>
+          <h2 className="text-2xl font-bold mb-8">Leadership Team</h2>
 
-          <div className="mb-6">
-            <h3 className="text-lg font-bold">Aanya Sharma - Founder & CEO</h3>
-            <p>
-              With over 15 years of experience in the beauty industry, Aanya founded LooksPure with a vision
-              to create skincare products that prioritize transparency and efficacy.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Priti Kumari */}
+            <div className="text-center group">
+              <div className="relative mb-4">
+                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Priti Kumari</h3>
+              <p className="text-gray-600 font-medium">CEO & Director</p>
+            </div>
 
-          <div className="mb-6">
-            <h3 className="text-lg font-bold">Vikram Patel - Chief Scientific Officer</h3>
-            <p>
-              Dr. Patel leads our research and development team, bringing his expertise in cosmetic chemistry
-              and dermatological science to create innovative formulations.
-            </p>
-          </div>
+            {/* Sakshi Jagtap */}
+            <div className="text-center group">
+              <div className="relative mb-4">
+                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Sakshi Jagtap</h3>
+              <p className="text-gray-600 font-medium">CSO & Director</p>
+            </div>
 
-          <div className="mb-6">
-            <h3 className="text-lg font-bold">Neha Kapoor - Chief Marketing Officer</h3>
-            <p>
-              Neha oversees our marketing strategies, focusing on authentic communication and building
-              meaningful connections with our community.
-            </p>
-          </div>
-
-          <div className="mb-6">
-            <h3 className="text-lg font-bold">Arjun Mehta - Chief Operations Officer</h3>
-            <p>
-              Arjun ensures that our supply chain and operations align with our commitment to sustainability
-              and ethical business practices.
-            </p>
+            {/* Prince Kumar */}
+            <div className="text-center group">
+              <div className="relative mb-4">
+                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">Prince Kumar</h3>
+              <p className="text-gray-600 font-medium">CMO & Director</p>
+            </div>
           </div>
         </section>
 

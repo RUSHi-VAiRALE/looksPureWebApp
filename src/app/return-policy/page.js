@@ -38,8 +38,8 @@ export default function ReturnPolicyPage() {
 
   const sections = [
     {
-      title: "Easy Return Policy",
-      content: "Returns/replacements are accepted for unused products only in case of defects, damages during delivery, missing, or wrong products delivered. Return requests can be raised on the 'My Order' section within 15 days of delivery."
+      title: "We offer refunds / replacements only in following cases:",
+      content: "You received a wrong shipment\nYou received a damaged product\nYou received an expired product\nIn any of the above case, please raise a return/ replacement request within 48 hours from the\ndate of delivery.To raise a return / refund request in such cases, please drop us an email at\nhelp@lookspure.com\nNo return or any other claim will be acceptable or valid after the expiration of 48 hours from the\ntime of delivery of the product.\nPlease allow us 24 hours to review your request.Once the request is approved, we will initiate a\nreverse pickup.Our courier partner will pick up the order from your doorstep.\nUpon receiving the returned order, our service team will review the same.If the issues described\nby you are verified, our team will initiate a refund within 2 - 3 days."
     },
     {
       title: "Eligibility for Returns",
@@ -104,8 +104,8 @@ export default function ReturnPolicyPage() {
 
                     <div
                       className={`overflow-hidden transition-all duration-500 ${activeSection === index
-                          ? 'max-h-96 opacity-100'
-                          : 'max-h-0 opacity-0'
+                        ? 'max-h-96 opacity-100'
+                        : 'max-h-0 opacity-0'
                         }`}
                     >
                       <div className="p-6 bg-gray-50">

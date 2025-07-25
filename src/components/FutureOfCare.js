@@ -70,7 +70,7 @@ export default function FutureOfCare() {
             Your skin deserves the best. Start your beauty journey with Lookspure.
           </h2>
           <p className="text-gray-600">
-            Embrace Minimalist, where each element is chosen for its scientific merit, offering you authentic, effective skincare solutions.
+            Embrace Lookspure, where each element is chosen for effective skincare solutions.
           </p>
         </div>
 

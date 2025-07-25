@@ -19,10 +19,6 @@ export default function ValuesPage() {
           The beauty space has become clouded with misinformation, exaggerated claims, and fear-driven marketing. As a result, consumers are often left overwhelmed and unsure of who or what to trust. We believe it&apos;s time for a change—a shift toward full transparency, where trust replaces doubt and every decision is guided by science and integrity.
         </p>
 
-        <p className="text-xl font-semibold italic">
-          &quot;We also believe in calling things what they are. Everything around us—including the air we breathe and the water we drink—is made of chemicals.&quot;
-        </p>
-
         <p>
           Instead of feeding fear, we focus on what truly matters: the safety, purpose, and proven efficacy of each ingredient. At Lookspure, our mission is clear: to offer products that do exactly what they claim—no marketing fluff, no scare tactics. Just clean, effective skincare made with intention and backed by <strong>SCIENCE</strong>.
         </p>
