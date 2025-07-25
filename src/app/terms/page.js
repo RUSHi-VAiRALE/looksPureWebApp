@@ -66,7 +66,7 @@ export default function TermsPage() {
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>Accessing data not intended for such user or logging into a server or account which the user is not authorized to access,</li>
             <li>Attempting to probe, scan or test the vulnerability of a system or network or to breach security or authentication measures without proper authorization,</li>
-            <li>Attempting to interfere with service to any user, host or network, including, without limitation, via means of submitting a virus or "Trojan horse" to the Website, overloading, "flooding", "mail bombing" or "crashing", or</li>
+            <li>Attempting to interfere with service to any user, host or network, including, without limitation, via means of submitting a virus or &quot;Trojan horse&quot; to the Website, overloading, &quot;flooding&quot;, &quot;mail bombing&quot; or &quot;crashing&quot;, or</li>
             <li>Sending unsolicited electronic mail, including promotions and/or advertising of products or services. Violations of system or network security may result in civil or criminal liability.</li>
             <li>Using any device, software or routine to interfere or attempt to interfere with the proper working of this Website; or</li>
             <li>Using or attempting to use any engine, software, tool, agent or other device or mechanism.</li>
@@ -114,13 +114,13 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold mb-4 text-gray-900">LIABILITY</h2>
           <p className="mb-4">
-            User agrees that neither LooksPure Wellness Limited /LooksPure nor its affiliates/associates, partners, officers or employees shall be liable for any direct and/or indirect and/or incidental and/or special and/or consequential and/or exemplary damages, resulting from the use and/or the inability to use the service and/or for cost of procurement of substitute goods and/or services or resulting from any goods and/or data and/or information and/or services purchased and/or obtained and/or messages received and/or transactions entered into through and/or from the service and/or resulting from unauthorized access to and/or alteration of user's transmissions and/or data and/or arising from any other matter relating to the service, including but not limited to, damages for loss of profits and/or use and/or data or other intangible, even if Company has been advised of the possibility of such damages.
+            User agrees that neither LooksPure Wellness Limited /LooksPure nor its affiliates/associates, partners, officers or employees shall be liable for any direct and/or indirect and/or incidental and/or special and/or consequential and/or exemplary damages, resulting from the use and/or the inability to use the service and/or for cost of procurement of substitute goods and/or services or resulting from any goods and/or data and/or information and/or services purchased and/or obtained and/or messages received and/or transactions entered into through and/or from the service and/or resulting from unauthorized access to and/or alteration of user&apos;s transmissions and/or data and/or arising from any other matter relating to the service, including but not limited to, damages for loss of profits and/or use and/or data or other intangible, even if Company has been advised of the possibility of such damages.
           </p>
           <p className="mb-4">
             User further agrees that Company shall not be liable for any damages arising from interruption, suspension or termination of service, including but not limited to direct and/or indirect and/or incidental and/or special consequential and/or exemplary damages, whether such interruption and/or suspension and/or termination was justified or not, negligent or intentional, inadvertent or advertent.
           </p>
           <p>
-            User agrees that Company shall not be responsible or liable to user, or anyone, for the statements or conduct of any third party of the service. In sum, in no event shall Company's total liability to the User for all damages and/or losses and/or causes of action exceed the amount paid by the User to Company, if any, that is related to the cause of action.
+            User agrees that Company shall not be responsible or liable to user, or anyone, for the statements or conduct of any third party of the service. In sum, in no event shall Company&apos;s total liability to the User for all damages and/or losses and/or causes of action exceed the amount paid by the User to Company, if any, that is related to the cause of action.
           </p>
         </section>
 
