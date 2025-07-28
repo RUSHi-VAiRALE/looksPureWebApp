@@ -47,7 +47,7 @@ export default function Home() {
             title: "CLOUD NINE",
             subtitle: "NIACINAMIDE GLOW BLUSH",
             tagline: "Blush Brighter, Care Deeper",
-            description: "Blush brighter, care deeper with our Cloud Nine Niacinamide Glow Blush that gives your cheeks the look straight out of a dream. Infused with 8 botanical oils, Niacinamide, Kojic Acid, and Vitamin C, it pampers your skin while giving you that lit-from-within flush. Just a dab of this weightless formula gives you glowing, radiant cheeks. Choose from playful shades like peachy pink or flirty raspberry, made to flatter every Indian skin tone. Glow-getter, are you in?",
+            description: "Your glow begins with the LooksPure Niacinamide Glow Serum — a lightweight, skin-loving formula designed to hydrate, brighten, and balance your skin every day. Powered by Niacinamide, Aloe Vera, Green Tea, and Licorice Extract, it helps soothe irritation, even out skin tone, and reduce dullness for a fresh, dewy look.With added benefits from Alpha Arbutin, Zinc PCA, and Hyaluronic Acid, this serum targets dark spots, regulates oil, and delivers deep, lasting hydration.Thoughtfully formulated with gentle botanicals and no heavy residue, it’s the ultimate go- to for radiant, healthy-looking skin.",
             image: "https://cdn.pixabay.com/photo/2023/12/19/01/10/ai-generated-8456887_1280.jpg",
             link: "/products/cloud-nine-blush"
           }}

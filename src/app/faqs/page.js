@@ -10,7 +10,7 @@ export default function FAQsPage() {
   const [openFaq, setOpenFaq] = useState(null)
   const headingRef = useRef(null)
   const contentRef = useRef(null)
-  
+
   useEffect(() => {
     if (headingRef.current) {
       headingRef.current.classList.add('animate-fadeIn')
@@ -30,19 +30,19 @@ export default function FAQsPage() {
       questions: [
         {
           question: "How long does shipping take?",
-          answer: "Standard shipping typically takes 3-5 business days within India. Express shipping options are available at checkout for 1-2 business day delivery in select areas."
+          answer: "Standard shipping within India usually takes 3–5 business days. Express delivery options are available at checkout and typically take 1–2 business days for eligible pin codes."
         },
         {
           question: "Do you ship internationally?",
-          answer: "Yes, we ship to select international destinations. International shipping typically takes 7-14 business days depending on the destination country and customs processing."
+          answer: "Yes, we ship to select international destinations. Delivery timelines vary between 7–14 business days, depending on customs clearance and location."
         },
         {
           question: "How can I track my order?",
-          answer: "Once your order ships, you'll receive a tracking number via email. You can also track your order by logging into your account or visiting our Track Order page."
+          answer: "Once your order is shipped, you'll receive a tracking (AWB) number via email and SMS. You can track your shipment using your AWB number, Order ID, or mobile number on our Track Order page or from your account dashboard."
         },
         {
           question: "What is your return policy?",
-          answer: "We accept returns within 30 days of purchase for unused items in their original packaging. Please visit our Return Policy page for detailed information."
+          answer: "Returns are accepted within 30 days of delivery for unused items in their original packaging. Once the return is received and inspected, a refund or resolution will be processed. Please refer to our Return Policy page for full details."
         }
       ]
     },
@@ -96,16 +96,16 @@ export default function FAQsPage() {
         {/* Decorative elements */}
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
         <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
-        
+
         <div className="relative">
-          <h1 
+          <h1
             ref={headingRef}
             className="text-5xl font-bold mb-10 inline-block border-b-4 border-black pb-2 opacity-0 transition-opacity duration-700"
           >
             Frequently Asked Questions
           </h1>
-          
-          <div 
+
+          <div
             ref={contentRef}
             className="space-y-10 text-lg opacity-0 transform translate-y-8 transition-all duration-700"
           >
@@ -114,35 +114,32 @@ export default function FAQsPage() {
                 <h2 className="text-3xl font-bold mb-6 inline-block border-b-2 border-gray-300 pb-2">
                   {category.category}
                 </h2>
-                
+
                 <div className="space-y-4">
                   {category.questions.map((faq, faqIndex) => {
                     const index = `${categoryIndex}-${faqIndex}`
                     return (
-                      <div 
-                        key={index} 
+                      <div
+                        key={index}
                         className="border border-gray-200 rounded-lg overflow-hidden transition-all duration-300"
                       >
                         <button
                           onClick={() => toggleFaq(index)}
-                          className={`flex justify-between items-center w-full text-left font-medium p-6 focus:outline-none transition-colors duration-300 ${
-                            openFaq === index ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-50'
-                          }`}
+                          className={`flex justify-between items-center w-full text-left font-medium p-6 focus:outline-none transition-colors duration-300 ${openFaq === index ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-50'
+                            }`}
                         >
                           <span className="text-xl">{faq.question}</span>
-                          <span className={`transition-transform duration-300 ${
-                            openFaq === index ? 'transform rotate-45' : ''
-                          }`}>
+                          <span className={`transition-transform duration-300 ${openFaq === index ? 'transform rotate-45' : ''
+                            }`}>
                             +
                           </span>
                         </button>
-                        
-                        <div 
-                          className={`overflow-hidden transition-all duration-500 ${
-                            openFaq === index 
-                              ? 'max-h-96 opacity-100' 
+
+                        <div
+                          className={`overflow-hidden transition-all duration-500 ${openFaq === index
+                              ? 'max-h-96 opacity-100'
                               : 'max-h-0 opacity-0'
-                          }`}
+                            }`}
                         >
                           <div className="p-6 bg-gray-50">
                             <p>{faq.answer}</p>
@@ -154,12 +151,12 @@ export default function FAQsPage() {
                 </div>
               </div>
             ))}
-            
+
             <div className="mt-16 p-8 bg-gray-50 rounded-lg border border-gray-200">
               <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
               <p className="mb-6">If you couldn&apos;t find the answer to your question, please contact our customer support team.</p>
-              <a 
-                href="/help" 
+              <a
+                href="/help"
                 className="inline-block px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition-colors duration-300"
               >
                 Contact Support
