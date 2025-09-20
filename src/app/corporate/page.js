@@ -1,5 +1,9 @@
+
 'use client'
 
+
+import princeImg from '../../../public/prince.jpg'
+import Image from 'next/image'
 // export const metadata = {
 //   title: 'Corporate Information | LooksPure',
 //   description: 'Learn about LooksPure company, our mission, and leadership team',
@@ -30,13 +34,13 @@ export default function CorporatePage() {
         <section>
           <h2 className="text-2xl font-bold mb-8">Leadership Team</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Priti Kumari */}
             <div className="text-center group">
               <div className="relative mb-4">
-                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-40 h-52 sm:w-48 sm:h-64 md:w-44 md:h-56 lg:w-48 lg:h-64 xl:w-52 xl:h-68 mx-auto rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-20 h-20 sm:w-24 sm:h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -49,9 +53,9 @@ export default function CorporatePage() {
             {/* Sakshi Jagtap */}
             <div className="text-center group">
               <div className="relative mb-4">
-                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-40 h-52 sm:w-48 sm:h-64 md:w-44 md:h-56 lg:w-48 lg:h-64 xl:w-52 xl:h-68 mx-auto rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-20 h-20 sm:w-24 sm:h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -64,11 +68,9 @@ export default function CorporatePage() {
             {/* Prince Kumar */}
             <div className="text-center group">
               <div className="relative mb-4">
-                <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-40 h-52 sm:w-48 sm:h-64 md:w-44 md:h-56 lg:w-48 lg:h-64 xl:w-52 xl:h-68 mx-auto rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all duration-300">
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
+                    <Image src={princeImg} alt="Prince Kumar" width={200} height={200} />
                   </div>
                 </div>
               </div>
