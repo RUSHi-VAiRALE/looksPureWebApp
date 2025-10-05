@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { FiSearch, FiStar, FiUser, FiX } from 'react-icons/fi';
+import { FiSearch, FiStar, FiUser, FiX, FiShoppingBag, FiShoppingCart } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { auth } from '@/lib/firebase';
@@ -9,16 +9,16 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
   const [animationStarted, setAnimationStarted] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [user, setUser] = useState(null);
-  
+
   // Check user authentication status
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
-    
+
     return () => unsubscribe();
   }, []);
-  
+
   // Reset animation state when menu closes
   useEffect(() => {
     if (isOpen) {
@@ -36,12 +36,18 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
-  
+
   const menuItems = [
     { path: '/', label: 'New' },
     { path: '/skincare', label: 'Skin Care' },
     { path: '/offers', label: 'Offers' },
     { path: '/bestseller', label: 'Bestseller' },
+  ];
+
+  const profileMenuItems = [
+    { path: '/profile', label: 'My Profile', icon: 'FiUser' },
+    { path: '/orders', label: 'My Orders', icon: 'FiShoppingBag' },
+    { path: '/cart', label: 'Cart', icon: 'FiShoppingCart' },
   ];
 
   const handleLoginClick = (e) => {
@@ -51,14 +57,21 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
     }
   };
 
+  const handleProfileClick = (e) => {
+    e.preventDefault();
+    if (!user) {
+      // Redirect to login page if user is not logged in
+      window.location.href = '/login';
+    }
+  };
+
   return (
     <>
       {/* Full Screen Mobile Menu - Slides from left to right */}
-      <div 
-        className={`fixed inset-0 bg-white w-[90%] z-50 transform transition-all duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
-        }`}
-        style={{ 
+      <div
+        className={`fixed inset-0 bg-white w-[90%] z-50 transform transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+          }`}
+        style={{
           transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
@@ -67,28 +80,28 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
             <Link href="/" className="text-3xl font-serif font-bold text-black">
               LooksPure
             </Link>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-gray-100"
             >
               <FiX size={24} />
             </button>
           </div>
-          
+
           <div className="flex-1 overflow-y-auto py-8 px-6">
             <div className="">
               {menuItems.map((item, index) => (
-                <Link 
+                <Link
                   key={item.path}
-                  href={item.path} 
+                  href={item.path}
                   className={`block text-md py-4 border-b border-gray-100 
                     ${isActive(item.path) ? 'text-black' : 'text-gray-700'}
                     transform transition-all duration-300 ease-out
-                    ${animationStarted 
-                      ? 'translate-y-0 opacity-100' 
+                    ${animationStarted
+                      ? 'translate-y-0 opacity-100'
                       : 'translate-y-[10px] opacity-0'
                     }`}
-                  style={{ 
+                  style={{
                     transitionDelay: animationStarted ? `${index * 150}ms` : '0ms',
                     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
@@ -96,23 +109,59 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                   {item.label}
                 </Link>
               ))}
+
+              {/* Profile Menu Items - Only show if user is logged in */}
+              {user && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
+                    Account
+                  </h3>
+                  {profileMenuItems.map((item, index) => {
+                    const IconComponent = item.icon === 'FiUser' ? FiUser :
+                      item.icon === 'FiShoppingBag' ? FiShoppingBag :
+                        FiShoppingCart;
+
+                    return (
+                      <Link
+                        key={item.path}
+                        href={item.path}
+                        className={`flex items-center text-md py-4 border-b border-gray-100 
+                          ${isActive(item.path) ? 'text-black' : 'text-gray-700'}
+                          transform transition-all duration-300 ease-out
+                          ${animationStarted
+                            ? 'translate-y-0 opacity-100'
+                            : 'translate-y-[10px] opacity-0'
+                          }`}
+                        style={{
+                          transitionDelay: animationStarted ? `${(menuItems.length + index) * 100}ms` : '0ms',
+                          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                        onClick={onClose}
+                      >
+                        <IconComponent size={18} className="mr-3" />
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
-          
+
           {/* User profile or login section at bottom */}
           <div className={`p-6 border-t border-gray-100 transform transition-all duration-300 
-            ${animationStarted 
-              ? 'translate-y-0 opacity-100' 
+            ${animationStarted
+              ? 'translate-y-0 opacity-100'
               : 'translate-y-[20px] opacity-0'
             }`}
-            style={{ 
-              transitionDelay: animationStarted ? `${menuItems.length * 100 + 100}ms` : '0ms',
+            style={{
+              transitionDelay: animationStarted ? `${(menuItems.length + (user ? profileMenuItems.length : 0)) * 100 + 100}ms` : '0ms',
               transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
             {user ? (
-              <Link 
-                href="/profile" 
+              <Link
+                href="/profile"
                 className="flex items-center space-x-3 py-2"
                 onClick={onClose}
               >
@@ -125,8 +174,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                 </div>
               </Link>
             ) : (
-              <a href="#" 
-                onClick={handleLoginClick}
+              <a href="/login"
                 className="flex items-center space-x-3 py-2"
               >
                 <div className="bg-gray-100 p-3 rounded-full">
@@ -134,6 +182,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                 </div>
                 <div>
                   <span className="block text-gray-700 capitalize">Account</span>
+                  <span className="text-xs text-gray-500">Login to access your profile</span>
                 </div>
               </a>
             )}
@@ -147,7 +196,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
           <div className="bg-white rounded-lg w-full max-w-sm overflow-hidden shadow-xl transform transition-all">
             {/* Dialog Header */}
             <div className="relative bg-black text-white p-5 text-center">
-              <button 
+              <button
                 onClick={() => setShowLoginDialog(false)}
                 className="absolute right-3 top-3 text-white"
               >
@@ -158,21 +207,21 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
               </div>
               <p className="text-sm">Rule the world, one look at a time ;)</p>
             </div>
-            
+
             {/* Dialog Content */}
             <div className="p-6">
               <h3 className="text-xl font-semibold text-center mb-4">Welcome to LooksPure</h3>
               <p className="text-sm text-center text-gray-600 mb-6">Get exciting deals :)</p>
-              
+
               <div className="space-y-4">
                 <div>
-                  <input 
-                    type="tel" 
-                    placeholder="Phone number" 
+                  <input
+                    type="tel"
+                    placeholder="Phone number"
                     className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
-                
+
                 <button className="w-full flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded transition-colors">
                   <FaWhatsapp size={20} />
                   <span>Whatsapp Login</span>
@@ -184,10 +233,9 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
       )}
 
       {/* Overlay for when menu is open */}
-      <div 
-        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+      <div
+        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
         onClick={onClose}
       ></div>
     </>

@@ -11,7 +11,7 @@ export default function OrderHistory({ user }) {
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -26,12 +26,12 @@ export default function OrderHistory({ user }) {
         setLoading(false);
       }
     };
-    
+
     if (user) {
       fetchOrders();
     }
   }, [user, currentPage]);
-  
+
   const getOrderStatusClass = (status) => {
     switch (status.toLowerCase()) {
       case 'delivered':
@@ -46,16 +46,16 @@ export default function OrderHistory({ user }) {
         return 'bg-gray-100 text-gray-800';
     }
   };
-  
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
-  
+
   if (loading) {
     return <div className="p-4">Loading order history...</div>;
   }
-  
+
   if (error) {
     return (
       <div className="p-4 bg-red-50 text-red-700 rounded-lg">
@@ -63,7 +63,7 @@ export default function OrderHistory({ user }) {
       </div>
     );
   }
-  
+
   if (orders.length === 0) {
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
@@ -78,13 +78,13 @@ export default function OrderHistory({ user }) {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-6 border-b border-gray-200">
         <h2 className="text-xl font-semibold">Order History</h2>
       </div>
-      
+
       <div className="divide-y divide-gray-200">
         {orders.map((order) => (
           <div key={order.id} className="p-6 hover:bg-gray-50">
@@ -99,7 +99,7 @@ export default function OrderHistory({ user }) {
                 </span>
               </div>
             </div>
-            
+
             <div className="mt-4 space-y-4">
               {order.items.slice(0, 2).map((item) => (
                 <div key={item.productId} className="flex items-center">
@@ -116,18 +116,18 @@ export default function OrderHistory({ user }) {
                     <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                   </div>
                   <div className="text-sm font-medium">
-                    ₹{item.price.toFixed(2)}
+                    ₹{order.totalAmount}
                   </div>
                 </div>
               ))}
-              
+
               {order.items.length > 2 && (
                 <p className="text-sm text-gray-500">
                   +{order.items.length - 2} more items
                 </p>
               )}
             </div>
-            
+
             <div className="mt-6 flex justify-between items-center">
               <div>
                 <p className="text-sm font-medium">Total: ₹{order.totalAmount.toFixed(2)}</p>
@@ -143,7 +143,7 @@ export default function OrderHistory({ user }) {
           </div>
         ))}
       </div>
-      
+
       {totalPages > 1 && (
         <div className="p-6 border-t border-gray-200 flex justify-center">
           <div className="flex space-x-2">
