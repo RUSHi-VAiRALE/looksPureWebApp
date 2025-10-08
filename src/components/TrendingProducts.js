@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { collection, query, where, getDocs, orderBy, limit,getFirestore } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, limit, getFirestore } from "firebase/firestore";
 import { app } from "@/lib/firebase";
 import ProductSpotlight from "./ProductSpotlight";
 
@@ -32,18 +32,18 @@ export default function TrendingProducts({
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const currentCategory = categories[activeCategory].toLowerCase().replace(/\s+/g, '');
         let productsQuery;
-        
+
         // Different query logic based on category
-        switch(currentCategory) {
+        switch (currentCategory) {
           case 'newlaunches':
             // Get products created in the last 30 days
             const thirtyDaysAgo = new Date();
             thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            
+
             productsQuery = query(
               collection(db, "products"),
               where("isActive", "==", true),
@@ -51,7 +51,7 @@ export default function TrendingProducts({
               limit(maxProducts)
             );
             break;
-            
+
           case 'bestsellers':
             productsQuery = query(
               collection(db, "products"),
@@ -60,7 +60,7 @@ export default function TrendingProducts({
               limit(maxProducts)
             );
             break;
-            
+
           case 'eliteedition':
           case 'on-the-goessential':
           case 'lookspureplayrange':
@@ -72,9 +72,9 @@ export default function TrendingProducts({
               'lookspureplayrange': 'facecare',
               'skincareessentials': 'skincare'
             };
-            
+
             const dbCategory = categoryMap[currentCategory] || currentCategory;
-            
+
             productsQuery = query(
               collection(db, "products"),
               where("isActive", "==", true),
@@ -82,7 +82,7 @@ export default function TrendingProducts({
               limit(maxProducts)
             );
             break;
-            
+
           default:
             // Default query for any other category
             productsQuery = query(
@@ -91,10 +91,10 @@ export default function TrendingProducts({
               limit(maxProducts)
             );
         }
-        
+
         const querySnapshot = await getDocs(productsQuery);
         const fetchedProducts = [];
-        
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           fetchedProducts.push({
@@ -108,7 +108,7 @@ export default function TrendingProducts({
             rating: data.rating || 0
           });
         });
-        
+
         setProducts(fetchedProducts);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -117,13 +117,13 @@ export default function TrendingProducts({
         setLoading(false);
       }
     };
-    
+
     fetchProducts();
   }, [activeCategory, categories, maxProducts]);
 
   const handleCategoryChange = (index) => {
     if (index === activeCategory) return;
-    
+
     setIsTransitioning(true);
     setTimeout(() => {
       setActiveCategory(index);
@@ -146,7 +146,7 @@ export default function TrendingProducts({
 
   const next = () => {
     const visibleProducts = getVisibleProducts();
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       Math.min(prev + visibleProducts, products.length - visibleProducts)
     );
   }
@@ -165,7 +165,7 @@ export default function TrendingProducts({
           {title}
         </h2>
       )}
-      
+
       {/* Category Tabs */}
       {categories.length > 1 && (
         <div className="flex justify-center mb-10">
@@ -173,11 +173,10 @@ export default function TrendingProducts({
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`px-2 sm:px-4 md:px-6 py-2 uppercase text-sm sm:text-base md:text-lg font-medium transition-all duration-300 tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] ${
-                  activeCategory === index 
-                    ? 'text-black' 
+                className={`px-2 sm:px-4 md:px-6 py-2 uppercase text-sm sm:text-base md:text-lg font-medium transition-all duration-300 tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] ${activeCategory === index
+                    ? 'text-black'
                     : 'text-black hover:text-gray-800'
-                }`}
+                  }`}
                 onClick={() => handleCategoryChange(index)}
               >
                 {category}
@@ -189,7 +188,7 @@ export default function TrendingProducts({
           </div>
         </div>
       )}
-      
+
       {/* Products Carousel */}
       <div className="relative">
         {loading ? (
@@ -202,14 +201,13 @@ export default function TrendingProducts({
           </div>
         ) : products.length === 0 ? (
           <div className="flex justify-center items-center h-64">
-            <p className="text-gray-500">No products available in this category.</p>
+            <p className="text-gray-500">Coming Soon.</p>
           </div>
         ) : (
           <div className="overflow-hidden">
-            <div 
-              className={`flex transition-all duration-300 ${
-                isTransitioning ? 'opacity-0' : 'opacity-100'
-              }`}
+            <div
+              className={`flex transition-all duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'
+                }`}
               style={{ transform: `translateX(-${currentIndex * (100 / getVisibleProducts())}%)` }}
             >
               {products.map((product) => (
@@ -228,19 +226,19 @@ export default function TrendingProducts({
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  
+
                   {/* Product Info */}
-                    <h3 className="text-sm font-medium uppercase tracking-wider mb-1">
-                      {product.name}
-                    </h3>
-                    
-                    {showRatings && (
-                      <div className="flex items-center mb-2">
+                  <h3 className="text-sm font-medium uppercase tracking-wider mb-1">
+                    {product.name}
+                  </h3>
+
+                  {showRatings && (
+                    <div className="flex items-center mb-2">
                       <div className="flex mr-2">
                         {[...Array(5)].map((_, i) => (
-                          <FaStar 
-                            key={i} 
-                            className={i < Math.floor(product.rating) ? "text-black w-3 h-3" : "text-gray-300 w-3 h-3"} 
+                          <FaStar
+                            key={i}
+                            className={i < Math.floor(product.rating) ? "text-black w-3 h-3" : "text-gray-300 w-3 h-3"}
                           />
                         ))}
                       </div>
@@ -285,7 +283,7 @@ export default function TrendingProducts({
       {/* View All Button - Only show if we have products */}
       {!loading && !error && products.length > 0 && viewAllLink && (
         <div className="flex justify-center mt-10">
-          <Link 
+          <Link
             href={viewAllLink}
             className="px-8 py-3 border border-black text-white bg-black hover:bg-white hover:text-black transition-colors duration-300 uppercase text-sm tracking-wider font-medium"
           >
