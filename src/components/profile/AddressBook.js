@@ -6,12 +6,10 @@ import AddressForm from './AddressForm';
 export default function AddressBook({ user }) {
   const [addresses, setAddresses] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [savingShipping, setSavingShipping] = useState(false);
-  const [savingBilling, setSavingBilling] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isAddingShipping, setIsAddingShipping] = useState(false);
-  const [isAddingBilling, setIsAddingBilling] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -43,49 +41,30 @@ export default function AddressBook({ user }) {
     }
   }, [successMessage, error]);
 
-  const handleSaveShippingAddress = async (addressData) => {
-    setSavingShipping(true);
+  const handleSaveAddress = async (addressData) => {
+    setSaving(true);
     setError('');
     setSuccessMessage('');
 
     try {
-      const updatedAddress = await profileAPI.updateShippingAddress(user.customerId, addressData);
+      // Save as both shipping and billing address
+      const [updatedShippingAddress, updatedBillingAddress] = await Promise.all([
+        profileAPI.updateShippingAddress(user.customerId, addressData),
+        profileAPI.updateBillingAddress(user.customerId, addressData)
+      ]);
 
       setAddresses({
-        ...addresses,
-        shippingAddress: updatedAddress
+        shippingAddress: updatedShippingAddress,
+        billingAddress: updatedBillingAddress
       });
 
-      setIsAddingShipping(false);
-      setSuccessMessage('Shipping address saved successfully!');
+      setIsEditing(false);
+      setSuccessMessage('Address saved successfully!');
     } catch (error) {
-      console.error('Error saving shipping address:', error);
-      setError('Failed to save shipping address. Please try again.');
+      console.error('Error saving address:', error);
+      setError('Failed to save address. Please try again.');
     } finally {
-      setSavingShipping(false);
-    }
-  };
-
-  const handleSaveBillingAddress = async (addressData) => {
-    setSavingBilling(true);
-    setError('');
-    setSuccessMessage('');
-
-    try {
-      const updatedAddress = await profileAPI.updateBillingAddress(user.customerId, addressData);
-
-      setAddresses({
-        ...addresses,
-        billingAddress: updatedAddress
-      });
-
-      setIsAddingBilling(false);
-      setSuccessMessage('Billing address saved successfully!');
-    } catch (error) {
-      console.error('Error saving billing address:', error);
-      setError('Failed to save billing address. Please try again.');
-    } finally {
-      setSavingBilling(false);
+      setSaving(false);
     }
   };
 
@@ -145,14 +124,17 @@ export default function AddressBook({ user }) {
         </div>
       )}
 
-      {/* Shipping Address */}
+      {/* Address Section */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Shipping Address</h2>
-          {addresses?.shippingAddress && !isAddingShipping && (
+          <div>
+            <h2 className="text-xl font-semibold">Address</h2>
+            <p className="text-sm text-gray-500 mt-1">This address will be used for both shipping and billing</p>
+          </div>
+          {addresses?.shippingAddress && !isEditing && (
             <button
-              onClick={() => setIsAddingShipping(true)}
-              disabled={savingShipping || savingBilling}
+              onClick={() => setIsEditing(true)}
+              disabled={saving}
               className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Edit
@@ -160,13 +142,13 @@ export default function AddressBook({ user }) {
           )}
         </div>
 
-        {isAddingShipping || !addresses?.shippingAddress ? (
+        {isEditing || !addresses?.shippingAddress ? (
           <AddressForm
             initialData={addresses?.shippingAddress || {}}
-            onSave={handleSaveShippingAddress}
-            onCancel={() => setIsAddingShipping(false)}
-            type="shipping"
-            loading={savingShipping}
+            onSave={handleSaveAddress}
+            onCancel={() => setIsEditing(false)}
+            type="address"
+            loading={saving}
           />
         ) : (
           <div className="space-y-3">
@@ -184,68 +166,6 @@ export default function AddressBook({ user }) {
               <p>{addresses.shippingAddress.country}</p>
               <p>Phone: {addresses.shippingAddress.phone}</p>
             </div>
-          </div>
-        )}
-      </div>
-
-      {/* Billing Address */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Billing Address</h2>
-          {addresses?.billingAddress && !isAddingBilling && (
-            <button
-              onClick={() => setIsAddingBilling(true)}
-              disabled={savingShipping || savingBilling}
-              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              Edit
-            </button>
-          )}
-        </div>
-
-        {isAddingBilling || !addresses?.billingAddress ? (
-          <AddressForm
-            initialData={addresses?.billingAddress || {}}
-            onSave={handleSaveBillingAddress}
-            onCancel={() => setIsAddingBilling(false)}
-            type="billing"
-            loading={savingBilling}
-          />
-        ) : (
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2 mb-3">
-              <span className="text-lg">{getCategoryIcon(addresses.billingAddress.category)}</span>
-              <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">
-                {addresses.billingAddress.category || 'Home'}
-              </span>
-            </div>
-            <div className="space-y-2 text-gray-700">
-              <p className="font-medium">{addresses.billingAddress.fullName}</p>
-              <p>{addresses.billingAddress.addressLine1}</p>
-              {addresses.billingAddress.addressLine2 && <p>{addresses.billingAddress.addressLine2}</p>}
-              <p>{addresses.billingAddress.city}, {addresses.billingAddress.state} {addresses.billingAddress.postalCode}</p>
-              <p>{addresses.billingAddress.country}</p>
-              <p>Phone: {addresses.billingAddress.phone}</p>
-            </div>
-          </div>
-        )}
-
-        {addresses?.shippingAddress && addresses?.billingAddress && !isAddingBilling && (
-          <div className="mt-4 flex items-center">
-            <input
-              type="checkbox"
-              id="sameAsShipping"
-              className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
-              disabled={savingBilling}
-              onChange={(e) => {
-                if (e.target.checked && addresses?.shippingAddress) {
-                  handleSaveBillingAddress({ ...addresses.shippingAddress });
-                }
-              }}
-            />
-            <label htmlFor="sameAsShipping" className="ml-2 block text-sm text-gray-700">
-              Use shipping address as billing address
-            </label>
           </div>
         )}
       </div>
