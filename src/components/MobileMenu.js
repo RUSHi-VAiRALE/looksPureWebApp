@@ -46,8 +46,6 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
 
   const profileMenuItems = [
     { path: '/profile', label: 'My Profile', icon: 'FiUser' },
-    { path: '/orders', label: 'My Orders', icon: 'FiShoppingBag' },
-    { path: '/cart', label: 'Cart', icon: 'FiShoppingCart' },
   ];
 
   const handleLoginClick = (e) => {
