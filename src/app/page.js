@@ -27,7 +27,7 @@ export default function Home() {
           title="TRENDING AT LOOKSPURE"
           categories={["skincare", "haircare"]}
           productData={[newLaunches, bestsellers]}
-          viewAllLinks={["/new-launches", "/bestsellers"]}
+          viewAllLinks={["/skincare", "/skincare"]}
           showRatings={true}
         />
 
