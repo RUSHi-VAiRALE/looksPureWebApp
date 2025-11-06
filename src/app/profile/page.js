@@ -12,15 +12,15 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState('addresses');
   const [userProfileData, setUserProfileData] = useState(null);
   const router = useRouter();
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser && currentUser.email) {
         setUser(currentUser);
-        
+
         // Get user profile from localStorage and parse it
         const storedProfile = localStorage.getItem('userProfile');
         if (storedProfile) {
@@ -42,20 +42,20 @@ export default function ProfilePage() {
       }
       setLoading(false);
     });
-    
+
     return () => unsubscribe();
   }, [router]);
-  
+
   if (loading) {
     return <LoadingSpinner />;
   }
-  
+
   // If not loading but no user or profile data, show a message
   if (!user || !userProfileData) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8 text-center">
         <p>Unable to load profile information. Please try logging in again.</p>
-        <button 
+        <button
           onClick={() => router.push('/login')}
           className="mt-4 px-4 py-2 bg-black text-white rounded-md"
         >
@@ -64,16 +64,16 @@ export default function ProfilePage() {
       </div>
     );
   }
-  
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold mb-8">My Account</h1>
-      
+
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-1/4">
           <ProfileSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
-        
+
         <div className="w-full md:w-3/4">
           {activeTab === 'profile' && <ProfileInfo user={userProfileData} />}
           {activeTab === 'addresses' && <AddressBook user={userProfileData} />}
