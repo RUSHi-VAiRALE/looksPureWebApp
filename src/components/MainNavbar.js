@@ -23,22 +23,22 @@ export default function MainNavbar() {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
-  
+
   // Check if user is logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-    
+
     return () => unsubscribe();
   }, []);
 
   // Check if current page should have forced scrolled style
   const shouldForceScrolledStyle = pathname.includes('/singleProduct/') || pathname.includes('/track') || pathname.includes('/cart') || pathname.includes('/values')
-  || pathname.includes('/privacy') || pathname.includes('/terms')||pathname.includes('/disclaimer') || pathname.includes('/corporate')||pathname.includes('/knowledge')
-  ||pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy') || pathname.includes('/offers') || pathname.includes('/bestseller') ||
-  pathname.includes('/profile') || pathname.includes('/admin/products/add') || pathname.includes('/admin/customers') || pathname.includes('/admin/payments') || pathname.includes('/admin/orders');
+    || pathname.includes('/privacy') || pathname.includes('/terms') || pathname.includes('/disclaimer') || pathname.includes('/corporate') || pathname.includes('/knowledge')
+    || pathname.includes('/faqs') || pathname.includes('/help') || pathname.includes('/return-policy') || pathname.includes('/offers') || pathname.includes('/bestseller') ||
+    pathname.includes('/profile') || pathname.includes('/admin/products/add') || pathname.includes('/admin/customers') || pathname.includes('/admin/payments') || pathname.includes('/admin/orders');
 
   // Set initial scrolled state based on the current page
   useEffect(() => {
@@ -46,10 +46,10 @@ export default function MainNavbar() {
       setScrolled(true);
     }
   }, [pathname, shouldForceScrolledStyle]);
-  
+
   // Changed to treat all pages like home page
   const isHomePage = true;
-  
+
   // Get cart state and functions
   const { cart, cartOpen, setCartOpen, getCartCount } = useCart();
   const cartItemCount = getCartCount();
@@ -59,14 +59,14 @@ export default function MainNavbar() {
     if (path === '/') {
       return pathname === '/';
     }
-    
+
     // Handle dynamic routes like /singleProduct/[id]
     if (pathname.includes('/singleProduct/')) {
       if (path === '/singleProduct') {
         return true;
       }
     }
-    
+
     return pathname.startsWith(path);
   };
 
@@ -85,12 +85,12 @@ export default function MainNavbar() {
   }, [pathname]);
 
   useEffect(() => {
-    
+
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
       if (isScrolled !== scrolled) {
         setScrolled(isScrolled);
-        
+
         // Control announcement bar visibility on all pages now
         const announcementBar = document.querySelector('.announcement-bar');
         if (announcementBar) {
@@ -121,9 +121,8 @@ export default function MainNavbar() {
   const shouldApplyScrolledStyles = scrolled || isHovered || shouldForceScrolledStyle;
 
   // Updated navClasses to apply to all pages with explicit background-color transition
-  const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-colors duration-500 ease-in-out ${
-    shouldApplyScrolledStyles ? 'bg-[#F3F3F3] shadow-md' : 'bg-transparent'
-  }`;
+  const navClasses = `fixed ${scrolled ? 'top-0' : 'top-[36px]'} w-full z-40 transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3] shadow-md' : 'bg-transparent'
+    }`;
 
   // Updated textClasses to apply to all pages
   const textClasses = shouldApplyScrolledStyles
@@ -145,25 +144,23 @@ export default function MainNavbar() {
     const baseClasses = "text-md uppercase tracking-widest text-[14px] transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5";
     const activeIndicator = isActive(path) ? 'after:w-full' : 'after:w-0 hover:after:w-full';
     const afterTransition = "after:transition-all";
-    
+
     if (shouldApplyScrolledStyles) {
-      return `${baseClasses} ${activeIndicator} ${afterTransition} ${
-        isActive(path) 
-          ? 'text-black after:bg-black' 
-          : 'text-gray-700 hover:text-black after:bg-black'
-      }`;
+      return `${baseClasses} ${activeIndicator} ${afterTransition} ${isActive(path)
+        ? 'text-black after:bg-black'
+        : 'text-gray-700 hover:text-black after:bg-black'
+        }`;
     } else {
-      return `${baseClasses} ${activeIndicator} ${afterTransition} ${
-        isActive(path) 
-          ? 'text-white after:bg-white font-semibold' 
-          : 'text-white hover:text-black after:bg-black'
-      }`;
+      return `${baseClasses} ${activeIndicator} ${afterTransition} ${isActive(path)
+        ? 'text-white after:bg-white font-semibold'
+        : 'text-white hover:text-black after:bg-black'
+        }`;
     }
   };
 
   return (
     <>
-      <nav 
+      <nav
         className={navClasses}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -172,7 +169,7 @@ export default function MainNavbar() {
           <div className={`flex items-center justify-between h-16 transition-colors duration-500 ease-in-out ${shouldApplyScrolledStyles ? 'bg-[#F3F3F3]' : 'bg-transparent'}`}>
             {/* Mobile Menu Button */}
             <div className="lg:hidden order-1 flex">
-              <button 
+              <button
                 className={`p-2 rounded-full transition-colors duration-200 ${iconClasses}`}
                 onClick={() => setIsMenuOpen(true)}
               >
@@ -180,13 +177,12 @@ export default function MainNavbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <button 
+              <button
                 onClick={() => setIsSearchOpen(true)}
-                className={`p-2 lg:hidden rounded-full transition-colors duration-200 ${
-                  shouldApplyScrolledStyles 
-                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                    : 'text-white hover:text-white hover:bg-white/20'
-                }`}
+                className={`p-2 lg:hidden rounded-full transition-colors duration-200 ${shouldApplyScrolledStyles
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  : 'text-white hover:text-white hover:bg-white/20'
+                  }`}
               >
                 <FiSearch size={22} />
               </button>
@@ -194,7 +190,7 @@ export default function MainNavbar() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-1 group order-2 lg:order-2 mx-auto md:mx-0 pb-0 sm:pb-4">
-              <Image 
+              <Image
                 src={logo}
                 alt="logo"
                 width={120}
@@ -221,38 +217,35 @@ export default function MainNavbar() {
 
             {/* Icons - Right side */}
             <div className="flex items-center space-x-2 md:space-x-4 order-3">
-              <button 
+              <button
                 onClick={() => setIsSearchOpen(true)}
-                className={`p-2 hidden lg:block rounded-full transition-colors duration-200 ${
-                  shouldApplyScrolledStyles 
-                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                    : 'text-white hover:text-white hover:bg-white/20'
-                }`}
+                className={`p-2 hidden lg:block rounded-full transition-colors duration-200 ${shouldApplyScrolledStyles
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  : 'text-white hover:text-white hover:bg-white/20'
+                  }`}
               >
                 <FiSearch size={22} />
               </button>
-              
+
               {/* Updated User Icon with conditional rendering */}
-              <button 
+              <button
                 onClick={handleProfileClick}
-                className={`hidden md:flex p-2 rounded-full transition-colors duration-200 items-center ${
-                  shouldApplyScrolledStyles 
-                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                    : 'text-white hover:text-white hover:bg-white/20'
-                }`}
+                className={`hidden md:flex p-2 rounded-full transition-colors duration-200 items-center ${shouldApplyScrolledStyles
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  : 'text-white hover:text-white hover:bg-white/20'
+                  }`}
               >
                 <FiUser size={22} />
                 {user && (
                   <span className="ml-1 w-2 h-2 bg-green-500 rounded-full"></span>
                 )}
               </button>
-              
-              <Link href="/cart" 
-                className={`p-2 rounded-full transition-colors duration-200 relative ${
-                  shouldApplyScrolledStyles 
-                    ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                    : 'text-white hover:text-white hover:bg-white/20'
-                }`}
+
+              <Link href="/cart"
+                className={`p-2 rounded-full transition-colors duration-200 relative ${shouldApplyScrolledStyles
+                  ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+                  : 'text-white hover:text-white hover:bg-white/20'
+                  }`}
               >
                 <SlHandbag size={22} />
                 {cartItemCount > 0 && (
@@ -261,17 +254,16 @@ export default function MainNavbar() {
                   </span>
                 )}
               </Link>
-              <Link href="/track" className={`p-2 rounded-full transition-colors duration-200 ${
-                shouldApplyScrolledStyles 
-                  ? 'text-gray-700 hover:text-black hover:bg-gray-100' 
-                  : 'text-white hover:text-white hover:bg-white/20'
-              }`}>
-                <Image 
+              <Link href="/track" className={`p-2 rounded-full transition-colors duration-200 ${shouldApplyScrolledStyles
+                ? 'text-gray-700 hover:text-black hover:bg-gray-100'
+                : 'text-white hover:text-white hover:bg-white/20'
+                }`}>
+                <Image
                   src={trackingLogo}
                   alt="Track Order"
                   width={36}
                   height={36}
-                  className="object-contain"
+                  className="object-contain min-w-8 min-h-8"
                 />
               </Link>
             </div>
@@ -283,10 +275,10 @@ export default function MainNavbar() {
       <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Use the MobileMenu component */}
-      <MobileMenu 
-        isOpen={isMenuOpen} 
-        onClose={() => setIsMenuOpen(false)} 
-        isActive={isActive} 
+      <MobileMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        isActive={isActive}
       />
     </>
   );

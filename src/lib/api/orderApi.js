@@ -14,11 +14,11 @@ const api_url = process.env.NEXT_PUBLIC_URL
 export async function fetchSalesOrders(params = {}) {
   try {
     const token = localStorage.getItem('authToken');
-    
+
     if (!token) {
       throw new Error('Authentication token not found');
     }
-    
+
     // Build query string
     const queryParams = new URLSearchParams();
     if (params.page) queryParams.append('page', params.page);
@@ -27,13 +27,13 @@ export async function fetchSalesOrders(params = {}) {
     if (params.customer_id) queryParams.append('customer_id', params.customer_id);
     if (params.date_start) queryParams.append('date_start', params.date_start);
     if (params.date_end) queryParams.append('date_end', params.date_end);
-    
-    const response = await axios.get(`${api_url}/api/orders/sales?${queryParams.toString()}`, {
+
+    const response = await axios.get(`${api_url}/api/orders?${queryParams.toString()}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    
+
     return response.data;
   } catch (error) {
     console.error('Error fetching sales orders:', error);
@@ -49,17 +49,17 @@ export async function fetchSalesOrders(params = {}) {
 export async function fetchOrderById(orderId) {
   try {
     const token = localStorage.getItem('authToken');
-    
+
     if (!token) {
       throw new Error('Authentication token not found');
     }
-    
+
     const response = await axios.get(`/api/orders/${orderId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    
+
     return response.data;
   } catch (error) {
     console.error(`Error fetching order ${orderId}:`, error);
@@ -76,12 +76,12 @@ export async function fetchOrderById(orderId) {
 export async function updateOrderStatus(orderId, status) {
   try {
     const token = localStorage.getItem('authToken');
-    
+
     if (!token) {
       throw new Error('Authentication token not found');
     }
-    
-    const response = await axios.patch(`/api/orders/${orderId}/status`, 
+
+    const response = await axios.patch(`/api/orders/${orderId}/status`,
       { status },
       {
         headers: {
@@ -90,7 +90,7 @@ export async function updateOrderStatus(orderId, status) {
         }
       }
     );
-    
+
     return response.data;
   } catch (error) {
     console.error(`Error updating order ${orderId}:`, error);

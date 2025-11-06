@@ -362,7 +362,7 @@ export default function CartPage() {
       const token = await auth.currentUser.getIdToken(true);
 
       // Check user addresses
-      const response = await axios.get(`https://ecombackend-mauve.vercel.app/api/users/${customerId}/addresses`, {
+      const response = await axios.get(`${API_BASE_URL}/api/users/${customerId}/addresses`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

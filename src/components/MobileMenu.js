@@ -1,14 +1,17 @@
 'use client'
 import Link from "next/link";
-import { FiSearch, FiStar, FiUser, FiX, FiShoppingBag, FiShoppingCart } from 'react-icons/fi';
+import { FiSearch, FiStar, FiUser, FiX, FiShoppingBag, FiShoppingCart, FiLogOut } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 export default function MobileMenu({ isOpen, onClose, isActive }) {
   const [animationStarted, setAnimationStarted] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   // Check user authentication status
   useEffect(() => {
@@ -60,6 +63,17 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
     if (!user) {
       // Redirect to login page if user is not logged in
       window.location.href = '/login';
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('userProfile');
+      await signOut(auth);
+      onClose(); // Close the mobile menu
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 
@@ -141,6 +155,24 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                       </Link>
                     );
                   })}
+
+                  {/* Logout Option */}
+                  <button
+                    onClick={handleLogout}
+                    className={`w-full flex items-center text-md py-4 border-b border-gray-100 text-gray-700
+                      transform transition-all duration-300 ease-out
+                      ${animationStarted
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-[10px] opacity-0'
+                      }`}
+                    style={{
+                      transitionDelay: animationStarted ? `${(menuItems.length + profileMenuItems.length) * 100}ms` : '0ms',
+                      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    <FiLogOut size={18} className="mr-3" />
+                    Logout
+                  </button>
                 </div>
               )}
             </div>
