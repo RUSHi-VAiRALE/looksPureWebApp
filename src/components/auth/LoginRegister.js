@@ -410,7 +410,7 @@ export default function LoginRegister({ mode = 'login' }) {
               Verify Your Email
             </h2>
             <p className="text-gray-600 mb-6">
-              We've sent a verification link to <span className="font-semibold">{pendingUserData.email}</span>
+              We&apos;ve sent a verification link to <span className="font-semibold">{pendingUserData.email}</span>
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <p className="text-sm text-blue-800">
