@@ -117,10 +117,14 @@ export default function LoginRegister({ mode = 'login' }) {
       return
     }
 
+    let firebaseUserCreated = false
+    let firebaseUser = null
+
     try {
-      // Create user in Firebase
+      // Create user in Firebase first
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      const user = userCredential.user
+      firebaseUser = userCredential.user
+      firebaseUserCreated = true
 
       // Store pending user data
       setPendingUserData({
@@ -128,11 +132,11 @@ export default function LoginRegister({ mode = 'login' }) {
         firstName,
         lastName,
         mobile,
-        uid: user.uid
+        uid: firebaseUser.uid
       })
 
       // Send email verification
-      await sendEmailVerification(user, {
+      await sendEmailVerification(firebaseUser, {
         url: `${window.location.origin}/login`,
         handleCodeInApp: false,
       })
@@ -146,6 +150,18 @@ export default function LoginRegister({ mode = 'login' }) {
 
     } catch (error) {
       console.error('Registration error:', error)
+
+      // If Firebase account was created but there was an error after that, clean it up
+      if (firebaseUserCreated && firebaseUser) {
+        try {
+          // Delete the Firebase user account if something went wrong
+          await firebaseUser.delete()
+          console.log('Cleaned up Firebase account due to registration error')
+        } catch (deleteError) {
+          console.error('Failed to clean up Firebase account:', deleteError)
+        }
+      }
+
       setError(getAuthErrorMessage(error.code) || error.message)
     } finally {
       setLoading(false)
@@ -187,7 +203,25 @@ export default function LoginRegister({ mode = 'login' }) {
       })
 
       if (!response.ok) {
-        throw new Error(response.error)
+        const errorData = await response.json()
+
+        // If email already exists in backend, it might be from a previous registration
+        if (errorData.message && errorData.message.toLowerCase().includes('already exists')) {
+          // Account already exists in backend, just proceed to login
+          await auth.signOut()
+          setVerificationSent(false)
+          setPendingUserData(null)
+          setIsLogin(true)
+          setFirstName('')
+          setLastName('')
+          setMobile('')
+          setPassword('')
+          setError('Account already exists. Please login with your credentials.')
+          setLoading(false)
+          return
+        }
+
+        throw new Error(errorData.message || 'Failed to create account in database')
       }
 
       // Sign out and prompt to login
