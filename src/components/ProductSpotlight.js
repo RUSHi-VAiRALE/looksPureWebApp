@@ -35,9 +35,9 @@ export default function ProductSpotlight({
           {/* Right Side - Product Info */}
           <div className="w-full md:w-1/2 flex-1 md:flex-none py-6 md:py-0 flex flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-8">
             <div className="max-w-lg w-full">
-              <div className="uppercase tracking-wider text-emerald-800 mb-3 text-sm">
+              {/* <div className="uppercase tracking-wider text-emerald-800 mb-3 text-sm">
                 {product.title}
-              </div>
+              </div> */}
 
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 md:mb-6 text-gray-900 leading-tight">
                 READY TO TAKE YOUR<br />
