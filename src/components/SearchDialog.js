@@ -2,9 +2,13 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiSearch, FiX } from 'react-icons/fi';
+import { FiSearch, FiX, FiLoader } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
+import { collection, query, getDocs, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function SearchDialog({ isOpen, onClose }) {
+  const router = useRouter();
   const searchInputRef = useRef(null);
   const dialogRef = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -12,6 +16,10 @@ export default function SearchDialog({ isOpen, onClose }) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
   const [charIndex, setCharIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const placeholders = [
     'Search for Shampoo...',
@@ -93,8 +101,79 @@ export default function SearchDialog({ isOpen, onClose }) {
       setPlaceholderText('');
       setCharIndex(0);
       setIsTyping(true);
+      setSearchQuery('');
+      setSearchResults([]);
+      setShowResults(false);
     }
   }, [isOpen]);
+
+  // Search products from Firebase Firestore
+  useEffect(() => {
+    const searchProducts = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSearchResults([]);
+        setShowResults(false);
+        return;
+      }
+
+      setIsSearching(true);
+      setShowResults(true);
+
+      try {
+        const searchTerm = searchQuery.toLowerCase().trim();
+        const productsRef = collection(db, 'products');
+
+        // Get all products and filter client-side
+        // Note: Firestore doesn't support case-insensitive or partial text search natively
+        const q = query(productsRef, limit(100));
+        const querySnapshot = await getDocs(q);
+
+        const results = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const productName = (data.name || '').toLowerCase();
+          const productCategory = (data.category || '').toLowerCase();
+
+          // Check if search term matches name or category
+          if (productName.includes(searchTerm) || productCategory.includes(searchTerm)) {
+            results.push({
+              id: doc.id,
+              ...data
+            });
+          }
+        });
+
+        setSearchResults(results);
+      } catch (error) {
+        console.error('Search error:', error);
+        setSearchResults([]);
+      } finally {
+
+        setIsSearching(false);
+      }
+    };
+
+    // Debounce search
+    const debounceTimer = setTimeout(() => {
+      searchProducts();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  const handleLinkClick = (href) => {
+    onClose();
+    setTimeout(() => {
+      router.push(href);
+    }, 100);
+  };
+
+  const handleProductClick = (productId) => {
+    onClose();
+    setTimeout(() => {
+      router.push(`/singleProduct/${productId}`);
+    }, 100);
+  };
 
   if (!isOpen) return null;
 
@@ -114,8 +193,13 @@ export default function SearchDialog({ isOpen, onClose }) {
                 ref={searchInputRef}
                 type="text"
                 placeholder={placeholderText}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full outline-none text-lg"
               />
+              {isSearching && (
+                <FiLoader size={20} className="text-gray-500 animate-spin ml-2" />
+              )}
             </div>
             <button
               onClick={onClose}
@@ -127,80 +211,151 @@ export default function SearchDialog({ isOpen, onClose }) {
         </div>
 
         <div className="p-6">
-          {/* Popular Choices */}
-          <div className="mb-8">
-            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4 flex items-center">
-              <span className="mr-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" fill="currentColor" />
-                </svg>
-              </span>
-              Popular Choices
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/skincare" className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50">
-                Skin Care
-                <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" fill="currentColor" />
-                </svg>
-              </Link>
-              <Link href="/skincare" className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50">
-                Serum
-                <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" fill="currentColor" />
-                </svg>
-              </Link>
+          {/* Search Results */}
+          {showResults && searchQuery.trim().length >= 2 ? (
+            <div>
+              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
+                Search Results {searchResults.length > 0 && `(${searchResults.length})`}
+              </h3>
 
-            </div>
-          </div>
+              {isSearching ? (
+                <div className="flex items-center justify-center py-8">
+                  <FiLoader size={24} className="text-gray-400 animate-spin" />
+                  <span className="ml-2 text-gray-500">Searching...</span>
+                </div>
+              ) : searchResults.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {searchResults.map((product) => (
 
-          {/* Recommended For You */}
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4 flex items-center">
-              <span className="mr-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM11 16H13V18H11V16ZM12.61 6.04C10.55 5.74 8.73 7.01 8.18 8.83C8 9.41 8.44 10 9.05 10H9.25C9.66 10 9.99 9.71 10.13 9.33C10.45 8.44 11.4 7.83 12.43 8.05C13.38 8.25 14.08 9.23 14 10.2C13.9 11.26 12.97 11.94 12 12V14C12 14.55 12.45 15 13 15C13.55 15 14 14.55 14 14V13.69C15.5 12.67 16.2 10.72 15.56 8.91C14.96 7.23 13.86 6.15 12.61 6.04Z" fill="currentColor" />
-                </svg>
-              </span>
-              Recommended For You
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="product-card">
-                <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
-                  <img
-                    src="https://cdn.pixabay.com/photo/2015/02/19/19/04/shampoo-642517_1280.jpg"
-                    alt="Hydrating Face Serum"
-                    className="w-full h-full object-cover"
-                    crossOrigin="anonymous"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Cpath d='M30,40 L70,40 L70,60 L30,60 Z' fill='%23d1d5db'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%236b7280'%3EImage%3C/text%3E%3C/svg%3E";
-                    }}
-                  />
+                    <div
+                      key={product.id}
+                      onClick={() => handleProductClick(product.id)}
+                      className="product-card cursor-pointer hover:shadow-lg transition-shadow"
+                    >
+                      <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
+                        <img
+                          src={product.images?.[0]?.src || '/placeholder.png'}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                          crossOrigin="anonymous"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Cpath d='M30,40 L70,40 L70,60 L30,60 Z' fill='%23d1d5db'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%236b7280'%3EImage%3C/text%3E%3C/svg%3E";
+                          }}
+                        />
+                      </div>
+                      <h4 className="text-xs uppercase font-medium text-center line-clamp-2">
+                        {product.name}
+                      </h4>
+                      {product.category && (
+                        <p className="text-center text-xs text-gray-500 mt-1">{product.category}</p>
+                      )}
+                      <p className="text-center text-sm font-medium mt-1">
+                        RS. {product.price || product.salePrice || 'N/A'}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-                <h4 className="text-xs uppercase font-medium text-center">Hydrating Face Serum</h4>
-                <p className="text-center text-sm font-medium mt-1">RS. 1299</p>
-              </div>
-              <div className="product-card">
-                <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
-                  <img
-                    src="https://cdn.pixabay.com/photo/2019/05/19/07/46/shampoo-4213395_1280.jpg"
-                    alt="Nourishing Face Cream"
-                    className="w-full h-full object-cover"
-                    crossOrigin="anonymous"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Cpath d='M30,40 L70,40 L70,60 L30,60 Z' fill='%23d1d5db'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%236b7280'%3EImage%3C/text%3E%3C/svg%3E";
-                    }}
-                  />
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No products found for &quot;{searchQuery}&quot;</p>
+                  <p className="text-sm text-gray-400 mt-2">Try searching with different keywords</p>
                 </div>
-                <h4 className="text-xs uppercase font-medium text-center">Nourishing Face Cream</h4>
-                <p className="text-center text-sm font-medium mt-1">RS. 1299</p>
-              </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <>
+              {/* Popular Choices */}
+              <div className="mb-8">
+                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4 flex items-center">
+                  <span className="mr-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" fill="currentColor" />
+                    </svg>
+                  </span>
+                  Popular Choices
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => handleLinkClick('/skincare')}
+                    className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50 transition-colors"
+                  >
+                    Skin Care
+                    <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" fill="currentColor" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleLinkClick('/bestseller')}
+                    className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50 transition-colors"
+                  >
+                    Bestseller
+                    <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" fill="currentColor" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleLinkClick('/offers')}
+                    className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50 transition-colors"
+                  >
+                    Offers
+                    <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" fill="currentColor" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Recommended For You */}
+              <div>
+                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4 flex items-center">
+                  <span className="mr-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM11 16H13V18H11V16ZM12.61 6.04C10.55 5.74 8.73 7.01 8.18 8.83C8 9.41 8.44 10 9.05 10H9.25C9.66 10 9.99 9.71 10.13 9.33C10.45 8.44 11.4 7.83 12.43 8.05C13.38 8.25 14.08 9.23 14 10.2C13.9 11.26 12.97 11.94 12 12V14C12 14.55 12.45 15 13 15C13.55 15 14 14.55 14 14V13.69C15.5 12.67 16.2 10.72 15.56 8.91C14.96 7.23 13.86 6.15 12.61 6.04Z" fill="currentColor" />
+                    </svg>
+                  </span>
+                  Recommended For You
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="product-card cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
+                      <img
+                        src="https://cdn.pixabay.com/photo/2015/02/19/19/04/shampoo-642517_1280.jpg"
+                        alt="Hydrating Face Serum"
+                        className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Cpath d='M30,40 L70,40 L70,60 L30,60 Z' fill='%23d1d5db'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%236b7280'%3EImage%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
+                    </div>
+                    <h4 className="text-xs uppercase font-medium text-center">Hydrating Face Serum</h4>
+                    <p className="text-center text-sm font-medium mt-1">RS. 1299</p>
+                  </div>
+                  <div className="product-card cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
+                      <img
+                        src="https://cdn.pixabay.com/photo/2019/05/19/07/46/shampoo-4213395_1280.jpg"
+                        alt="Nourishing Face Cream"
+                        className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Cpath d='M30,40 L70,40 L70,60 L30,60 Z' fill='%23d1d5db'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%236b7280'%3EImage%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
+                    </div>
+                    <h4 className="text-xs uppercase font-medium text-center">Nourishing Face Cream</h4>
+                    <p className="text-center text-sm font-medium mt-1">RS. 1299</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
