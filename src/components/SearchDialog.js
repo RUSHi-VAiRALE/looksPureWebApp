@@ -226,15 +226,17 @@ export default function SearchDialog({ isOpen, onClose }) {
               ) : searchResults.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {searchResults.map((product) => (
-
+                    console.log(product.images[0].src),
                     <div
                       key={product.id}
                       onClick={() => handleProductClick(product.id)}
                       className="product-card cursor-pointer hover:shadow-lg transition-shadow"
                     >
                       <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
-                        <img
-                          src={product.images?.[0]?.src || '/placeholder.png'}
+                        <Image
+                          src={product.images?.[0]?.src}
+                          width={100}
+                          height={100}
                           alt={product.name}
                           className="w-full h-full object-cover"
                           crossOrigin="anonymous"
@@ -287,7 +289,7 @@ export default function SearchDialog({ isOpen, onClose }) {
                     </svg>
                   </button>
                   <button
-                    onClick={() => handleLinkClick('/bestseller')}
+                    onClick={() => handleLinkClick('/skincare')}
                     className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50 transition-colors"
                   >
                     Bestseller
@@ -320,10 +322,12 @@ export default function SearchDialog({ isOpen, onClose }) {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="product-card cursor-pointer hover:shadow-lg transition-shadow">
                     <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
-                      <img
+                      <Image
                         src="https://cdn.pixabay.com/photo/2015/02/19/19/04/shampoo-642517_1280.jpg"
                         alt="Hydrating Face Serum"
                         className="w-full h-full object-cover"
+                        width={100}
+                        height={100}
                         crossOrigin="anonymous"
                         loading="lazy"
                         onError={(e) => {
@@ -337,10 +341,12 @@ export default function SearchDialog({ isOpen, onClose }) {
                   </div>
                   <div className="product-card cursor-pointer hover:shadow-lg transition-shadow">
                     <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center mb-2 overflow-hidden">
-                      <img
+                      <Image
                         src="https://cdn.pixabay.com/photo/2019/05/19/07/46/shampoo-4213395_1280.jpg"
                         alt="Nourishing Face Cream"
                         className="w-full h-full object-cover"
+                        width={100}
+                        height={100}
                         crossOrigin="anonymous"
                         loading="lazy"
                         onError={(e) => {
