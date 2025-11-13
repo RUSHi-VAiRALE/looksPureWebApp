@@ -125,7 +125,7 @@ export default function SearchDialog({ isOpen, onClose }) {
 
         // Get all products and filter client-side
         // Note: Firestore doesn't support case-insensitive or partial text search natively
-        const q = query(productsRef, limit(100));
+        const q = query(productsRef, limit(10));
         const querySnapshot = await getDocs(q);
 
         const results = [];
