@@ -14,6 +14,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
   const router = useRouter();
 
   // Check user authentication status
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
@@ -50,6 +51,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
   const profileMenuItems = [
     { path: '/profile', label: 'My Profile', icon: 'FiUser' },
   ];
+
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -200,7 +202,7 @@ export default function MobileMenu({ isOpen, onClose, isActive }) {
                 </div>
                 <div>
                   <span className="block text-gray-700 capitalize">My Profile</span>
-                  <span className="text-xs text-gray-500">{user.email || user.phoneNumber}</span>
+                  <span className="text-xs text-gray-500">{user?.displayName}</span>
                 </div>
               </Link>
             ) : (

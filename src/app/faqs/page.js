@@ -42,7 +42,7 @@ export default function FAQsPage() {
         },
         {
           question: "What is your return policy?",
-          answer: "Returns are accepted within 30 days of delivery for unused items in their original packaging. Once the return is received and inspected, a refund or resolution will be processed. Please refer to our Return Policy page for full details."
+          answer: "Returns are accepted within 7 days of delivery for unused items in their original packaging. Once the return is received and inspected, a refund or resolution will be processed. Please refer to our Return Policy page for full details."
         }
       ]
     },
@@ -137,8 +137,8 @@ export default function FAQsPage() {
 
                         <div
                           className={`overflow-hidden transition-all duration-500 ${openFaq === index
-                              ? 'max-h-96 opacity-100'
-                              : 'max-h-0 opacity-0'
+                            ? 'max-h-96 opacity-100'
+                            : 'max-h-0 opacity-0'
                             }`}
                         >
                           <div className="p-6 bg-gray-50">

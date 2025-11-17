@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { FiArrowLeft, FiPhone, FiMail } from 'react-icons/fi'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { RecaptchaVerifier, signInWithPhoneNumber, updateProfile } from 'firebase/auth'
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '@/lib/firebase'
+
 export default function LoginRegister({ mode = 'login' }) {
   const router = useRouter()
-  const [isLogin, setIsLogin] = useState(mode === 'login')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -20,7 +20,12 @@ export default function LoginRegister({ mode = 'login' }) {
   const [otpSent, setOtpSent] = useState(false)
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null)
 
-  // Registration flow states
+  // Resend OTP timer states
+  const [resendTimer, setResendTimer] = useState(0)
+  const [canResend, setCanResend] = useState(false)
+
+  // Registration flow states - only shown if user is new
+  const [isNewUser, setIsNewUser] = useState(false)
   const [showDetailsForm, setShowDetailsForm] = useState(false)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -62,8 +67,28 @@ export default function LoginRegister({ mode = 'login' }) {
     }
   }, [])
 
-  const toggleMode = () => {
-    setIsLogin(!isLogin)
+  // Timer countdown for resend OTP
+  useEffect(() => {
+    let interval = null
+
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer(prev => {
+          if (prev <= 1) {
+            setCanResend(true)
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [resendTimer])
+
+  const resetForm = () => {
     setError('')
     setSuccess('')
     setOtpSent(false)
@@ -71,9 +96,12 @@ export default function LoginRegister({ mode = 'login' }) {
     setPhoneNumber('')
     setOtp('')
     setShowDetailsForm(false)
+    setIsNewUser(false)
     setFirstName('')
     setLastName('')
     setEmail('')
+    setResendTimer(0)
+    setCanResend(false)
   }
 
   // Format phone number to E.164 format
@@ -99,7 +127,7 @@ export default function LoginRegister({ mode = 'login' }) {
     return `+${cleaned}`
   }
 
-  // Send OTP for both login and registration
+  // Send OTP - unified flow (no separate login/register)
   const handleSendOTP = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -121,21 +149,24 @@ export default function LoginRegister({ mode = 'login' }) {
         throw new Error('reCAPTCHA not initialized. Please refresh the page.')
       }
 
-      // For registration, check if user already exists
-      if (!isLogin) {
-        const userDoc = await getDoc(doc(db, 'customers', formattedPhone))
-        if (userDoc.exists()) {
-          setError('This phone number is already registered. Please login instead.')
-          setLoading(false)
-          return
-        }
-      }
+      // Check if user exists in Firestore
+      const userDoc = await getDoc(doc(db, 'customers', formattedPhone))
+      setIsNewUser(!userDoc.exists())
 
       // Send OTP via Firebase Phone Authentication
       const confirmation = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier)
       setConfirmationResult(confirmation)
       setOtpSent(true)
-      setSuccess('OTP sent successfully! Please check your phone.')
+
+      // Start 60 second timer for resend OTP
+      setResendTimer(60)
+      setCanResend(false)
+
+      if (userDoc.exists()) {
+        setSuccess('OTP sent successfully! Please check your phone to login.')
+      } else {
+        setSuccess('OTP sent successfully! Please verify to create your account.')
+      }
 
     } catch (error) {
       console.error('Error sending OTP:', error)
@@ -143,8 +174,6 @@ export default function LoginRegister({ mode = 'login' }) {
         setError('Invalid phone number format')
       } else if (error.code === 'auth/too-many-requests') {
         setError('Too many requests. Please try again later.')
-      } else if (error.code === 'auth/user-not-found' && isLogin) {
-        setError('No account found with this phone number. Please register first.')
       } else if (error.message && error.message.includes('reCAPTCHA')) {
         setError('reCAPTCHA verification failed. Please try again.')
       } else {
@@ -171,8 +200,8 @@ export default function LoginRegister({ mode = 'login' }) {
     }
   }
 
-  // Verify OTP for login
-  const handleVerifyOTPLogin = async (e) => {
+  // Unified OTP Verification - handles both new and existing users
+  const handleVerifyOTP = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -191,74 +220,44 @@ export default function LoginRegister({ mode = 'login' }) {
       // Verify OTP
       const result = await confirmationResult.confirm(otp)
       const user = result.user
-
-      // Fetch user data from Firestore
       const formattedPhone = formatPhoneNumber(phoneNumber)
-      const userDoc = await getDoc(doc(db, 'customers', formattedPhone))
 
-      if (!userDoc.exists()) {
-        // User doesn't exist in database
-        await auth.signOut()
-        setError('No account found. Please register first.')
-        setLoading(false)
-        return
-      }
-
-      const userData = userDoc.data()
-
-      // Store user data in localStorage
-      localStorage.setItem('userProfile', JSON.stringify({
-        customerId: userDoc.id,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        mobile: userData.mobile,
-        shippingAddress: userData.shippingAddress || null,
-        billingAddress: userData.billingAddress || null,
-        uid: user.uid,
-        phoneNumber: formattedPhone
-      }))
-
-      // Redirect to home
-      router.push('/')
-
-    } catch (error) {
-      console.error('OTP verification error:', error)
-      if (error.code === 'auth/invalid-verification-code') {
-        setError('Invalid OTP. Please try again.')
-      } else if (error.code === 'auth/code-expired') {
-        setError('OTP expired. Please request a new one.')
+      // Check if this is a new user
+      if (isNewUser) {
+        // New user - show details form to complete profile
+        setShowDetailsForm(true)
+        setSuccess('Phone verified! Please complete your profile.')
       } else {
-        setError(error.message || 'Failed to verify OTP. Please try again.')
+        // Existing user - fetch data from Firestore and login
+        const userDoc = await getDoc(doc(db, 'customers', formattedPhone))
+
+        if (!userDoc.exists()) {
+          // Shouldn't happen but handle it gracefully
+          setShowDetailsForm(true)
+          setIsNewUser(true)
+          setSuccess('Phone verified! Please complete your profile.')
+          return
+        }
+
+        const userData = userDoc.data()
+
+        // Store user data in localStorage (for backward compatibility)
+        localStorage.setItem('userProfile', JSON.stringify({
+          customerId: userDoc.id,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          mobile: userData.mobile,
+          displayName: userData.displayName || `${userData.firstName} ${userData.lastName}`,
+          shippingAddress: userData.shippingAddress || null,
+          billingAddress: userData.billingAddress || null,
+          uid: user.uid,
+          phoneNumber: formattedPhone
+        }))
+
+        // Redirect to home - user is logged in via Firebase auth
+        router.push('/')
       }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Verify OTP for registration - shows details form
-  const handleVerifyOTPRegister = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    if (!otp || otp.length !== 6) {
-      setError('Please enter a valid 6-digit OTP')
-      setLoading(false)
-      return
-    }
-
-    try {
-      if (!confirmationResult) {
-        throw new Error('Please request OTP first')
-      }
-
-      // Verify OTP
-      await confirmationResult.confirm(otp)
-
-      // Show details form after successful OTP verification
-      setShowDetailsForm(true)
-      setSuccess('Phone verified! Please complete your profile.')
 
     } catch (error) {
       console.error('OTP verification error:', error)
@@ -302,6 +301,13 @@ export default function LoginRegister({ mode = 'login' }) {
       }
 
       const formattedPhone = formatPhoneNumber(phoneNumber)
+      const displayName = `${firstName.trim()} ${lastName.trim()}`
+      const email1 = email.trim().toLowerCase()
+      // Update Firebase user profile with displayName and email
+      await updateProfile(user, {
+        displayName: displayName,
+        email: email1
+      })
 
       // Save user data to Firestore customers collection
       await setDoc(doc(db, 'customers', formattedPhone), {
@@ -311,6 +317,7 @@ export default function LoginRegister({ mode = 'login' }) {
         mobile: formattedPhone,
         uid: user.uid,
         phoneNumber: formattedPhone,
+        displayName: displayName,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         shippingAddress: null,
@@ -324,6 +331,7 @@ export default function LoginRegister({ mode = 'login' }) {
         lastName: lastName.trim(),
         email: email.trim().toLowerCase(),
         mobile: formattedPhone,
+        displayName: displayName,
         shippingAddress: null,
         billingAddress: null,
         uid: user.uid,
@@ -343,6 +351,8 @@ export default function LoginRegister({ mode = 'login' }) {
 
   // Resend OTP
   const handleResendOTP = async () => {
+    if (!canResend) return
+
     setLoading(true)
     setError('')
     setSuccess('')
@@ -358,6 +368,10 @@ export default function LoginRegister({ mode = 'login' }) {
       const confirmation = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier)
       setConfirmationResult(confirmation)
       setSuccess('OTP resent successfully! Please check your phone.')
+
+      // Restart 60 second timer
+      setResendTimer(60)
+      setCanResend(false)
 
     } catch (error) {
       console.error('Error resending OTP:', error)
@@ -486,16 +500,10 @@ export default function LoginRegister({ mode = 'login' }) {
             <FiArrowLeft className="mr-2" /> Back to home
           </Link>
           <h2 className="text-center text-3xl font-bold text-gray-900">
-            {isLogin ? 'Sign in to your account' : 'Create your account'}
+            Welcome to LooksPure
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={toggleMode}
-              className="font-medium text-black hover:text-gray-800 underline"
-            >
-              {isLogin ? 'Sign up' : 'Sign in'}
-            </button>
+            Enter your mobile number to continue
           </p>
         </div>
 
@@ -552,7 +560,7 @@ export default function LoginRegister({ mode = 'login' }) {
           </form>
         ) : (
           // OTP Verification Form
-          <form className="mt-8 space-y-6" onSubmit={isLogin ? handleVerifyOTPLogin : handleVerifyOTPRegister}>
+          <form className="mt-8 space-y-6" onSubmit={handleVerifyOTP}>
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
@@ -587,14 +595,20 @@ export default function LoginRegister({ mode = 'login' }) {
             </div>
 
             <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={handleResendOTP}
-                disabled={loading}
-                className="text-sm text-black hover:text-gray-800 underline disabled:opacity-50"
-              >
-                Resend OTP
-              </button>
+              {canResend ? (
+                <button
+                  type="button"
+                  onClick={handleResendOTP}
+                  disabled={loading}
+                  className="text-sm text-black hover:text-gray-800 underline disabled:opacity-50 font-medium"
+                >
+                  Resend OTP
+                </button>
+              ) : (
+                <div className="text-sm text-gray-600">
+                  Resend OTP in <span className="font-semibold text-black">{resendTimer}s</span>
+                </div>
+              )}
             </div>
 
             <div>

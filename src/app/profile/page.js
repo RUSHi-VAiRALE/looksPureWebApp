@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { getUserProfile } from '@/lib/auth';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
 import ProfileInfo from '@/components/profile/ProfileInfo';
 import AddressBook from '@/components/profile/AddressBook';
@@ -17,24 +18,33 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser && currentUser.email) {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      console.log('currentUser', currentUser);
+      if (currentUser) {
         setUser(currentUser);
 
-        // Get user profile from localStorage and parse it
-        const storedProfile = localStorage.getItem('userProfile');
-        if (storedProfile) {
-          try {
-            const parsedProfile = JSON.parse(storedProfile);
-            setUserProfileData(parsedProfile);
-          } catch (error) {
-            console.error('Error parsing user profile:', error);
-            // If there's an error parsing, redirect to login
-            router.push('/login');
+        // Fetch user profile from Firestore using the auth utility
+        try {
+          const profile = await getUserProfile();
+          if (profile) {
+            setUserProfileData(profile);
+            // Also store in localStorage for backward compatibility
+            localStorage.setItem('userProfile', JSON.stringify(profile));
+          } else {
+            console.warn('User is authenticated but profile data not found in Firestore');
+            // Try to get from localStorage as fallback
+            const storedProfile = localStorage.getItem('userProfile');
+            if (storedProfile) {
+              const parsedProfile = JSON.parse(storedProfile);
+              setUserProfileData(parsedProfile);
+            } else {
+              // No profile data found anywhere, redirect to complete profile
+              router.push('/login');
+            }
           }
-        } else {
-          console.warn('User is authenticated but profile data not found');
-          // You might want to fetch the profile data here instead of redirecting
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          router.push('/login');
         }
       } else {
         // User not authenticated, redirect to login

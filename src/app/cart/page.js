@@ -63,8 +63,9 @@ export default function CartPage() {
         //console.log(response);
         console.log("cart :", cart)
 
-        // Get user profile from localStorage
+        // Get user profile - try localStorage first, but use Firebase auth as primary source
         const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        const currentUser = auth.currentUser;
 
         // Create detailed order items with comprehensive product information
         const orderItems = await cart.map(item => ({
@@ -89,20 +90,20 @@ export default function CartPage() {
           productDiscount: item.discount || 0
         }));
 
-        // Prepare comprehensive customer data
+        // Prepare comprehensive customer data using Firebase auth as primary source
         const customerData = {
-          customerId: userProfile.customerId || null,
-          customerName: userProfile.name || auth.currentUser?.displayName || '',
-          customerEmail: auth.currentUser?.email || userProfile.email || '',
-          customerPhone: userProfile.phone || shippingAddress?.phone || '',
+          customerId: currentUser?.phoneNumber || userProfile.customerId || null,
+          customerName: `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim() || currentUser?.displayName || '',
+          customerEmail: userProfile.email || currentUser?.email || '',
+          customerPhone: currentUser?.phoneNumber || userProfile.mobile || shippingAddress?.phone || '',
           customerGender: userProfile.gender || '',
           customerDateOfBirth: userProfile.dateOfBirth || '',
           customerAnniversary: userProfile.anniversary || '',
           // Firebase user data
-          firebaseUid: auth.currentUser?.uid || null,
-          firebaseEmail: auth.currentUser?.email || null,
-          firebaseDisplayName: auth.currentUser?.displayName || null,
-          firebasePhoneNumber: auth.currentUser?.phoneNumber || null,
+          firebaseUid: currentUser?.uid || null,
+          firebaseEmail: currentUser?.email || null,
+          firebaseDisplayName: currentUser?.displayName || null,
+          firebasePhoneNumber: currentUser?.phoneNumber || null,
           // Profile data
           profilePicture: userProfile.profilePicture || '',
           preferences: userProfile.preferences || {},
@@ -216,8 +217,9 @@ export default function CartPage() {
     setIsProcessing(true);
 
     try {
-      // Get user profile from localStorage
+      // Get user profile - try localStorage first, but use Firebase auth as primary source
       const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      const currentUser = auth.currentUser;
 
       // Create detailed order items with comprehensive product information
       const orderItems = cart.map(item => ({
@@ -242,20 +244,20 @@ export default function CartPage() {
         productDiscount: item.discount || 0
       }));
 
-      // Prepare comprehensive customer data
+      // Prepare comprehensive customer data using Firebase auth as primary source
       const customerData = {
-        customerId: userProfile.customerId || null,
-        customerName: userProfile.firstName + " " + userProfile.lastName || auth.currentUser?.displayName || '',
-        customerEmail: auth.currentUser?.email || userProfile.email || '',
-        customerPhone: userProfile.phone || shippingAddress?.phone || '',
+        customerId: currentUser?.phoneNumber || userProfile.customerId || null,
+        customerName: `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim() || currentUser?.displayName || '',
+        customerEmail: userProfile.email || currentUser?.email || '',
+        customerPhone: currentUser?.phoneNumber || userProfile.mobile || shippingAddress?.phone || '',
         customerGender: userProfile.gender || '',
         customerDateOfBirth: userProfile.dateOfBirth || '',
         customerAnniversary: userProfile.anniversary || '',
         // Firebase user data
-        firebaseUid: auth.currentUser?.uid || null,
-        firebaseEmail: auth.currentUser?.email || null,
-        firebaseDisplayName: auth.currentUser?.displayName || null,
-        firebasePhoneNumber: auth.currentUser?.phoneNumber || null,
+        firebaseUid: currentUser?.uid || null,
+        firebaseEmail: currentUser?.email || null,
+        firebaseDisplayName: currentUser?.displayName || null,
+        firebasePhoneNumber: currentUser?.phoneNumber || null,
         // Profile data
         profilePicture: userProfile.profilePicture || '',
         preferences: userProfile.preferences || {},
@@ -350,19 +352,22 @@ export default function CartPage() {
   // Function to validate user addresses
   const validateUserAddresses = async () => {
     try {
-      // Get user profile from localStorage
-      const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-      const customerId = userProfile.customerId;
+      // Check if user is authenticated
+      if (!auth.currentUser) {
+        throw new Error('User not authenticated');
+      }
 
-      if (!customerId) {
-        throw new Error('Customer ID not found');
+      // Get user phone number from Firebase auth
+      const phoneNumber = auth.currentUser.phoneNumber;
+      if (!phoneNumber) {
+        throw new Error('Phone number not found');
       }
 
       // Get Firebase token for authentication
       const token = await auth.currentUser.getIdToken(true);
 
-      // Check user addresses
-      const response = await axios.get(`${API_BASE_URL}/api/users/${customerId}/addresses`, {
+      // Check user addresses using phone number as customer ID
+      const response = await axios.get(`${API_BASE_URL}/api/users/${phoneNumber}/addresses`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

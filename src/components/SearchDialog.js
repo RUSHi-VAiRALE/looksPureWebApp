@@ -289,7 +289,7 @@ export default function SearchDialog({ isOpen, onClose }) {
                     </svg>
                   </button>
                   <button
-                    onClick={() => handleLinkClick('/skincare')}
+                    onClick={() => handleLinkClick('/bestseller')}
                     className="border border-gray-300 rounded px-4 py-2 text-sm flex items-center hover:bg-gray-50 transition-colors"
                   >
                     Bestseller
