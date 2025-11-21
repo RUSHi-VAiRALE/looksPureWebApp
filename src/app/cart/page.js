@@ -1,12 +1,17 @@
 'use client'
-import { FiShoppingBag, FiTrash2, FiArrowLeft } from 'react-icons/fi';
+import { FiShoppingBag, FiArrowLeft } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { auth } from '@/lib/firebase';
+import AddressSelectionModal from '@/components/cart/AddressSelectionModal';
+import CartItem from '@/components/cart/CartItem';
+import CartSummary from '@/components/cart/CartSummary';
+import OrderSuccessDialog from '@/components/cart/OrderSuccessDialog';
+import OrderErrorDialog from '@/components/cart/OrderErrorDialog';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
 export default function CartPage() {
   const {
@@ -20,6 +25,10 @@ export default function CartPage() {
   const [paymentMethod, setPaymentMethod] = useState('online');
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [orderSuccessData, setOrderSuccessData] = useState(null);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [selectedAddresses, setSelectedAddresses] = useState(null);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [orderError, setOrderError] = useState(null);
   const router = useRouter();
 
   // Handle order success
@@ -33,6 +42,16 @@ export default function CartPage() {
     setTimeout(() => {
       router.push('/');
     }, 3000);
+  };
+
+  // Handle order error
+  const handleOrderError = (errorData, paymentId = null) => {
+    setOrderError({
+      ...errorData,
+      paymentId: paymentId
+    });
+    setShowErrorDialog(true);
+    setIsProcessing(false);
   };
 
   // Check if Razorpay is loaded
@@ -190,12 +209,28 @@ export default function CartPage() {
             if (res.data.success) {
               handleOrderSuccess(res.data);
             } else {
-              setIsProcessing(false);
+              // Handle ShipRocket or other errors
+              handleOrderError(
+                {
+                  error: res.data.error || 'ORDER_ERROR',
+                  message: res.data.message || 'Failed to create order. Please try again.',
+                  details: res.data.details || null
+                },
+                response.razorpay_payment_id // Pass payment ID since payment was successful
+              );
             }
           })
           .catch(err => {
             console.error("Order creation failed:", err);
-            setIsProcessing(false);
+            const errorData = err.response?.data || {};
+            handleOrderError(
+              {
+                error: errorData.error || 'ORDER_ERROR',
+                message: errorData.message || 'Failed to create order. Please try again.',
+                details: errorData.details || null
+              },
+              response.razorpay_payment_id // Pass payment ID since payment was successful
+            );
           });
       },
       prefill: {
@@ -336,88 +371,59 @@ export default function CartPage() {
           if (res.data.success) {
             handleOrderSuccess(res.data);
           } else {
-            setIsProcessing(false);
+            // Handle ShipRocket or other errors (no payment ID for COD)
+            handleOrderError({
+              error: res.data.error || 'ORDER_ERROR',
+              message: res.data.message || 'Failed to create order. Please try again.',
+              details: res.data.details || null
+            });
           }
         })
         .catch(err => {
           console.error("COD Order creation failed:", err);
-          setIsProcessing(false);
+          const errorData = err.response?.data || {};
+          handleOrderError({
+            error: errorData.error || 'ORDER_ERROR',
+            message: errorData.message || 'Failed to create order. Please try again.',
+            details: errorData.details || null
+          });
         });
     } catch (error) {
       console.error("COD Order processing error:", error);
-      setIsProcessing(false);
-    }
-  };
-
-  // Function to validate user addresses
-  const validateUserAddresses = async () => {
-    try {
-      // Check if user is authenticated
-      if (!auth.currentUser) {
-        throw new Error('User not authenticated');
-      }
-
-      // Get user phone number from Firebase auth
-      const phoneNumber = auth.currentUser.phoneNumber;
-      if (!phoneNumber) {
-        throw new Error('Phone number not found');
-      }
-
-      // Get Firebase token for authentication
-      const token = await auth.currentUser.getIdToken(true);
-
-      // Check user addresses using phone number as customer ID
-      const response = await axios.get(`${API_BASE_URL}/api/users/${phoneNumber}/addresses`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      handleOrderError({
+        error: 'ORDER_ERROR',
+        message: 'An unexpected error occurred. Please try again.',
+        details: error.message
       });
-
-      const { shippingAddress, billingAddress } = response.data;
-
-      // Check if addresses are missing
-      if (!shippingAddress || !billingAddress) {
-        return {
-          isValid: false,
-          message: 'Please fill your shipping and billing addresses first to proceed with the order.'
-        };
-      }
-
-      return {
-        isValid: true,
-        shippingAddress,
-        billingAddress
-      };
-
-    } catch (error) {
-      console.error('Address validation error:', error);
-      return {
-        isValid: false,
-        message: 'Unable to validate addresses. Please try again.'
-      };
     }
   };
 
-  const handlePayment = async () => {
-    setIsProcessing(true);
+  // Handle address selection from modal
+  const handleAddressSelected = (addresses) => {
+    setSelectedAddresses(addresses);
+    setShowAddressModal(false);
+    // Proceed with payment after address is selected
+    proceedWithPayment(addresses);
+  };
 
+  // Open address modal for checkout
+  const handleCheckout = () => {
     // Check if user is logged in
     if (!auth.currentUser) {
       alert("Please login to continue with checkout");
       router.push('/login');
-      setIsProcessing(false);
       return;
     }
 
-    // Validate user addresses before proceeding
-    const addressValidation = await validateUserAddresses();
+    // Show address selection modal
+    setShowAddressModal(true);
+  };
 
-    if (!addressValidation.isValid) {
-      alert(addressValidation.message);
-      router.push('/profile');
-      setIsProcessing(false);
-      return;
-    }
+  // Proceed with payment after address is confirmed
+  const proceedWithPayment = async (addresses) => {
+    setIsProcessing(true);
+
+    const { shippingAddress, billingAddress } = addresses;
 
     // Store simplified cart details in localStorage
     const simplifiedCart = cart.map(item => ({
@@ -432,7 +438,7 @@ export default function CartPage() {
 
     // If Cash on Delivery is selected
     if (paymentMethod === 'cod') {
-      handleCashOnDelivery(addressValidation.shippingAddress, addressValidation.billingAddress);
+      handleCashOnDelivery(shippingAddress, billingAddress);
       return;
     }
 
@@ -456,7 +462,7 @@ export default function CartPage() {
       })
         .then(res => {
           console.log("Payment order created:", res.data);
-          handleOpenRazorpay(res.data, addressValidation.shippingAddress, addressValidation.billingAddress);
+          handleOpenRazorpay(res.data, shippingAddress, billingAddress);
         })
         .catch(err => {
           console.error("Payment order creation failed:", err);
@@ -498,210 +504,56 @@ export default function CartPage() {
           </div>
         ) : (
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-            {/* Cart Items section remains the same */}
+            {/* Cart Items */}
             <div className="lg:col-span-8">
-              {/* Cart items code remains unchanged */}
               <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200">
                 <ul className="divide-y divide-gray-200">
                   {cart.map((item) => (
-
-                    <li key={`${item.id}`} className="p-6">
-                      <div className="flex flex-col sm:flex-row">
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 mb-4 sm:mb-0">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            width={96}
-                            height={96}
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </div>
-
-                        <div className="sm:ml-6 flex flex-1 flex-col">
-                          <div className="flex justify-between">
-                            <div>
-                              <h3 className="text-base font-medium text-gray-900">
-                                <Link href={`/singleProduct/${item.id}`} className="hover:text-emerald-600">
-                                  {item.name}
-                                </Link>
-                              </h3>
-                              <p className="mt-1 text-sm text-gray-500">{item.subtitle}</p>
-                            </div>
-                            <p className="text-base font-medium text-gray-900">₹{item.price.toFixed(2)}</p>
-                          </div>
-
-                          <div className="flex justify-between items-end mt-4">
-                            <div className="flex items-center border border-gray-300 rounded-md">
-                              <button
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="px-3 py-1 text-gray-600 hover:text-gray-900"
-                              >
-                                -
-                              </button>
-                              <span className="px-3 py-1">{item.quantity}</span>
-                              <button
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="px-3 py-1 text-gray-600 hover:text-gray-900"
-                              >
-                                +
-                              </button>
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() => removeFromCart(item.id)}
-                              className="flex items-center text-sm font-medium text-red-600 hover:text-red-500"
-                            >
-                              <FiTrash2 className="mr-1" />
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
+                    <CartItem
+                      key={item.id}
+                      item={item}
+                      onUpdateQuantity={updateQuantity}
+                      onRemove={removeFromCart}
+                    />
                   ))}
                 </ul>
               </div>
             </div>
 
-            {/* Order Summary - Right Side */}
-            <div className="lg:col-span-4 mt-8 lg:mt-0">
-              <div className="bg-white p-6 shadow-sm rounded-lg border border-gray-200">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between border-b border-gray-200 pb-4">
-                    <p className="text-gray-600">Subtotal</p>
-                    <p className="font-medium">₹{getCartTotal().toFixed(2)}</p>
-                  </div>
-
-                  <div className="flex justify-between border-b border-gray-200 pb-4">
-                    <p className="text-gray-600">Shipping</p>
-                    <p className="font-medium">Calculated at checkout</p>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <p className="text-gray-900 font-medium">Total</p>
-                    <p className="text-gray-900 font-medium">₹{getCartTotal().toFixed(2)}</p>
-                  </div>
-                </div>
-
-                {/* Payment Method Selection */}
-                <div className="mt-6">
-                  <h3 className="text-sm font-medium text-gray-900 mb-3">Payment Method</h3>
-                  <div className="space-y-3">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="online"
-                        checked={paymentMethod === 'online'}
-                        onChange={() => setPaymentMethod('online')}
-                        className="h-4 w-4 text-black focus:ring-black border-gray-300"
-                      />
-                      <span className="ml-2 text-sm text-gray-700">Online Payment</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="cod"
-                        checked={paymentMethod === 'cod'}
-                        onChange={() => setPaymentMethod('cod')}
-                        className="h-4 w-4 text-black focus:ring-black border-gray-300"
-                      />
-                      <span className="ml-2 text-sm text-gray-700">Cash on Delivery</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <button
-                    onClick={handlePayment}
-                    disabled={isProcessing}
-                    className="w-full flex items-center justify-center border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {isProcessing ? 'Processing...' : paymentMethod === 'online' ? 'Proceed to Payment' : 'Place Order (COD)'}
-                  </button>
-                </div>
-
-                <div className="mt-4">
-                  <Link
-                    href="/"
-                    className="w-full flex items-center justify-center px-6 py-3 text-base font-medium text-gray-700 hover:text-gray-900 border border-gray-300 hover:border-gray-400"
-                  >
-                    Continue Shopping
-                  </Link>
-                </div>
-              </div>
-            </div>
+            {/* Cart Summary */}
+            <CartSummary
+              cartTotal={getCartTotal()}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              onCheckout={handleCheckout}
+              isProcessing={isProcessing}
+            />
           </div>
         )}
       </div>
 
+      {/* Address Selection Modal */}
+      <AddressSelectionModal
+        isOpen={showAddressModal}
+        onClose={() => setShowAddressModal(false)}
+        onSelectAddress={handleAddressSelected}
+      />
+
       {/* Order Success Dialog */}
-      {showSuccessDialog && orderSuccessData && (
-        <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg w-full max-w-md overflow-hidden shadow-xl transform transition-all">
-            {/* Dialog Header */}
-            <div className="relative bg-green-500 text-white p-6 text-center">
-              <div className="flex justify-center items-center mb-4">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold">Order Successful!</h2>
-              <p className="text-green-100 mt-2">Your order has been placed successfully</p>
-            </div>
+      <OrderSuccessDialog
+        orderData={orderSuccessData}
+        isOpen={showSuccessDialog}
+      />
 
-            {/* Dialog Content */}
-            <div className="p-6">
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="font-medium text-gray-600">Order ID:</span>
-                      <p className="font-semibold text-gray-900">{orderSuccessData.orderId}</p>
-                    </div>
-                    <div>
-                      <span className="font-medium text-gray-600">ShipRocket ID:</span>
-                      <p className="font-semibold text-gray-900">{orderSuccessData.shipRocketOrderId}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <p className="text-gray-600 mb-4">
-                    {orderSuccessData.courierName && (
-                      <>Your order will be shipped via <strong>{orderSuccessData.courierName}</strong></>
-                    )}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    You will be redirected to the home page in a few seconds...
-                  </p>
-                </div>
-
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() => router.push('/')}
-                    className="flex-1 bg-black hover:bg-gray-900 text-white py-3 px-4 rounded transition-colors"
-                  >
-                    Go to Home
-                  </button>
-                  <button
-                    onClick={() => router.push('/orders')}
-                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-4 rounded transition-colors"
-                  >
-                    View Orders
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Order Error Dialog */}
+      <OrderErrorDialog
+        error={orderError}
+        isOpen={showErrorDialog}
+        onClose={() => {
+          setShowErrorDialog(false);
+          setOrderError(null);
+        }}
+      />
     </div>
   );
 }

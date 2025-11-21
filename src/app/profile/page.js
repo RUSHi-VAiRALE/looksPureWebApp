@@ -86,7 +86,6 @@ export default function ProfilePage() {
 
         <div className="w-full md:w-3/4">
           {activeTab === 'profile' && <ProfileInfo user={userProfileData} />}
-          {activeTab === 'addresses' && <AddressBook user={userProfileData} />}
           {activeTab === 'orders' && <OrderHistory user={userProfileData} />}
         </div>
       </div>
